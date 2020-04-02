@@ -1,8 +1,14 @@
 version: '3.7'
 services:
-  # rezerwacje-app:
-  #   build: ./rezerwacje-app
-  #   container_name: rezerwacje-app
+  rezerwacje-app:
+    build: ./rezerwacje-app
+    # container_name: rezerwacje-app
+    ports: 
+      - 8080:8080
+    volumes: 
+      - ./rezerwacje-app:/app
+    user: appuser
+    command: ./gradlew --project-cache-dir /tmp/gradle-chache bootRun
 
   rezerwacje-front:
     build:
