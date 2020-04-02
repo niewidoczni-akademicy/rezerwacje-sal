@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  # rezerwacje-app:
+  #   build: ./rezerwacje-app
+  #   container_name: rezerwacje-app
+
+  rezerwacje-front:
+    build:
+      context: ./rezerwacje-front
+      target: base
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./rezerwacje-front/public:/webapp/public
+      - ./rezerwacje-front/src:/webapp/src
+      - ./rezerwacje-front/package.json:/webapp/package.json
+      - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
+    stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
