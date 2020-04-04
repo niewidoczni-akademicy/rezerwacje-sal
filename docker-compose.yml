@@ -9,6 +9,8 @@ services:
       - ./rezerwacje-app:/app
     user: appuser
     command: ./gradlew --project-cache-dir /tmp/gradle-chache bootRun
+    depends_on:
+      - rezerwacje-db
 
   rezerwacje-front:
     build:
@@ -23,3 +25,15 @@ services:
       - ./rezerwacje-front/package.json:/webapp/package.json
       - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
     stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
+
+  rezerwacje-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=rezerwacje
+      - POSTGRES_PASSWORD=postgres #todo: look into options for hiding this
+      - PGDATA=/db/data
+    ports:
+      - 5432:5432
+    user: ${CURRENT_UID}
+    volumes:
+      - ./rezerwacje-db/data:/db/data
