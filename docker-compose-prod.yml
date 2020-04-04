@@ -16,3 +16,11 @@ services:
       context: ./rezerwacje-front
     ports:
       - 3000:80
+
+  rezerwacje-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=rezerwacje
+      - POSTGRES_PASSWORD=postgres #todo: look into options for hiding this
+    ports:
+      - 5432:5432
