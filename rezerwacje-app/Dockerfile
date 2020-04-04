@@ -1,4 +1,4 @@
-FROM openjdk:14-jdk-alpine
+FROM openjdk:11-jdk-alpine
 WORKDIR /app
 
 RUN set -x && \
