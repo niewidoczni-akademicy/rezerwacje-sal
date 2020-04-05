@@ -8,7 +8,10 @@ services:
     volumes: 
       - ./rezerwacje-app:/app
     user: appuser
+    env_file: .env
     command: ./gradlew --project-cache-dir /tmp/gradle-chache bootRun
+    depends_on:
+      - rezerwacje-db
 
   rezerwacje-front:
     build:
@@ -23,3 +26,13 @@ services:
       - ./rezerwacje-front/package.json:/webapp/package.json
       - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
     stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
+
+  rezerwacje-db:
+    image: postgres
+    env_file: .env
+    environment:
+      - PGDATA=/db/data
+    ports:
+      - 5432:5432
+    volumes:
+      - ./rezerwacje-db/data:/db/data
