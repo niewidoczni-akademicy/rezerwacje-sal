@@ -1,0 +1,1 @@
+[![niewidoczni-akademicy](https://circleci.com/gh/niewidoczni-akademicy/rezerwacje-sal/tree/develop.svg?style=shield)](https://app.circleci.com/pipelines/github/niewidoczni-akademicy/rezerwacje-sal)
