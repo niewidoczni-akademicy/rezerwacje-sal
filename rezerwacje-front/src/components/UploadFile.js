@@ -14,8 +14,8 @@ class UploadFileForm extends React.Component {
       function (res) {
         if (res.ok) {
           alert("Perfect! ");
-        } else if (res.status === 401) {
-          alert("Oops! ");
+        } else if (res.status === 400) {
+          alert("Baaad request.");
         }
       },
       function (e) {

@@ -1,8 +1,10 @@
 package org.niewidoczniakademicy.rezerwacje.core;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import org.niewidoczniakademicy.rezerwacje.core.model.Room;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,28 +18,31 @@ import java.util.List;
 @Service
 public class CSVService {
 
-    public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
+    private Logger logger = LoggerFactory.getLogger(CSVService.class);
+
+    private <T> List<T> parseFile(MultipartFile file,
+                                  Class<? extends T> clazz) throws ParseException {
         try {
             if (file.isEmpty()) {
                 return new ArrayList<>();
             }
 
-            try (
-                    InputStream inputStream = file.getInputStream();
-                    InputStreamReader reader = new InputStreamReader(inputStream)
-            ) {
-                CSVFormat format = CSVFormat.RFC4180.withHeader("building", "name");
-                CSVParser parser = new CSVParser(reader, format);
-                List<Room> result = new ArrayList<>();
-                parser.iterator().forEachRemaining(record -> {
-                    Room r = new Room(record.get("name"));
-                    result.add(r);
-                });
-                return result;
+            try (InputStream inputStream = file.getInputStream();
+                 InputStreamReader reader = new InputStreamReader(inputStream)) {
+
+                CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
+                        .withType(clazz)
+                        .build();
+                return toBean.parse();
             }
         }
-        catch (IOException e) {
-            throw new ParseException("CSV shit!", 0);
+        catch (IOException | RuntimeException e) {
+            logger.info("Error parsing CSV: " + e.getLocalizedMessage());
+            throw new ParseException("", 0);
         }
+    }
+
+    public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
+        return parseFile(file, Room.class);
     }
 }

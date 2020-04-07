@@ -1,6 +1,12 @@
-const proxy = require("http-proxy-middleware");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+
 module.exports = function (app) {
-  app.use(
-    proxy("/api", { target: "http://rezerwacje-app:8080/", changeOrigin: true })
-  );
+  const options = {
+    target: "http://rezerwacje-app:8080/",
+    pathRewrite: {
+      "^/api/": "/", // remove base path
+    },
+    changeOrigin: true,
+  };
+  app.use(createProxyMiddleware("/api", options));
 };

@@ -31,7 +31,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// CSV parsing
-	implementation 'org.apache.commons:commons-csv:1.8'
+	implementation 'com.opencsv:opencsv:4.0'
 
 	testCompile 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
