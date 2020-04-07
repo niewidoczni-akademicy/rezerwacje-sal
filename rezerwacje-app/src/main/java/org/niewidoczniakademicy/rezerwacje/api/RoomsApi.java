@@ -25,6 +25,11 @@ public class RoomsApi {
         this.csvService = csvService;
     }
 
+    @GetMapping(path = "all")
+    public List<Room> getAll() {
+        return roomRepository.findAll();
+    }
+
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
     public void addRoom(@RequestParam(name = "file") MultipartFile file) {

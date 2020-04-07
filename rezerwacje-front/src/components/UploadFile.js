@@ -7,7 +7,6 @@ class UploadFileForm extends React.Component {
     data.append("file", fileData);
 
     fetch("/api/rooms/upload", {
-      mode: "no-cors",
       method: "POST",
       body: data,
     }).then(
