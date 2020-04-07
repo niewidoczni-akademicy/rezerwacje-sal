@@ -26,7 +26,8 @@ public class CSVService {
                     InputStream inputStream = file.getInputStream();
                     InputStreamReader reader = new InputStreamReader(inputStream)
             ) {
-                CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT);
+                CSVFormat format = CSVFormat.RFC4180.withHeader("building", "name");
+                CSVParser parser = new CSVParser(reader, format);
                 List<Room> result = new ArrayList<>();
                 parser.iterator().forEachRemaining(record -> {
                     Room r = new Room(record.get("name"));
