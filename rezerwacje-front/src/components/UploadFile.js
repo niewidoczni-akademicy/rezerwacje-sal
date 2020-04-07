@@ -13,13 +13,13 @@ class UploadFileForm extends React.Component {
     }).then(
       function (res) {
         if (res.ok) {
-          alert("Perfect! ");
+          alert("Zapisano.");
         } else if (res.status === 400) {
-          alert("Baaad request.");
+          alert("Wystąpił błąd.");
         }
       },
       function (e) {
-        alert("Error submitting form!");
+        alert("Wystąpił błąd.");
       }
     );
   }
@@ -30,7 +30,7 @@ class UploadFileForm extends React.Component {
         <input type="file" name="file" />
         <input
           type="button"
-          value="upload"
+          value="Prześlij"
           onClick={this.uploadFileAction.bind(this)}
         ></input>
       </form>

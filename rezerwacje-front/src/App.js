@@ -1,17 +1,16 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
-import UploadFileForm from "./components/UploadFile";
+import Home from "./components/Home/Home";
+import Rooms from "./components/Rooms/Rooms";
 
 function App() {
   return (
     <div>
-      <div className="App">Hello, world!</div>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/rooms/upload" component={UploadFileForm} />
+          <Route exact path="/rooms" component={Rooms} />
         </Switch>
       </BrowserRouter>
     </div>
