@@ -13,7 +13,8 @@ services:
     depends_on:
       - rezerwacje-db
     networks:
-      - local
+      - backend
+      - frontend
 
   rezerwacje-front:
     build:
@@ -29,7 +30,7 @@ services:
       - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
     stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
     networks:
-      - local
+      - frontend
 
   rezerwacje-db:
     image: postgres
@@ -41,8 +42,9 @@ services:
     volumes:
       - ./rezerwacje-db/data:/db/data
     networks:
-      - local
+      - backend
 
 networks:
-  local:
-    driver: bridge
+  backend:
+  frontend:
+
