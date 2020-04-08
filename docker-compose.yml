@@ -29,6 +29,8 @@ services:
       - ./rezerwacje-front/package.json:/webapp/package.json
       - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
     stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
+    depends_on:
+      - rezerwacje-app
     networks:
       - frontend
 

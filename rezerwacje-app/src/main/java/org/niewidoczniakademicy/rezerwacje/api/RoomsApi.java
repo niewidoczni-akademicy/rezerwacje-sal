@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.api;
 
+import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.core.CSVService;
 import org.niewidoczniakademicy.rezerwacje.core.model.Room;
@@ -14,16 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "rooms")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RoomsApi {
 
     private final RoomRepository roomRepository;
     private final CSVService csvService;
-
-    @Autowired
-    public RoomsApi(RoomRepository roomRepository, CSVService csvService) {
-        this.roomRepository = roomRepository;
-        this.csvService = csvService;
-    }
 
     @GetMapping(path = "all")
     public List<Room> getAll() {
@@ -32,11 +28,11 @@ public class RoomsApi {
 
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addRoom(@RequestParam(name = "file") MultipartFile file) {
+    public void addRoom(@RequestParam MultipartFile file) {
         try {
             List<Room> rooms = csvService.parseRoomsFile(file);
-            rooms.forEach(roomRepository::save);
-        } catch (ParseException e) {
+            rooms.forEach(roomRepository::save);    // TODO: to single transaction
+        } catch (ParseException e) {                // TODO: handle database errors
             throw new InvalidInputException();
         }
     }
