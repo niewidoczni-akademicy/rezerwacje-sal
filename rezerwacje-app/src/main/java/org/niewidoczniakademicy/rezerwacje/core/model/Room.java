@@ -17,12 +17,15 @@ public class Room {  // TODO: how to model this?
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @CsvBindByName
     @NonNull
     private String building;
+
     @CsvBindByName
     @NonNull
     private String name;
+    
     @CsvBindByName
     @NonNull
     private Integer capacity;
