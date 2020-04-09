@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.core.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 @Data
 @Table
 @Entity
+@Builder
 @NoArgsConstructor
 public class RecruitmentPeriod {
 
