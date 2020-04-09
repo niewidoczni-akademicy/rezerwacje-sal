@@ -35,18 +35,20 @@ services:
       - frontend
 
   rezerwacje-db:
-    image: postgres
+    image: postgres:11.7
     env_file: .env
     environment:
       - PGDATA=/db/data
     ports:
       - 5432:5432
     volumes:
-      - ./rezerwacje-db/data:/db/data
+      - db-data:/db/data
     networks:
       - backend
+
+volumes:
+  db-data:
 
 networks:
   backend:
   frontend:
-
