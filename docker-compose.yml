@@ -12,6 +12,9 @@ services:
     command: ./gradlew --project-cache-dir /tmp/gradle-chache bootRun
     depends_on:
       - rezerwacje-db
+    networks:
+      - backend
+      - frontend
 
   rezerwacje-front:
     build:
@@ -26,6 +29,10 @@ services:
       - ./rezerwacje-front/package.json:/webapp/package.json
       - ./rezerwacje-front/package-lock.json:/webapp/package-lock.json
     stdin_open: true # https://github.com/facebook/create-react-app/issues/8688
+    depends_on:
+      - rezerwacje-app
+    networks:
+      - frontend
 
   rezerwacje-db:
     image: postgres
@@ -36,3 +43,10 @@ services:
       - 5432:5432
     volumes:
       - ./rezerwacje-db/data:/db/data
+    networks:
+      - backend
+
+networks:
+  backend:
+  frontend:
+
