@@ -2,7 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.core;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.niewidoczniakademicy.rezerwacje.core.model.Room;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
