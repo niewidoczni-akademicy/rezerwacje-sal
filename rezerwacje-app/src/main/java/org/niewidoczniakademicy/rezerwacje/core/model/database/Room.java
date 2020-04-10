@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.core.model;
+package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
 import com.opencsv.bean.CsvBindByName;
 import lombok.Data;

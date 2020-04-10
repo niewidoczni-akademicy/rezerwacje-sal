@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class RezerwacjeApplication {
+public class ReservationsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RezerwacjeApplication.class, args);
+		SpringApplication.run(ReservationsApplication.class, args);
 	}
 
 	@GetMapping("/hello")
