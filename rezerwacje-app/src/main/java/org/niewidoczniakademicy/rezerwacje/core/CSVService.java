@@ -3,6 +3,7 @@ package org.niewidoczniakademicy.rezerwacje.core;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.niewidoczniakademicy.rezerwacje.core.model.Room;
+import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,9 @@ public class CSVService {
 
     public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
         return parseFile(file, Room.class);
+    }
+
+    public List<CourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
+        return parseFile(file, CourseOfStudy.class);
     }
 }
