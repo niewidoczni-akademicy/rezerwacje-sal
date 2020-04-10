@@ -1,13 +1,15 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.course;
 
-import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvRecurse;
+import com.univocity.parsers.annotations.EnumOptions;
+import com.univocity.parsers.annotations.Nested;
+import com.univocity.parsers.annotations.Parsed;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.niewidoczniakademicy.rezerwacje.core.csv.ContactPersonHeaderTransformer;
 import org.niewidoczniakademicy.rezerwacje.core.model.Faculty;
-import org.niewidoczniakademicy.rezerwacje.core.model.database.User;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.Person;
 
 import javax.persistence.*;
 
@@ -20,32 +22,37 @@ public class CourseOfStudy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @CsvBindByName
+    @Parsed(field = "course name")
     @NonNull
     private String name;
 
-    @CsvRecurse
+    @Nested
     @NonNull
     @ManyToOne
     private Faculty faculty;
 
-    @CsvBindByName
+    @Parsed(field = "course type")
+    @EnumOptions(customElement = "typeCode")
     @NonNull
     @Enumerated(EnumType.STRING)
     private CourseType courseType;
 
-    @CsvRecurse
+    @Nested(headerTransformer  = ContactPersonHeaderTransformer.class, args = "c1")
     @NonNull
-    private User contactPerson1;    // TODO: does it have to be a User in DB or just anyone?
+    @ManyToOne
+    @JoinColumn(name = "contact_person1_id")
+    private Person contactPerson1;    // TODO: does it have to be a User in DB or just anyone?
 
-    @CsvRecurse
-    private User contactPerson2;
+    @Nested(headerTransformer  = ContactPersonHeaderTransformer.class, args = "c2")
+    @ManyToOne
+    @JoinColumn(name = "contact_person2_id")
+    private Person contactPerson2;
 
-    @CsvBindByName
+    @Parsed(field = "joined")
     @NonNull
     private boolean isJoined;
 
-    @CsvBindByName
+    @Parsed
     private String remarks;         // TODO: separate table?
 
     // TODO: typ egzaminu???

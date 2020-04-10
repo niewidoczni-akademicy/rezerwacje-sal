@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.core.model;
 
-import com.opencsv.bean.CsvBindByName;
+import com.univocity.parsers.annotations.Parsed;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -18,15 +18,15 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @CsvBindByName
+    @Parsed
     @NonNull
     private String building;
 
-    @CsvBindByName
+    @Parsed
     @NonNull
     private String name;
-    
-    @CsvBindByName
+
+    @Parsed
     @NonNull
     private Integer capacity;
 }

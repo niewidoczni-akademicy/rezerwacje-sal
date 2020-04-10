@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.core.model;
 
-import com.opencsv.bean.CsvBindByName;
+import com.univocity.parsers.annotations.Parsed;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @CsvBindByName
+    @Parsed(field = "faculty name")
     @NonNull
     private String name;
 }

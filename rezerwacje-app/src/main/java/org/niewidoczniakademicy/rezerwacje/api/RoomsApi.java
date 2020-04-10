@@ -2,7 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.api;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
-import org.niewidoczniakademicy.rezerwacje.core.CSVService;
+import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.core.model.Room;
 import org.niewidoczniakademicy.rezerwacje.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;

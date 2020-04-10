@@ -1,7 +1,8 @@
-package org.niewidoczniakademicy.rezerwacje.core;
+package org.niewidoczniakademicy.rezerwacje.core.csv;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
+import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.niewidoczniakademicy.rezerwacje.core.model.Room;
 import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
 import org.slf4j.Logger;
@@ -21,8 +22,7 @@ public class CSVService {
 
     private Logger logger = LoggerFactory.getLogger(CSVService.class);
 
-    private <T> List<T> parseFile(MultipartFile file,
-                                  Class<? extends T> clazz) throws ParseException {
+    private <T> List<T> parseFile(MultipartFile file, Class<T> clazz) throws ParseException {
         try {
             if (file.isEmpty()) {
                 return new ArrayList<>();
@@ -31,10 +31,17 @@ public class CSVService {
             try (InputStream inputStream = file.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream)) {
 
-                CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
-                        .withType(clazz)
-                        .build();
-                return toBean.parse();
+                BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
+
+                CsvParserSettings parserSettings = new CsvParserSettings();
+                parserSettings.getFormat().setLineSeparator("\n");
+                parserSettings.setRowProcessor(rowProcessor);
+                parserSettings.setHeaderExtractionEnabled(true);
+
+                CsvParser parser = new CsvParser(parserSettings);
+                parser.parse(reader);
+
+                return rowProcessor.getBeans();
             }
         }
         catch (IOException | RuntimeException e) {

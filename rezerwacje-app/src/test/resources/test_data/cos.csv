@@ -1,0 +1,3 @@
+course name,faculty name,course type,c1 first name,c1 last name,c1 e-mail,c1 phone number,c2 first name,c2 last name,c2 e-mail,c2 phone number,joined,remarks
+Informatyka,WIEiT,full time,Jan,Kowalski,j@p.pl,123,Tomasz,Nowak,j@p2.pl,1234,false,Badziebadla
+Informatyka,WIEiT,external,Jan,Kowalski,j@p.pl,123,Tomasz,Nowak,j@p2.pl,1234,true,
