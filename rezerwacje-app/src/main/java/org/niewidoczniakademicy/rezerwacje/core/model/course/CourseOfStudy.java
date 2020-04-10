@@ -50,7 +50,7 @@ public class CourseOfStudy {
 
     @Parsed(field = "joined")
     @NonNull
-    private boolean isJoined;
+    private Boolean isJoined;
 
     @Parsed
     private String remarks;         // TODO: separate table?
