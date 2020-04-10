@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class SystemUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
