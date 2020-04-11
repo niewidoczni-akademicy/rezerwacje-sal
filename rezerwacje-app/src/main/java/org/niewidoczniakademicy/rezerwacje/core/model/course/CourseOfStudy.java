@@ -28,7 +28,7 @@ public class CourseOfStudy {
 
     @Nested
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private Faculty faculty;
 
     @Parsed(field = "course type")
@@ -39,12 +39,12 @@ public class CourseOfStudy {
 
     @Nested(headerTransformer  = ContactPersonHeaderTransformer.class, args = "c1")
     @NonNull
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "contact_person1_id")
     private Person contactPerson1;    // TODO: does it have to be a User in DB or just anyone?
 
     @Nested(headerTransformer  = ContactPersonHeaderTransformer.class, args = "c2")
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "contact_person2_id")
     private Person contactPerson2;
 

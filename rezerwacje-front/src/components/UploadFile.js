@@ -6,7 +6,7 @@ class UploadFileForm extends React.Component {
     var fileData = document.querySelector('input[type="file"]').files[0];
     data.append("file", fileData);
 
-    fetch("/api/rooms/upload", {
+    fetch(this.props.to, {
       method: "POST",
       body: data,
     }).then(

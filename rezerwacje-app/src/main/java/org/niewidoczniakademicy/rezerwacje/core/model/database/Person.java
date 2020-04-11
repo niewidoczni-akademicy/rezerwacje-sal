@@ -33,6 +33,6 @@ public class Person {
     @NonNull
     private String phoneNumber;
 
-    @NonNull
+    //@NonNull
     private ZonedDateTime additionTime;
 }

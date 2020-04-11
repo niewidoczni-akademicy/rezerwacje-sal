@@ -2,24 +2,6 @@ import React from "react";
 import SimpleTable from "../Basic/Table";
 import UploadFileForm from "../UploadFile";
 
-function Room(props) {
-  return (
-    <tr>
-      <td>{props.data.building}</td>
-      <td>{props.data.name}</td>
-      <td>{props.data.capacity}</td>
-    </tr>
-  );
-}
-
-function RoomList(props) {
-  let rooms = [];
-  for (let i = 0; i < props.rooms.length; i++) {
-    rooms.push(<Room data={props.rooms[i]} />);
-  }
-  return <table>{rooms}</table>;
-}
-
 class Courses extends React.Component {
   constructor(props) {
     super(props);
@@ -29,21 +11,40 @@ class Courses extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/cos/all")
+    fetch("/api/course_of_study/all")
       .then((res) => res.json())
-      .then((json) => this.setState({ courses: [{ name: "Infa" }] }))
+      .then((json) => this.setState({ courses: json }))
       .catch((e) => alert(e));
   }
 
   coursesToHeader() {
-    return ["Nazwa"]; // TODO: hardcoding?
+    return [
+      "Nazwa",
+      "Wydział",
+      "Typ studiów",
+      "Kontakt 1 - imię",
+      "Kontakt 1 - nazwisko",
+      "Łączony",
+    ]; // TODO: hardcoding?
   }
 
   coursesToRows() {
+    if (this.state.courses.length === 0) {
+      return [];
+    }
+
+    // TODO: fix this crap
     return this.state.courses.map((course, index) => {
       return {
         id: index,
-        fields: [course.name],
+        fields: [
+          course.name,
+          course.faculty.name,
+          course.courseType,
+          course.contactPerson1.firstName,
+          course.contactPerson1.lastName,
+          course.isJoined,
+        ],
       };
     });
   }
@@ -55,7 +56,7 @@ class Courses extends React.Component {
           header={this.coursesToHeader()}
           rows={this.coursesToRows()}
         />
-        <UploadFileForm></UploadFileForm>
+        <UploadFileForm to={"/api/course_of_study/upload"} />
       </div>
     );
   }

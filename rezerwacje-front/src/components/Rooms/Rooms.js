@@ -22,6 +22,10 @@ class Rooms extends React.Component {
   }
 
   roomsToRows() {
+    if (this.state.rooms.length === 0) {
+      return [];
+    }
+
     return this.state.rooms.map((room, index) => {
       return {
         id: index,
@@ -34,7 +38,7 @@ class Rooms extends React.Component {
     return (
       <div>
         <SimpleTable header={this.roomsToHeader()} rows={this.roomsToRows()} />
-        <UploadFileForm></UploadFileForm>
+        <UploadFileForm to={"/api/rooms/upload"} />
       </div>
     );
   }
