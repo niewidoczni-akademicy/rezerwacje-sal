@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   table: {
-    border: "none",
+    "border-collapse": true,
     minWidth: 650,
   },
 });
@@ -47,7 +47,7 @@ function SimpleTable(props) {
 
   return (
     <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
+      <Table className={classes.table} stickyHeader aria-label="sticky header">
         <Header fields={props.header} />
         <TableBody>
           {props.rows.map((row) => (

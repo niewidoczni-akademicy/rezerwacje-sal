@@ -1,7 +1,8 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Home from "./components/Home/Home";
-import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 240;
 
@@ -31,7 +32,11 @@ const useStyles = makeStyles((theme) => ({
 function App(props) {
   const classes = useStyles();
 
-  return <Home classes={classes} />;
+  return (
+    <BrowserRouter>
+      <Home classes={classes}> </Home>
+    </BrowserRouter>
+  );
 }
 
 export default App;

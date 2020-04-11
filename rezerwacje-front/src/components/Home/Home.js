@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,7 +8,12 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 
-import { AppBarLabel, Users, RecruitmentPeriods } from "../../Const";
+import {
+  AppBarLabel,
+  UsersItem,
+  RecruitmentPeriodsItem,
+  RoomsItem,
+} from "../../Const";
 import DrawerItems from "../DrawerItems";
 import Rooms from "../Rooms/Rooms";
 
@@ -16,7 +21,7 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarItems: [Users, RecruitmentPeriods],
+      sidebarItems: [UsersItem, RecruitmentPeriodsItem, RoomsItem],
     };
   }
 
@@ -46,13 +51,13 @@ class Home extends React.Component {
           >
             <div className={this.props.classes.toolbar} />
             <Divider />
-            <DrawerItems items={[Users, RecruitmentPeriods]} />
+            <DrawerItems items={this.state.sidebarItems} />
           </Drawer>
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/rooms" component={Rooms} />
-            </Switch>
-          </BrowserRouter>
+
+          <Switch>
+            <Route exact path="/" component={null} />
+            <Route exact path="/rooms" component={Rooms} />
+          </Switch>
         </div>
       </div>
     );

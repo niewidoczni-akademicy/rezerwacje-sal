@@ -1,9 +1,30 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { SidebarIcons } from "../Const";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import PeopleIcon from "@material-ui/icons/People";
+
+import {
+  AppBarLabel,
+  UsersItem,
+  RecruitmentPeriodsItem,
+  RoomsItem,
+} from "../Const";
+
+const SidebarIcons = {
+  Użytkownicy: <PeopleIcon />,
+  Rekrutacje: <CalendarTodayIcon />,
+  Sale: null,
+};
+
+const SidebarLinks = {
+  Użytkownicy: "/users",
+  Rekrutacje: "/recruitments",
+  Sale: "/rooms",
+};
 
 function DrawerItems(props) {
   return (
@@ -12,7 +33,7 @@ function DrawerItems(props) {
         const icon = SidebarIcons[item];
 
         return (
-          <ListItem button key={item}>
+          <ListItem button key={item} component={Link} to={SidebarLinks[item]}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={item} />
           </ListItem>
