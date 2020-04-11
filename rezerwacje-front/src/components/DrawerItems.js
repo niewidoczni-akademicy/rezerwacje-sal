@@ -18,11 +18,13 @@ const SidebarIcons = {
   Użytkownicy: <PeopleIcon />,
   Rekrutacje: <CalendarTodayIcon />,
   Sale: null,
+  "Kierunki studiów": null,
 };
 
 const SidebarLinks = {
   Użytkownicy: "/users",
   Rekrutacje: "/recruitments",
+  "Kierunki studiów": "/courses",
   Sale: "/rooms",
 };
 

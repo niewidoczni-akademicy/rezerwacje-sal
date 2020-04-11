@@ -1,6 +1,6 @@
 import React from "react";
+import SimpleTable from "../Basic/Table";
 import UploadFileForm from "../UploadFile";
-import "./Rooms.css";
 
 function Room(props) {
   return (
@@ -24,25 +24,41 @@ class Courses extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rooms: [],
+      courses: [],
     };
   }
 
   componentDidMount() {
-    fetch("/api/rooms/all")
+    fetch("/api/cos/all")
       .then((res) => res.json())
-      .then((json) => this.setState({ rooms: json }))
+      .then((json) => this.setState({ courses: [{ name: "Infa" }] }))
       .catch((e) => alert(e));
+  }
+
+  coursesToHeader() {
+    return ["Nazwa"]; // TODO: hardcoding?
+  }
+
+  coursesToRows() {
+    return this.state.courses.map((course, index) => {
+      return {
+        id: index,
+        fields: [course.name],
+      };
+    });
   }
 
   render() {
     return (
       <div>
-        <RoomList rooms={this.state.rooms} />
+        <SimpleTable
+          header={this.coursesToHeader()}
+          rows={this.coursesToRows()}
+        />
         <UploadFileForm></UploadFileForm>
       </div>
     );
   }
 }
 
-export default Rooms;
+export default Courses;

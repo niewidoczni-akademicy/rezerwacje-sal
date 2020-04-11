@@ -1,26 +1,6 @@
 import React from "react";
 import SimpleTable from "../Basic/Table";
 import UploadFileForm from "../UploadFile";
-import "./Rooms.css";
-
-// function Room(props) {
-//   return (
-//     <ListItem button>
-//       <ListItemText>{props.data.building}</ListItemText>
-//       <ListItemText>{props.data.name}</ListItemText>
-//       <ListItemText>{props.data.capacity}</ListItemText>
-//     </ListItem>
-//   );
-// }
-
-// function RoomList(props) {
-//   let rooms = [];
-//   for (let i = 0; i < props.rooms.length; i++) {
-//     rooms.push(<Room data={props.rooms[i]} />);
-//   }
-
-//   return <List component="nav">{rooms}</List>;
-// }
 
 class Rooms extends React.Component {
   constructor(props) {

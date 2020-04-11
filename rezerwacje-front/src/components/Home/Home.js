@@ -13,15 +13,18 @@ import {
   UsersItem,
   RecruitmentPeriodsItem,
   RoomsItem,
+  CoursesItem,
 } from "../../Const";
+
 import DrawerItems from "../DrawerItems";
 import Rooms from "../Rooms/Rooms";
+import Courses from "../Courses/Courses";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sidebarItems: [UsersItem, RecruitmentPeriodsItem, RoomsItem],
+      sidebarItems: [UsersItem, RecruitmentPeriodsItem, CoursesItem, RoomsItem],
     };
   }
 
@@ -56,6 +59,8 @@ class Home extends React.Component {
 
           <Switch>
             <Route exact path="/" component={null} />
+            <Route exact path="/recruitments" component={null} />
+            <Route exact path="/courses" component={Courses} />
             <Route exact path="/rooms" component={Rooms} />
           </Switch>
         </div>
