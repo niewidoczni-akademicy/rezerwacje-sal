@@ -1,25 +1,26 @@
 import React from "react";
+import SimpleTable from "../Basic/Table";
 import UploadFileForm from "../UploadFile";
-import Sidebar from "../Sidebar";
 import "./Rooms.css";
 
-function Room(props) {
-  return (
-    <tr>
-      <td>{props.data.building}</td>
-      <td>{props.data.name}</td>
-      <td>{props.data.capacity}</td>
-    </tr>
-  );
-}
+// function Room(props) {
+//   return (
+//     <ListItem button>
+//       <ListItemText>{props.data.building}</ListItemText>
+//       <ListItemText>{props.data.name}</ListItemText>
+//       <ListItemText>{props.data.capacity}</ListItemText>
+//     </ListItem>
+//   );
+// }
 
-function RoomList(props) {
-  let rooms = [];
-  for (let i = 0; i < props.rooms.length; i++) {
-    rooms.push(<Room data={props.rooms[i]} />);
-  }
-  return <table>{rooms}</table>;
-}
+// function RoomList(props) {
+//   let rooms = [];
+//   for (let i = 0; i < props.rooms.length; i++) {
+//     rooms.push(<Room data={props.rooms[i]} />);
+//   }
+
+//   return <List component="nav">{rooms}</List>;
+// }
 
 class Rooms extends React.Component {
   constructor(props) {
@@ -36,14 +37,24 @@ class Rooms extends React.Component {
       .catch((e) => alert(e));
   }
 
+  roomsToHeader() {
+    return ["Budynek", "Nazwa", "Pojemność"]; // TODO: no hardcoding?
+  }
+
+  roomsToRows() {
+    return this.state.rooms.map((room, index) => {
+      return {
+        id: index,
+        fields: [room.building, room.name, room.capacity],
+      };
+    });
+  }
+
   render() {
     return (
       <div>
-        <Sidebar />
-        <div class="main">
-          <RoomList rooms={this.state.rooms} />
-          <UploadFileForm></UploadFileForm>
-        </div>
+        <SimpleTable header={this.roomsToHeader()} rows={this.roomsToRows()} />
+        <UploadFileForm></UploadFileForm>
       </div>
     );
   }
