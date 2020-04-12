@@ -3,8 +3,8 @@ package org.niewidoczniakademicy.rezerwacje.core.csv;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import org.niewidoczniakademicy.rezerwacje.core.model.Room;
 import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class CSVService {
 
                 CsvParserSettings parserSettings = new CsvParserSettings();
                 parserSettings.getFormat().setLineSeparator("\n");
-                parserSettings.setRowProcessor(rowProcessor);
+                parserSettings.setProcessor(rowProcessor);
                 parserSettings.setHeaderExtractionEnabled(true);
 
                 CsvParser parser = new CsvParser(parserSettings);

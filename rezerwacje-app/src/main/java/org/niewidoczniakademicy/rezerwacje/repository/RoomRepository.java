@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.repository;
 
-import org.niewidoczniakademicy.rezerwacje.core.model.Room;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
