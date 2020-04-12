@@ -43,6 +43,16 @@ class CSVServiceTest {
     }
 
     @Test
+    void parseCoursesOfStudyCRLF() throws IOException, ParseException {
+        MockMultipartFile mf = new MockMultipartFile(
+                "test_data/cos_crlf.csv",
+                this.getClass().getResourceAsStream("/" + "test_data/cos_crlf.csv"));
+
+        List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+        assert cosList.size() == 2;
+    }
+
+    @Test
     void parseCoursesOfStudyErr() throws IOException {
         MockMultipartFile mf = new MockMultipartFile(
                 "test_data/cos_bad.csv",

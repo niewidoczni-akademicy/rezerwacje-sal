@@ -34,7 +34,7 @@ public class CSVService {
                 BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
 
                 CsvParserSettings parserSettings = new CsvParserSettings();
-                parserSettings.getFormat().setLineSeparator("\n");
+                parserSettings.setLineSeparatorDetectionEnabled(true);
                 parserSettings.setProcessor(rowProcessor);
                 parserSettings.setHeaderExtractionEnabled(true);
 
