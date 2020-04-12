@@ -1,7 +1,9 @@
-package org.niewidoczniakademicy.rezerwacje.core;
+package org.niewidoczniakademicy.rezerwacje.core.csv;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
+import com.univocity.parsers.common.processor.BeanListProcessor;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
+import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +22,7 @@ public class CSVService {
 
     private Logger logger = LoggerFactory.getLogger(CSVService.class);
 
-    private <T> List<T> parseFile(MultipartFile file,
-                                  Class<? extends T> clazz) throws ParseException {
+    private <T> List<T> parseFile(MultipartFile file, Class<T> clazz) throws ParseException {
         try {
             if (file.isEmpty()) {
                 return new ArrayList<>();
@@ -30,10 +31,17 @@ public class CSVService {
             try (InputStream inputStream = file.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream)) {
 
-                CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
-                        .withType(clazz)
-                        .build();
-                return toBean.parse();
+                BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
+
+                CsvParserSettings parserSettings = new CsvParserSettings();
+                parserSettings.setLineSeparatorDetectionEnabled(true);
+                parserSettings.setProcessor(rowProcessor);
+                parserSettings.setHeaderExtractionEnabled(true);
+
+                CsvParser parser = new CsvParser(parserSettings);
+                parser.parse(reader);
+
+                return rowProcessor.getBeans();
             }
         }
         catch (IOException | RuntimeException e) {
@@ -44,5 +52,9 @@ public class CSVService {
 
     public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
         return parseFile(file, Room.class);
+    }
+
+    public List<CourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
+        return parseFile(file, CourseOfStudy.class);
     }
 }
