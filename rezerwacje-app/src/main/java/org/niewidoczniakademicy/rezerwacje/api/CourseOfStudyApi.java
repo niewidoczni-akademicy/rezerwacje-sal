@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(path = "course_of_study")
+@RequestMapping(path = "course-of-study")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CourseOfStudyApi {
 
