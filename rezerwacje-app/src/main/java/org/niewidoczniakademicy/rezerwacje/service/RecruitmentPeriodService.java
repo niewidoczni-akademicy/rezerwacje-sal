@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.repository.RecruitmentPeriodRepository;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -51,5 +55,24 @@ public class RecruitmentPeriodService {
         LocalDate currentDate = LocalDate.now();
         if (startDate.isBefore(currentDate))
             throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
+    }
+
+    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(LocalDate startDate, LocalDate endDate) {
+        List<RecruitmentPeriod> recruitmentPeriods = recruitmentPeriodRepository
+                .findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
+
+        return GetRecruitmentPeriodsResponse.builder()
+                .recruitmentPeriods(recruitmentPeriods)
+                .build();
+    }
+
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(String id) {
+        Optional<RecruitmentPeriod> result = recruitmentPeriodRepository.findById(Long.parseLong(id));
+        if (result.isEmpty())
+            return null;
+
+        return GetRecruitmentPeriodResponse.builder()
+                .recruitmentPeriod(result.get())
+                .build();
     }
 }
