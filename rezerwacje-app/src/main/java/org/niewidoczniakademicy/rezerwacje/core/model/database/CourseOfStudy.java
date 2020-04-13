@@ -68,12 +68,12 @@ public class CourseOfStudy {
     private Set<ExamTerm> examTerms = new HashSet<>();
 
     private void addFacultyTerm(Faculty faculty) {
-        this.faculty = faculty;
         faculty.getCourseOfStudies().add(this);
+        this.faculty = faculty;
     }
 
     private void addExamTerm(ExamTerm examTerm) {
-        this.examTerms.add(examTerm);
         examTerm.setCourseOfStudy(this);
+        this.examTerms.add(examTerm);
     }
 }

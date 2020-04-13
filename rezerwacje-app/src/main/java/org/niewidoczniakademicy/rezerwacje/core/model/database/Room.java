@@ -40,7 +40,7 @@ public class Room {
     private Set<ExamTerm> examTerms = new HashSet<>();
 
     private void addExamTerm(ExamTerm examTerm) {
-        this.examTerms.add(examTerm);
         examTerm.setRoom(this);
+        this.examTerms.add(examTerm);
     }
 }

@@ -1,6 +1,5 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.univocity.parsers.annotations.Parsed;
 import lombok.*;
@@ -31,7 +30,7 @@ public class Faculty {
     private Set<CourseOfStudy> courseOfStudies = new HashSet<>();
 
     private void addCourseOfStudy(CourseOfStudy courseOfStudy) {
-        this.courseOfStudies.add(courseOfStudy);
         courseOfStudy.setFaculty(this);
+        this.courseOfStudies.add(courseOfStudy);
     }
 }
