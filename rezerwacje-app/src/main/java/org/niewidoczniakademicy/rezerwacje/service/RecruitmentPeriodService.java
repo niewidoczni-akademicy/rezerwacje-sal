@@ -7,7 +7,7 @@ import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodR
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodsResponse;
-import org.niewidoczniakademicy.rezerwacje.repository.RecruitmentPeriodRepository;
+import org.niewidoczniakademicy.rezerwacje.dao.repository.RecruitmentPeriodRepository;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.springframework.beans.factory.annotation.Autowired;
