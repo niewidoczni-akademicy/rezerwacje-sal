@@ -3,8 +3,8 @@ package org.niewidoczniakademicy.rezerwacje.api;
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
-import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
-import org.niewidoczniakademicy.rezerwacje.repository.CourseOfStudyRepository;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.dao.CourseOfStudyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +19,21 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CourseOfStudyApi {
 
-    private final CourseOfStudyRepository cosRepository;
+    private final CourseOfStudyDAO courseOfStudyDAO;
     private final CSVService csvService;
 
-    @GetMapping(path = "all")
+
+    @GetMapping
     public List<CourseOfStudy> getAll() {
-        return cosRepository.findAll();
+        return courseOfStudyDAO.findAll();
     }
 
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addRoom(@RequestParam MultipartFile file) {
+    public List<CourseOfStudy> uploadCourseOfStudies(@RequestParam MultipartFile file) {
         try {
-            List<CourseOfStudy> rooms = csvService.parseCoursesOfStudy(file);
-            rooms.forEach(cosRepository::save);    // TODO: to single transaction
+            List<CourseOfStudy> courseOfStudies = csvService.parseCoursesOfStudy(file);
+            return courseOfStudyDAO.save(courseOfStudies);
         } catch (ParseException e) {                // TODO: handle database errors
             throw new InvalidInputException();
         }
