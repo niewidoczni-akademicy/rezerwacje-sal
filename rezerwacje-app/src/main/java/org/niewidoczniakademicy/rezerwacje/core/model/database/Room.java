@@ -1,22 +1,26 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.univocity.parsers.annotations.Parsed;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints={
+@Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"building", "name"})
 })
-@Data
+@Getter @Setter
+@ToString
+@EqualsAndHashCode(exclude = {"examTerms"})
 @NoArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Parsed
     @NonNull
@@ -29,4 +33,14 @@ public class Room {
     @Parsed
     @NonNull
     private Integer capacity;
+
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    private Set<ExamTerm> examTerms = new HashSet<>();
+
+    private void addExamTerm(ExamTerm examTerm) {
+        examTerm.setRoom(this);
+        this.examTerms.add(examTerm);
+    }
 }

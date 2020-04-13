@@ -19,5 +19,4 @@ else
 	done
 fi
 
-mkdir -p rezerwacje-db/data
 docker-compose up --build "$@"
