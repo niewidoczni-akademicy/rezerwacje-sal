@@ -37,10 +37,9 @@ public class UserService {
     }
 
     public GetSystemUserResponse getSystemUserByUserUniqueId(String userUniqueId) {
-        final SystemUser systemUser = userRepository.findByUserUniqueId(userUniqueId);
-
-        if (systemUser == null)
-            throw new UserNotFoundException("User with id: " + userUniqueId + " not found");
+        final SystemUser systemUser = userRepository
+                .findByUserUniqueId(userUniqueId)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + userUniqueId + " not found"));
 
         return GetSystemUserResponse.builder()
                 .systemUser(systemUser)
@@ -49,10 +48,8 @@ public class UserService {
 
     public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(String firstName, String lastName) {
         final List<SystemUser> systemUsers = userRepository
-                .findSystemUsersByFirstNameAndLastName(firstName, lastName);
-
-        if (systemUsers == null)
-            throw new UserNotFoundException("No user with first name: " + firstName + " and last name : " + lastName + " found");
+                .findSystemUsersByFirstNameAndLastName(firstName, lastName)
+                .orElseThrow(() -> new UserNotFoundException("No user with first name: " + firstName + " and last name : " + lastName + " found"));
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)

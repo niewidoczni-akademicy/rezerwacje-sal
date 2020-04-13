@@ -4,6 +4,7 @@ import org.niewidoczniakademicy.rezerwacje.core.model.database.SystemUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<SystemUser, Long> {
 
@@ -13,7 +14,7 @@ public interface UserRepository extends JpaRepository<SystemUser, Long> {
     @Override
     List<SystemUser> findAll();
 
-    SystemUser findByUserUniqueId(String userUniqueId);
+    Optional<SystemUser> findByUserUniqueId(String userUniqueId);
 
-    List<SystemUser> findSystemUsersByFirstNameAndLastName(String firstName, String lastName);
+    Optional<List<SystemUser>> findSystemUsersByFirstNameAndLastName(String firstName, String lastName);
 }
