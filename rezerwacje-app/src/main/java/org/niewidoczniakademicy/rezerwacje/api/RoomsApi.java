@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
-import org.niewidoczniakademicy.rezerwacje.repository.RoomRepository;
+import org.niewidoczniakademicy.rezerwacje.dao.RoomDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +18,12 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RoomsApi {
 
-    private final RoomRepository roomRepository;
+    private final RoomDAO roomDAO;
     private final CSVService csvService;
 
     @GetMapping
     public List<Room> getAll() {
-        return roomRepository.findAll();
+        return roomDAO.findAll();
     }
 
     @PostMapping(path = "upload")
@@ -31,7 +31,7 @@ public class RoomsApi {
     public List<Room> addRoom(@RequestParam MultipartFile file) {
         try {
             List<Room> rooms = csvService.parseRoomsFile(file);
-            return roomRepository.saveAll(rooms);
+            return roomDAO.save(rooms);
         } catch (ParseException e) {                // TODO: handle database errors
             throw new InvalidInputException();
         }
