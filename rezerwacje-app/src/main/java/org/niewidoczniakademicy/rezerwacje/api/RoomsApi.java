@@ -21,17 +21,17 @@ public class RoomsApi {
     private final RoomRepository roomRepository;
     private final CSVService csvService;
 
-    @GetMapping(path = "all")
+    @GetMapping
     public List<Room> getAll() {
         return roomRepository.findAll();
     }
 
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addRoom(@RequestParam MultipartFile file) {
+    public List<Room> addRoom(@RequestParam MultipartFile file) {
         try {
             List<Room> rooms = csvService.parseRoomsFile(file);
-            rooms.forEach(roomRepository::save);    // TODO: to single transaction
+            return roomRepository.saveAll(rooms);
         } catch (ParseException e) {                // TODO: handle database errors
             throw new InvalidInputException();
         }

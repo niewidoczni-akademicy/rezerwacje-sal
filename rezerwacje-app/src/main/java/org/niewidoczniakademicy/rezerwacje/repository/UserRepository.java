@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<SystemUser, Integer> {
+public interface UserRepository extends JpaRepository<SystemUser, Long> {
 
     @Override
     <S extends SystemUser> S save(S entity);

@@ -14,8 +14,8 @@ public class ReservationsApplication {
 		SpringApplication.run(ReservationsApplication.class, args);
 	}
 
-	@GetMapping("/hello")
-	public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return String.format("Hi %s!", name);
+	@GetMapping
+	public String hello() {
+		return String.format("Backend"); // TODO return existing endpoints
 	}
 }

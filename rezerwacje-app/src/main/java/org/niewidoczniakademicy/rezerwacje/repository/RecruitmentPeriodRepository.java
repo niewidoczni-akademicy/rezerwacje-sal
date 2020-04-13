@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RecruitmentPeriodRepository extends JpaRepository<RecruitmentPeriod, Integer> {
+public interface RecruitmentPeriodRepository extends JpaRepository<RecruitmentPeriod, Long> {
     @Override
     <S extends RecruitmentPeriod> S save(S entity);
 

@@ -19,7 +19,7 @@ public class RecruitmentPeriod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NonNull
     private LocalDate startDate;

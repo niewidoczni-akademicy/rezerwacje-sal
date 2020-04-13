@@ -3,7 +3,7 @@ package org.niewidoczniakademicy.rezerwacje.core.csv;
 import com.univocity.parsers.common.processor.BeanListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.core.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +43,7 @@ public class CSVService {
 
                 return rowProcessor.getBeans();
             }
-        }
-        catch (IOException | RuntimeException e) {
+        } catch (IOException | RuntimeException e) {
             logger.info("Error parsing CSV: " + e.getLocalizedMessage());
             throw new ParseException("", 0);
         }
