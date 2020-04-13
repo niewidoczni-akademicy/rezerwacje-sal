@@ -23,7 +23,7 @@ public class RecruitmentPeriodApi {
     private final RecruitmentPeriodService recruitmentPeriodService;
 
     @PostMapping
-    public ResponseEntity<AddRecruitmentPeriodResponse> addRoom(@RequestBody AddRecruitmentPeriodRequest request) {
+    public ResponseEntity<AddRecruitmentPeriodResponse> addRecruitmentPeriod(@RequestBody AddRecruitmentPeriodRequest request) {
         AddRecruitmentPeriodResponse response = recruitmentPeriodService.saveRecruitmentPeriod(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
