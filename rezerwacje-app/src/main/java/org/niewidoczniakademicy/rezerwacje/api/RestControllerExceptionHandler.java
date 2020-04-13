@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Arrays;
+
 @Slf4j
 @ControllerAdvice
 public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -20,6 +22,9 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
                 .message(e.getMessage())
                 .status(HttpStatus.NOT_FOUND)
                 .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
 
         return ResponseEntity
                 .status(errorResponse.getStatus())
@@ -32,6 +37,9 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
                 .message(e.getMessage())
                 .status(HttpStatus.BAD_REQUEST)
                 .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
 
         return ResponseEntity
                 .status(errorResponse.getStatus())
