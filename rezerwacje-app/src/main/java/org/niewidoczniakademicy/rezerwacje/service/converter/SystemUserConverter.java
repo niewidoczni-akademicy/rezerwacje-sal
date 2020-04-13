@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class SystemUserConverter implements GenericConverter<AddSystemUserRequest, SystemUser> {
+public class SystemUserConverter
+        implements GenericConverter<AddSystemUserRequest, SystemUser> {
 
     @Override
     public SystemUser createFrom(AddSystemUserRequest dto) {

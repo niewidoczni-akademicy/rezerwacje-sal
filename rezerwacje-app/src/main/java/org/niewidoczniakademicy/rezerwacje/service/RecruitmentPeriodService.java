@@ -8,6 +8,7 @@ import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecrui
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.dao.repository.RecruitmentPeriodRepository;
+import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,12 @@ import java.util.Optional;
 public class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
+    private final ConversionService conversionService;
 
     public AddRecruitmentPeriodResponse saveRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
         validateRecruitmentPeriod(request);
 
-        RecruitmentPeriod recruitmentPeriod = RecruitmentPeriod.builder()
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .build();
+        RecruitmentPeriod recruitmentPeriod = conversionService.convert(request);
         recruitmentPeriodRepository.save(recruitmentPeriod);
 
         return AddRecruitmentPeriodResponse.builder()
