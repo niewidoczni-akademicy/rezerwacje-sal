@@ -38,25 +38,6 @@ public class RecruitmentPeriodService {
                 .build();
     }
 
-    private void validateRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
-        validateEndDateNotBeforeStartDate(request);
-        validateStartDateNotBeforeCurrentDate(request);
-    }
-
-    private void validateEndDateNotBeforeStartDate(AddRecruitmentPeriodRequest request) {
-        LocalDate startDate = request.getStartDate();
-        LocalDate endDate = request.getEndDate();
-        if (endDate.isBefore(startDate))
-            throw new RecruitmentPeriodEndDateBeforeStartDateException();
-    }
-
-    private void validateStartDateNotBeforeCurrentDate(AddRecruitmentPeriodRequest request) {
-        LocalDate startDate = request.getStartDate();
-        LocalDate currentDate = LocalDate.now();
-        if (startDate.isBefore(currentDate))
-            throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
-    }
-
     public GetRecruitmentPeriodsResponse getRecruitmentPeriods(LocalDate startDate, LocalDate endDate) {
         List<RecruitmentPeriod> recruitmentPeriods = recruitmentPeriodRepository
                 .findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
@@ -74,5 +55,24 @@ public class RecruitmentPeriodService {
         return GetRecruitmentPeriodResponse.builder()
                 .recruitmentPeriod(result.get())
                 .build();
+    }
+
+    private void validateRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
+        validateEndDateNotBeforeStartDate(request);
+        validateStartDateNotBeforeCurrentDate(request);
+    }
+
+    private void validateEndDateNotBeforeStartDate(AddRecruitmentPeriodRequest request) {
+        LocalDate startDate = request.getStartDate();
+        LocalDate endDate = request.getEndDate();
+        if (endDate.isBefore(startDate))
+            throw new RecruitmentPeriodEndDateBeforeStartDateException();
+    }
+
+    private void validateStartDateNotBeforeCurrentDate(AddRecruitmentPeriodRequest request) {
+        LocalDate startDate = request.getStartDate();
+        LocalDate currentDate = LocalDate.now();
+        if (startDate.isBefore(currentDate))
+            throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
     }
 }
