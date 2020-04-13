@@ -11,6 +11,7 @@ import org.niewidoczniakademicy.rezerwacje.core.model.rest.user.GetSystemUsersRe
 import org.niewidoczniakademicy.rezerwacje.dao.repository.UserRepository;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,9 @@ public class UserService {
     public GetSystemUserResponse getSystemUserByUserUniqueId(String userUniqueId) {
         final SystemUser systemUser = userRepository.findByUserUniqueId(userUniqueId);
 
+        if (systemUser == null)
+            throw new UserNotFoundException("User with id: " + userUniqueId + " not found");
+
         return GetSystemUserResponse.builder()
                 .systemUser(systemUser)
                 .build();
@@ -47,6 +51,9 @@ public class UserService {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName);
 
+        if (systemUsers == null)
+            throw new UserNotFoundException("No user with first name: " + firstName + " and last name : " + lastName + " found");
+
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
                 .build();
@@ -54,6 +61,9 @@ public class UserService {
 
     public GetSystemUsersResponse getAllSystemUsers() {
         final List<SystemUser> systemUsers = userRepository.findAll();
+
+        if (systemUsers == null)
+            throw new UserNotFoundException("No users in the system found");
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
