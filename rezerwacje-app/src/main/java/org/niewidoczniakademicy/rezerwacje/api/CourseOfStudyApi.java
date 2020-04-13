@@ -33,7 +33,6 @@ public class CourseOfStudyApi {
     public List<CourseOfStudy> uploadCourseOfStudies(@RequestParam MultipartFile file) {
         try {
             List<CourseOfStudy> courseOfStudies = csvService.parseCoursesOfStudy(file);
-            System.out.println(courseOfStudies);
             return cosRepository.saveAll(courseOfStudies);
         } catch (ParseException e) {                // TODO: handle database errors
             throw new InvalidInputException();

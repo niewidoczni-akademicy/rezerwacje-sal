@@ -16,7 +16,6 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"courseOfStudies"})
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties("courseOfStudies")
 public class Faculty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
