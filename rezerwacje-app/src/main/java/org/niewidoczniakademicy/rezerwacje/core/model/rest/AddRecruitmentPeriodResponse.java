@@ -1,13 +1,11 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.rest;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class AddRecruitmentPeriodResponse {
 
     @NonNull
