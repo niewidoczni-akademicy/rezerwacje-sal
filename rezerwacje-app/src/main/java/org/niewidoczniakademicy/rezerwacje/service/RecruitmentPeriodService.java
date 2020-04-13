@@ -3,11 +3,12 @@ package org.niewidoczniakademicy.rezerwacje.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.RecruitmentPeriod;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodRequest;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodResponse;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodResponse;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodsResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecruitmentPeriodRequest;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.dao.repository.RecruitmentPeriodRepository;
+import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,12 @@ import java.util.Optional;
 public class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
+    private final ConversionService conversionService;
 
     public AddRecruitmentPeriodResponse saveRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
         validateRecruitmentPeriod(request);
 
-        RecruitmentPeriod recruitmentPeriod = RecruitmentPeriod.builder()
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
-                .build();
+        RecruitmentPeriod recruitmentPeriod = conversionService.convert(request);
         recruitmentPeriodRepository.save(recruitmentPeriod);
 
         return AddRecruitmentPeriodResponse.builder()

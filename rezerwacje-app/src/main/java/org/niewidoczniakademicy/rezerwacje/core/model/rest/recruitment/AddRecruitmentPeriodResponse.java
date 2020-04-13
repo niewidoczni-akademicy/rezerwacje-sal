@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.core.model.rest;
+package org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment;
 
 import lombok.*;
 
