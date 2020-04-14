@@ -18,6 +18,10 @@ public class SystemUser {
     private Long id;
 
     @NonNull
+    @Column(unique = true)
+    private String userUniqueId;
+
+    @NonNull
     private String firstName;
 
     @NonNull

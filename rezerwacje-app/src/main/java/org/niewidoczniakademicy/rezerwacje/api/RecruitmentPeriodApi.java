@@ -1,10 +1,10 @@
 package org.niewidoczniakademicy.rezerwacje.api;
 
 import lombok.AllArgsConstructor;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodRequest;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.AddRecruitmentPeriodResponse;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodResponse;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.GetRecruitmentPeriodsResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecruitmentPeriodRequest;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodResponse;
+import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.RecruitmentPeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
