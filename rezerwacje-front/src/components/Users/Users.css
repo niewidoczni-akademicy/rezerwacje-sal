@@ -1,5 +1,33 @@
 .Grid {
     margin: 10px;
+    padding: 30px;
+    text-align: left;
+    align-content: center;
+}
+
+.Paper {
+    margin-left: 400px;
+    margin-right:400px;
+    margin-bottom: 25px;
+    margin-top: 25px;
     padding: 15px;
     text-align: center;
+    align-content: center;
+}
+
+.GridItem {
+    text-align: center
+}
+
+.ButtonItem {
+    padding: 10px;
+}
+
+.AppBar {
+    padding: 5px;
+}
+
+.Button {
+    margin: 20px;
+    padding: 20px;
 }

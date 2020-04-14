@@ -6,7 +6,7 @@ class Sidebar extends React.Component {
       <div class="sidenav">
         <a href="/">Strona główna</a>
         <a href="/rooms">Sale</a>
-        <a href="/users">Użytkownicy</a>
+        <a href="/users/add">Nowy użytkownik</a>
       </div>
     );
   }
