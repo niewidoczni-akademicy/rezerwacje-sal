@@ -1,15 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import { Switch, Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import UserForm from './components/Users/UserForm'
+import Home from "./components/Home/Home";
+import Rooms from "./components/Rooms/Rooms"
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Home</h1>
-      </div>
-    )
-  }
+function App() {
+  return (
+    <div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/rooms" component={Rooms} />
+          <Route path="/users" component={UserForm} />
+        </Switch>
+      </Router>
+    </div>
+  );
 }
 
 export default App;
