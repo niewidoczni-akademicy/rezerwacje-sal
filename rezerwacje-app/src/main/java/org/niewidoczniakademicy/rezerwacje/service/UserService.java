@@ -36,10 +36,10 @@ public class UserService {
                 .build();
     }
 
-    public GetSystemUserResponse getSystemUserByUserUniqueId(String userUniqueId) {
+    public GetSystemUserResponse getSystemUserByLogin(String login) {
         final SystemUser systemUser = userRepository
-                .findByUserUniqueId(userUniqueId)
-                .orElseThrow(() -> new UserNotFoundException("User with id: " + userUniqueId + " not found"));
+                .findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
 
         return GetSystemUserResponse.builder()
                 .systemUser(systemUser)
