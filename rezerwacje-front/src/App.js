@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { ThemeProvider } from '@material-ui/styles';
 
 import theme from './theme';
-import './index.scss';
+import './App.scss';
 import Routes from './Routes';
 
 const browserHistory = createBrowserHistory();
