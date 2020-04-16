@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReservationsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ReservationsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ReservationsApplication.class, args);
+    }
 
-	@GetMapping
-	public String hello() {
-		return String.format("Backend"); // TODO return existing endpoints
-	}
+    @GetMapping
+    public String hello() {
+        return String.format("Backend"); // TODO return existing endpoints
+    }
 }
