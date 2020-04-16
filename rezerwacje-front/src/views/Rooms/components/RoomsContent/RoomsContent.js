@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-// import UploadFileForm from "../../../../components/UploadFile";
-import RoomsForm from "../index";
+import { RoomsForm } from "../";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -66,7 +65,7 @@ const RoomsContent = props => {
               ROOMS
             </Typography>
           </Grid>
-          <RoomsForm></RoomsForm>
+          <RoomsForm />
         </Grid>
       </CardContent>
     </Card>

@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import HomeIcon from '@material-ui/icons/Home';
 
@@ -38,11 +37,6 @@ const Sidebar = props => {
   const classes = useStyles();
 
   const pages = [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: <DashboardIcon />
-    },
     {
       title: 'Home',
       href: '/home',

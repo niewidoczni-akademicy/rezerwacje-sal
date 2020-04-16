@@ -1,8 +1,6 @@
 import React from "react";
-// import UploadFileForm from "../UploadFile"
-import UploadFileForm from "../../../../components/UploadFile";
-// import UploadFileForm from "components/UploadFile";
-// import "./Rooms.css";
+import UploadFileForm from "./UploadFile";
+import "./RoomsForm.scss";
 
 function Room(props) {
   return (
@@ -34,14 +32,14 @@ class RoomsForm extends React.Component {
     fetch("/api/rooms/all")
       .then((res) => res.json())
       .then((json) => this.setState({ rooms: json }))
-      .catch((e) => alert(e));
+      .catch((e) => console.log(e));
   }
 
   render() {
     return (
         <div class="main">
             <RoomList rooms={this.state.rooms} />
-            <UploadFileForm></UploadFileForm>
+            <UploadFileForm />
         </div>
     );
   }
