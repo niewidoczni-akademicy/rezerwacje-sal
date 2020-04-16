@@ -7,7 +7,7 @@ import com.univocity.parsers.annotations.Nested;
 import com.univocity.parsers.annotations.Parsed;
 import lombok.*;
 import org.niewidoczniakademicy.rezerwacje.core.csv.ContactPersonHeaderTransformer;
-import org.niewidoczniakademicy.rezerwacje.core.model.course.CourseType;
+import org.niewidoczniakademicy.rezerwacje.core.model.enums.CourseType;
 
 import javax.persistence.*;
 import java.util.HashSet;
