@@ -47,7 +47,7 @@ Konfiguracja bazy danej znajduję się z pliku `docker-compose.yml` oraz pliku k
 
 ### CI
 
-Konfiguracja Continuous Integration. Po więcej szczegółów zobacz [CI](https://github.com/niewidoczni-akademicy/rezerwacje-sal/tree/develop/.circleci). 
+Konfiguracja Continuous Integration znajduję się w folderze `.circleci`. Po więcej szczegółów zobacz [CI](https://github.com/niewidoczni-akademicy/rezerwacje-sal/tree/develop/.circleci). 
 
 ## Konfiguracja
 
