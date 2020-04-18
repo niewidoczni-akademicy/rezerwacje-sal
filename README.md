@@ -135,10 +135,10 @@ W aplikacji zostały użyte poniższe open-sourcowe narzędzia i technologie
 
 ## Dla developerów
 
-- Fronend hot-realoading
+- Fronend hot-reloading
     - Automatycznie po zmianie w plikach
 
-- Backend hot-realoading
+- Backend hot-reloading
     - Automatycznie po przebudowaniu projektu gradlowego
     - W celu przebudowania zalecane puszczenie testów `Run Tests in 'rezerwacje...'`, dzięki czemu nie tylko zaaplikuje zmiany, ale też sprawdzimy testy.
 
