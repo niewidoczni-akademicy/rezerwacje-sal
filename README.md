@@ -99,18 +99,18 @@ Konfiguracja startowa aplikacji znajduję w jednym pliku `docker-compose.yml`, p
 
 - rezerwacje-app
     - kontener backendu
-    - kominukuję się zarówno z bazą danych, jak i frontendem
+    - komunikuję się zarówno z bazą danych, jak i frontendem
     - api domyślnie działa na porcie 8080
     - konfiguracja pozwala na hot-reloading (patrz #)
 - rezerwacje-front
     - kontener frontendu
-    - kominukuję się tylko z backendem
+    - komunikuję się tylko z backendem
     - domyślnie działa na porcie 3000
     - przy zmianie pliku zapewnia hot-reloading
     - zależności (npm install) są tworzone podczas budowania obrazu
 - rezerwacje-db
     - kontener bazy danych
-    - kominukuję się tylko z backendem
+    - komunikuję się tylko z backendem
     - dane domyślnie trzymane w volumenie dockera (`docker volume ls`)
 
 #### Skrypt startowy
