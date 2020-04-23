@@ -1,7 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.univocity.parsers.annotations.Parsed;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,7 +19,6 @@ public class Faculty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Parsed(field = "faculty name")
     @NonNull
     private String name;
 

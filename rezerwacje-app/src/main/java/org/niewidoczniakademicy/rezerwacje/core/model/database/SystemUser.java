@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
+import com.univocity.parsers.annotations.Parsed;
 import lombok.*;
 import org.niewidoczniakademicy.rezerwacje.core.model.enums.UserType;
 
@@ -18,9 +19,11 @@ public class SystemUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Parsed(field = "first name")
     @NonNull
     private String firstName;
 
+    @Parsed(field = "last name")
     @NonNull
     private String lastName;
 
