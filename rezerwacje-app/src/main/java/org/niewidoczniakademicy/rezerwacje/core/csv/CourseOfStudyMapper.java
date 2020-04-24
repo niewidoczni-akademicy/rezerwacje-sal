@@ -35,7 +35,7 @@ public class CourseOfStudyMapper {
         return cos.stream().map(course ->
             CourseOfStudy.builder()
                     .name(course.getName())
-                    .faculty(name2faculty.get(course.getName()))
+                    .faculty(name2faculty.get(course.getFaculty()))
                     .courseType(course.getCourseType())
                     .contactPerson1(login2user.get(course.getContactPerson1Login()))
                     .contactPerson2(login2user.getOrDefault(course.getContactPerson1Login(), null))

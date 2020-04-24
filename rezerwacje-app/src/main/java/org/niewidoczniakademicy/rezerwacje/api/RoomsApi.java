@@ -37,7 +37,7 @@ public class RoomsApi {
             List<Room> rooms = roomMapper.convert(csvRooms);
             return roomDAO.save(rooms);
         } catch (ParseException e) {                // TODO: handle database errors
-            throw new InvalidInputException();
+            throw new InvalidInputException("");
         }
     }
 }

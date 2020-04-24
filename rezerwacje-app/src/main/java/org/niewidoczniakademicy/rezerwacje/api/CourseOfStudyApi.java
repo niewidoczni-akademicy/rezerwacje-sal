@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CourseOfStudyMapper;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.dao.CourseOfStudyDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,16 @@ public class CourseOfStudyApi {
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
     public List<CourseOfStudy> uploadCourseOfStudies(@RequestParam MultipartFile file) {
+        // TODO: provide better error messages
         try {
             List<org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy> csvCourseOfStudies =
                     csvService.parseCoursesOfStudy(file);
             List<CourseOfStudy> courseOfStudies = courseOfStudyMapper.convert(csvCourseOfStudies);
             return courseOfStudyDAO.save(courseOfStudies);
-        } catch (ParseException e) {                // TODO: handle database errors
-            throw new InvalidInputException();
+        } catch (ParseException e) {
+            throw new InvalidInputException("...");
+        } catch (DatabaseException e) {
+            throw new InvalidInputException(e.getMessage());
         }
     }
 }
