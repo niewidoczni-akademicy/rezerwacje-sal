@@ -1,10 +1,8 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.csv;
 
-import com.univocity.parsers.annotations.EnumOptions;
-import com.univocity.parsers.annotations.Nested;
-import com.univocity.parsers.annotations.Parsed;
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
 import lombok.*;
-import org.niewidoczniakademicy.rezerwacje.core.model.database.Faculty;
 import org.niewidoczniakademicy.rezerwacje.core.model.enums.CourseType;
 
 
@@ -13,29 +11,25 @@ import org.niewidoczniakademicy.rezerwacje.core.model.enums.CourseType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CourseOfStudy {
-    @Parsed(field = "course name")
-    @NonNull
+    @CsvBindByName(column = "course name", required = true)
     private String name;
 
-    @Nested
-    @NonNull
-    private Faculty faculty;
+    @CsvBindByName(column = "faculty name", required = true)
+    private String faculty;
 
-    @Parsed(field = "course type")
-    @EnumOptions(customElement = "typeCode")
-    @NonNull
+    @CsvCustomBindByName(column = "course type", required = true, converter = CourseTypeConverter.class)
     private CourseType courseType;
 
-    @NonNull
+    @CsvBindByName(column = "contact login 1", required = true)
     private String contactPerson1Login;
 
+    @CsvBindByName(column = "contact login 2")
     private String contactPerson2Login;
 
-    @Parsed(field = "joined")
-    @NonNull
+    @CsvBindByName(column = "joined", required = true)
     private Boolean isJoined;
 
-    @Parsed
+    @CsvBindByName
     private String remarks;         // TODO: separate table?
 
     // TODO: typ egzaminu???

@@ -1,8 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.core.csv;
 
-import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.core.model.csv.Room;
 import org.slf4j.Logger;
@@ -31,17 +30,10 @@ public class CSVService {
             try (InputStream inputStream = file.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream)) {
 
-                BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
-
-                CsvParserSettings parserSettings = new CsvParserSettings();
-                parserSettings.setLineSeparatorDetectionEnabled(true);
-                parserSettings.setProcessor(rowProcessor);
-                parserSettings.setHeaderExtractionEnabled(true);
-
-                CsvParser parser = new CsvParser(parserSettings);
-                parser.parse(reader);
-
-                return rowProcessor.getBeans();
+                    CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
+                            .withType(clazz)
+                            .build();
+                    return toBean.parse();
             }
         } catch (IOException | RuntimeException e) {
             logger.info("Error parsing CSV: " + e.getLocalizedMessage());

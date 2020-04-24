@@ -16,6 +16,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(exclude = {"examTerms"})
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Room {
     @Id

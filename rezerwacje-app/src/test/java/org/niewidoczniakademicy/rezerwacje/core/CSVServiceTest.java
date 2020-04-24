@@ -3,7 +3,7 @@ package org.niewidoczniakademicy.rezerwacje.core;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
-import org.niewidoczniakademicy.rezerwacje.core.model.database.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,7 @@ class CSVServiceTest {
                 this.getClass().getResourceAsStream("/" + "test_data/cos_crlf.csv"));
 
         List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+        logger.info(cosList.toString());
         assert cosList.size() == 2;
     }
 

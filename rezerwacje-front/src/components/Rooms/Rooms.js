@@ -30,7 +30,7 @@ class Rooms extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/api/rooms/all")
+    fetch("/api/rooms")
       .then((res) => res.json())
       .then((json) => this.setState({ rooms: json }))
       .catch((e) => alert(e));

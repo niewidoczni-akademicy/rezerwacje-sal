@@ -1,22 +1,18 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.csv;
 
-import com.univocity.parsers.annotations.Parsed;
+import com.opencsv.bean.CsvBindByName;
 import lombok.*;
-import org.springframework.lang.NonNull;
 
 @Getter @Setter
 @ToString
 @NoArgsConstructor
 public class Room {
-    @Parsed
-    @NonNull
+    @CsvBindByName(column = "building", required = true)
     private String building;
 
-    @Parsed
-    @NonNull
+    @CsvBindByName(column = "name", required = true)
     private String name;
 
-    @Parsed
-    @NonNull
+    @CsvBindByName(column = "capacity", required = true)
     private Integer capacity;
 }
