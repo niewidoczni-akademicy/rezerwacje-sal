@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<SystemUser, Long> {
     @Override
     List<SystemUser> findAll();
 
-    Optional<SystemUser> findByUserUniqueId(String userUniqueId);
+    Optional<SystemUser> findByLogin(String login);
 
     Optional<List<SystemUser>> findSystemUsersByFirstNameAndLastName(String firstName, String lastName);
 }

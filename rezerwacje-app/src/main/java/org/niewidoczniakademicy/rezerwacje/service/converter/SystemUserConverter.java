@@ -13,7 +13,7 @@ public class SystemUserConverter
     @Override
     public SystemUser createFrom(AddSystemUserRequest dto) {
         return SystemUser.builder()
-                .userUniqueId(dto.getUserUniqueId())
+                .userType(dto.getUserType())
                 .additionTime(LocalDateTime.now())
                 .emailAddress(dto.getEmailAddress())
                 .firstName(dto.getFirstName())

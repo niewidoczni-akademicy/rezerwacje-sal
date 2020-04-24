@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
 import lombok.*;
+import org.niewidoczniakademicy.rezerwacje.core.model.enums.UserType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,20 +19,21 @@ public class SystemUser {
     private Long id;
 
     @NonNull
-    @Column(unique = true)
-    private String userUniqueId;
-
-    @NonNull
     private String firstName;
 
     @NonNull
     private String lastName;
 
+    @Column(unique = true)
     @NonNull
     private String login;
 
     @NonNull
     private String password;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     @NonNull
     private String emailAddress;

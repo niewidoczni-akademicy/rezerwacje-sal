@@ -23,9 +23,9 @@ public class SystemUserApi {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping(params = {"uniqueUserId"})
-    public ResponseEntity<GetSystemUserResponse> getSystemUserByUniqueUserId(@RequestParam String uniqueUserId) {
-        GetSystemUserResponse response = userService.getSystemUserByUserUniqueId(uniqueUserId);
+    @GetMapping(params = {"login"})
+    public ResponseEntity<GetSystemUserResponse> getSystemUserByUniqueUserId(@RequestParam String login) {
+        GetSystemUserResponse response = userService.getSystemUserByLogin(login);
         return ResponseEntity.ok().body(response);
     }
 

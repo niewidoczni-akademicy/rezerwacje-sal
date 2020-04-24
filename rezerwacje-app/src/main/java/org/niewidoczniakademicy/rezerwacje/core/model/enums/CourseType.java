@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.core.model.course;
+package org.niewidoczniakademicy.rezerwacje.core.model.enums;
 
 public enum CourseType {
     FULL_TIME("full time"),
