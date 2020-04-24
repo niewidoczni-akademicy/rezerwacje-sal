@@ -44,10 +44,10 @@ export class Confirm extends Component {
                             <ListItemText primary="NAZWISKO" secondary={lastName}/>
                             </ListItem>   
                             <ListItem>
-                                <ListItemText primary="EMAIL" secondary={email}/>
+                                <ListItemText primary="ADRES EMAIL" secondary={email}/>
                             </ListItem>
                             <ListItem>
-                                <ListItemText primary="PHONE" secondary={phone}/>
+                                <ListItemText primary="NUMER TELEFONU" secondary={phone}/>
                             </ListItem>
                             <ListItem>
                                 <ListItemText primary="LOGIN" secondary={login}/>
