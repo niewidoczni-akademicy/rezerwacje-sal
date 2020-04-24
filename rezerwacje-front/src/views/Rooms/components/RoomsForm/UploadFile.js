@@ -7,7 +7,6 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 class UploadFileForm extends React.Component {
   uploadFileAction() {
-    alert("here lol");
     var data = new FormData();
     var fileData = document.querySelector('input[type="file"]').files[0];
     data.append("file", fileData);

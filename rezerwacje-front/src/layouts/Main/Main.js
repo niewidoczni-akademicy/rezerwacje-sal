@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar } from './components';
+
+import { Switch, Route } from 'react-router-dom';
+import {
+  Home as HomeView,
+  Rooms as RoomsView
+} from '../../views';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,8 +27,25 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Main = props => {
-  const { children } = props;
+const Routes = () => {
+  console.log("Main router called");
+  return (
+    <Switch>
+      <Route
+        exact
+        path="/home"
+        render={() => <HomeView/>} 
+      />
+      <Route 
+        exact
+        path="/rooms"
+        render={() => <RoomsView/>} 
+      />
+    </Switch>
+  );
+};
+
+const MainLayout = () => {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -57,14 +79,10 @@ const Main = props => {
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
       <main className={classes.content}>
-        {children}
+        <Routes/>
       </main>
     </div>
   );
 };
 
-Main.propTypes = {
-  children: PropTypes.node
-};
-
-export default Main;
+export default MainLayout;

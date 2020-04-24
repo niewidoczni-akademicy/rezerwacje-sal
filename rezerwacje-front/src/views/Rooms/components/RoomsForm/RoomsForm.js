@@ -37,10 +37,10 @@ class RoomsForm extends React.Component {
 
   render() {
     return (
-        <div class="main">
-            <RoomList rooms={this.state.rooms} />
-            <UploadFileForm />
-        </div>
+      <div className="RoomsFormMain">
+        <RoomList rooms={this.state.rooms} />
+        <UploadFileForm />
+      </div>
     );
   }
 }
