@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserService {
+public final class UserService {
 
     private final ConversionService conversionService;
     private final UserRepository userRepository;

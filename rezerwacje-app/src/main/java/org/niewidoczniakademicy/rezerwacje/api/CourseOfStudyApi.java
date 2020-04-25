@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "course-of-study")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CourseOfStudyApi {
+public final class CourseOfStudyApi {
 
     private final CourseOfStudyDAO courseOfStudyDAO;
     private final CSVService csvService;

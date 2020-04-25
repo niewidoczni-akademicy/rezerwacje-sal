@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Slf4j
-public class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
+public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
 
     private static final List<MediaType> VISIBLE_TYPES = Arrays.asList(
             MediaType.valueOf("text/*"),

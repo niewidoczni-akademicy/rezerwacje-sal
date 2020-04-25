@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "rooms")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RoomsApi {
+public final class RoomsApi {
 
     private final RoomDAO roomDAO;
     private final CSVService csvService;

@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("recruitment-period")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentPeriodApi {
+public final class RecruitmentPeriodApi {
 
     private final RecruitmentPeriodService recruitmentPeriodService;
 

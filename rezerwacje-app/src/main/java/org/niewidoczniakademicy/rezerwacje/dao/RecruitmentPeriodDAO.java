@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentPeriodDAO implements GenericDAO<RecruitmentPeriod> {
+public final class RecruitmentPeriodDAO implements GenericDAO<RecruitmentPeriod> {
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
 
     @Override

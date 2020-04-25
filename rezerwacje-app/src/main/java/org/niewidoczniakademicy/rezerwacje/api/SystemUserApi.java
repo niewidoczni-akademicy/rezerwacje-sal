@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("system-user")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class SystemUserApi {
+public final class SystemUserApi {
 
     private final UserService userService;
 

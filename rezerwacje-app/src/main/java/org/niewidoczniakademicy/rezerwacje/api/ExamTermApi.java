@@ -29,7 +29,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestController
 @RequestMapping(path = "exam-terms")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ExamTermApi {
+public final class ExamTermApi {
 
     private final ExamTermDAO examTermDAO;
     private final CourseOfStudyDAO courseOfStudyDAO;
