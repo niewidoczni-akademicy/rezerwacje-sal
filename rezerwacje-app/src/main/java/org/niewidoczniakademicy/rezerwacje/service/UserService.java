@@ -59,8 +59,9 @@ public final class UserService {
     public GetSystemUsersResponse getAllSystemUsers() {
         final List<SystemUser> systemUsers = userRepository.findAll();
 
-        if (systemUsers == null)
+        if (systemUsers == null) {
             throw new UserNotFoundException("No users in the system found");
+        }
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -70,8 +71,9 @@ public final class UserService {
     public void validateAddSystemUserRequest(AddSystemUserRequest request) {
         boolean isEmailValid = EmailValidator.getInstance().isValid(request.getEmailAddress());
 
-        if (!isEmailValid)
+        if (!isEmailValid) {
             throw new InvalidEmailAddressException();
+        }
     }
 
 }
