@@ -14,5 +14,6 @@ public interface RecruitmentPeriodRepository extends JpaRepository<RecruitmentPe
     @Override
     List<RecruitmentPeriod> findAll();
 
-    List<RecruitmentPeriod> findByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+    List<RecruitmentPeriod> findByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate,
+                                                                                   LocalDate endDate);
 }

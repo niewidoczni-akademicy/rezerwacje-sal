@@ -49,7 +49,9 @@ public final class UserService {
     public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(String firstName, String lastName) {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName)
-                .orElseThrow(() -> new UserNotFoundException("No user with first name: " + firstName + " and last name : " + lastName + " found"));
+                .orElseThrow(() -> new UserNotFoundException("No user with first name: "
+                                                            + firstName + " and last name : "
+                                                            + lastName + " found"));
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)

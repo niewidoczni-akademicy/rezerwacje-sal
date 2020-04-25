@@ -75,8 +75,10 @@ public final class ExamTermApi {
                             @RequestParam Long roomId
     ) {
         // TODO date/time validations
-        CourseOfStudy cos = courseOfStudyDAO.find(cosId).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unable to find Course Of Study with id " + cosId));
-        Room room = roomDAO.find(roomId).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unable to find Room with id " + roomId));
+        CourseOfStudy cos = courseOfStudyDAO.find(cosId).orElseThrow(() ->
+                new ResponseStatusException(NOT_FOUND, "Unable to find Course Of Study with id " + cosId));
+        Room room = roomDAO.find(roomId).orElseThrow(() ->
+                new ResponseStatusException(NOT_FOUND, "Unable to find Room with id " + roomId));
 
         ExamTerm examTerm = new ExamTerm(day, timeStart, timeEnd, cos, room);
         examTermDAO.save(examTerm);
