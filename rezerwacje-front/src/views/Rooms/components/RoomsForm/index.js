@@ -1,1 +1,1 @@
-export { default } from './RoomsForm.jsx';
+export { default } from './RoomsForm';

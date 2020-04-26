@@ -1,9 +1,4 @@
 import React from "react";
-import { Button, Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 class UploadFileForm extends React.Component {
   uploadFileAction() {

@@ -1,5 +1,5 @@
 import React from "react";
-import UploadFileForm from "./UploadFile.jsx";
+import UploadFileForm from "./UploadFile";
 import "./RoomsForm.scss";
 
 function Room(props) {

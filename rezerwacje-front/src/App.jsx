@@ -1,38 +1,45 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
-import PropTypes from 'prop-types';
 
 import theme from './theme';
 import './App.scss';
 
 import { Main as MainLayout } from './layouts';
-import {
-  Home as HomeView,
-  Rooms as RoomsView
-} from './views';
-
-const Routes = () => {
-  return (
-    <Switch>
-      <Redirect
-        exact
-        from="/"
-        to="/home"
-      />
-      <Route 
-        exact
-        path={["/home", "/rooms"]}
-        render={() => <MainLayout/>} 
-      />
-    </Switch>
-  );
-};
+import Routes from './common'
 
 const App = () => {
+
+  const MainRoutes = () => {
+    return (
+      <Switch>
+        {
+          Routes.map(route => 
+            <Route 
+              key={route.title} 
+              exact 
+              path={route.href} 
+              render={() => route.view}
+            />)
+        }
+      </Switch>
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Routes/>
+      <Switch>
+        {/* <Redirect
+          exact
+          from="/"
+          to="/home"
+        /> */}
+        <Route 
+          exact
+          path={Routes.map(route => route.href)}
+          render={() => <MainLayout children={<MainRoutes/>}/>} 
+        />
+      </Switch>
     </ThemeProvider>
   );
 }

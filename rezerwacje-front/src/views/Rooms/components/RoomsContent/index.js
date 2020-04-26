@@ -1,1 +1,1 @@
-export { default } from './RoomsContent.jsx';
+export { default } from './RoomsContent';

@@ -5,12 +5,6 @@ import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar } from './components';
 
-import { Switch, Route } from 'react-router-dom';
-import {
-  Home as HomeView,
-  Rooms as RoomsView
-} from '../../views';
-
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 56,
@@ -27,25 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Routes = () => {
-  console.log("Main router called");
-  return (
-    <Switch>
-      <Route
-        exact
-        path="/home"
-        render={() => <HomeView/>} 
-      />
-      <Route 
-        exact
-        path="/rooms"
-        render={() => <RoomsView/>} 
-      />
-    </Switch>
-  );
-};
-
-const MainLayout = () => {
+const Standard = ({children}) => {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -79,10 +55,10 @@ const MainLayout = () => {
         variant={isDesktop ? 'persistent' : 'temporary'}
       />
       <main className={classes.content}>
-        <Routes/>
+        {children}
       </main>
     </div>
   );
 };
 
-export default MainLayout;
+export default Standard;

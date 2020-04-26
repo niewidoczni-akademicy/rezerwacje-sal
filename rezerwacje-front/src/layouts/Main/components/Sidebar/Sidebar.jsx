@@ -8,6 +8,8 @@ import HomeIcon from '@material-ui/icons/Home';
 
 import { SidebarNav } from './components';
 
+import Routes from '../../../../common'
+
 const useStyles = makeStyles(theme => ({
   drawer: {
     width: 240,
@@ -36,18 +38,25 @@ const Sidebar = props => {
 
   const classes = useStyles();
 
-  const pages = [
-    {
-      title: 'Home',
-      href: '/home',
-      icon: <HomeIcon />
-    },
-    {
-      title: 'Rooms',
-      href: '/rooms',
-      icon: <MeetingRoomIcon />
+  const pages = Routes.map(route=> {
+    return {
+      title: route.title,
+      href: route.href,
+      icon: route.icon,
     }
-  ];
+  })
+  // const pages = [
+  //   {
+  //     title: 'Home',
+  //     href: '/home',
+  //     icon: <HomeIcon />
+  //   },
+  //   {
+  //     title: 'Rooms',
+  //     href: '/rooms',
+  //     icon: <MeetingRoomIcon />
+  //   }
+  // ];
 
   return (
     <Drawer
