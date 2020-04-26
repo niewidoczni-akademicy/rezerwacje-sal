@@ -28,18 +28,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Switch>
-        {/* <Redirect
-          exact
-          from="/"
-          to="/home"
-        /> */}
-        <Route 
-          exact
-          path={Routes.map(route => route.href)}
-          render={() => <MainLayout children={<MainRoutes/>}/>} 
-        />
-      </Switch>
+      <Route 
+        exact
+        path={Routes.map(route => route.href)}
+        render={() => <MainLayout children={<MainRoutes/>}/>} 
+      />
     </ThemeProvider>
   );
 }
