@@ -14,9 +14,13 @@ const useForm = (initState, callback, validate) => {
     });
   };
 
-  const handleSubmit = event => {
+  const setState = state => {
+    setValues(state)
+  }
+
+  const handleSubmit = async event => {
     event.preventDefault();
-    setErrors(validate(values));
+    setErrors(await validate(values));
     setIsSubmitting(true);
   };
 
@@ -30,7 +34,8 @@ const useForm = (initState, callback, validate) => {
     handleChange,
     handleSubmit,
     values,
-    errors
+    errors,
+    setState
   };
 };
 

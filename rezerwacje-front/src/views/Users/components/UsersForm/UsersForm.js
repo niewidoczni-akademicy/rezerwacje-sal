@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -17,13 +15,9 @@ import {
 } from '@material-ui/core';
 import useForm from "./useForm"
 import validateUserForm from "./validateUserForm"
-import './User.css'
+import './Users.scss'
 
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
-
-const UserDetails = () => {
+const UsersForm = () => {
 
    const initState = {
     firstName: '',
@@ -36,13 +30,14 @@ const UserDetails = () => {
     role: ''
   };
 
-  const classes = useStyles();
 
-  const submit = e => {
+  const submit = () => {
+
       const {firstName, lastName, email, phone, login, password, role} = values
       console.log(JSON.stringify({firstName: firstName, lastName: lastName, emailAddress: email, phoneNumber: phone, 
         login: login,  password: password, userType: role}))
-      fetch("/api/system-user", {
+      
+        fetch("/api/system-user", {
           method: "POST", 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({firstName: firstName, lastName: lastName, emailAddress: email, phoneNumber: phone, 
@@ -50,6 +45,8 @@ const UserDetails = () => {
         }).then(
           function (res) {
             if (res.ok) {
+              setState(initState);
+              console.log(values);
               alert("Użytkownik został dodany do bazy.");
             } else if (res.status === 400) {
               alert("Wystąpił błąd.");
@@ -61,11 +58,11 @@ const UserDetails = () => {
         );
   }
 
-  const { handleChange, handleSubmit, values, errors } = useForm(
+  const { handleChange, handleSubmit, values, errors, setState} = useForm(
     initState,
     submit,
-    validateUserForm
-  );
+    validateUserForm);
+
  
   return (
     <Card
@@ -276,4 +273,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails;
+export default UsersForm;

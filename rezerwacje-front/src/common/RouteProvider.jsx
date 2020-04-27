@@ -1,9 +1,12 @@
 import React from 'react';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person'
+
 import {
   Home as HomeView,
-  Rooms as RoomsView
+  Rooms as RoomsView,
+  Users as UsersView
 } from '../views';
 
 const Routes = [
@@ -18,6 +21,12 @@ const Routes = [
     href: '/rooms',
     icon: <MeetingRoomIcon />,
     view: <RoomsView />,
+  },
+  {
+    title: 'Users',
+    href: '/users/add',
+    icon: <PersonIcon />,
+    view: <UsersView />,
   }
 ];
 

@@ -8,7 +8,7 @@ import {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(4)
+    padding: theme.spacing(1)
   }
 }));
 
@@ -22,10 +22,6 @@ const Rooms = () => {
         spacing={4}
       >
         <Grid
-          item
-          lg={3}
-          sm={6}
-          xl={3}
           xs={12}
         >
           <RoomsContent />
