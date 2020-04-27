@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.niewidoczniakademicy.rezerwacje.model.database.ExamTerm;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,5 +14,5 @@ import javax.validation.constraints.NotNull;
 public class AddExamTermResponse {
 
     @NotNull
-    ExamTerm examTerm;
+    Long examTermId;
 }

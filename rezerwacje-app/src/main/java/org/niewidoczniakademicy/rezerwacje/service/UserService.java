@@ -59,9 +59,6 @@ public class UserService {
     public GetSystemUsersResponse getAllSystemUsers() {
         final List<SystemUser> systemUsers = userRepository.findAll();
 
-        if (systemUsers == null)
-            throw new UserNotFoundException("No users in the system found");
-
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
                 .build();

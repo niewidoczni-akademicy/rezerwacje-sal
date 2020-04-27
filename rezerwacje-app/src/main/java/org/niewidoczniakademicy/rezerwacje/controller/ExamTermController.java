@@ -50,7 +50,7 @@ public class ExamTermController {
     }
 
     @PostMapping
-    public ResponseEntity<AddExamTermResponse> addExamTerm(AddExamTermRequest addExamTermRequest) {
+    public ResponseEntity<AddExamTermResponse> addExamTerm(@RequestBody AddExamTermRequest addExamTermRequest) {
         AddExamTermResponse response = examTermService.getAddExamTermResponse(addExamTermRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

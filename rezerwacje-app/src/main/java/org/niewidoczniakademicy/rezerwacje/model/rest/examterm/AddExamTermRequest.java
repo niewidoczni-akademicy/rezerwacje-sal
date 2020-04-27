@@ -22,6 +22,7 @@ public class AddExamTermRequest {
 
     @NotNull
     LocalTime timeEnd;
+
     @NotNull
     Long cosId;
 
