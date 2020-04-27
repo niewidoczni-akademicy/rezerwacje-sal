@@ -22,6 +22,7 @@ const Rooms = () => {
         spacing={4}
       >
         <Grid
+          item
           lg={3}
           sm={6}
           xl={3}
