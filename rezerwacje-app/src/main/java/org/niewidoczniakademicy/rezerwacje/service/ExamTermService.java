@@ -68,7 +68,7 @@ public class ExamTermService { // Validations will be fixed in [NIAK -25]
                 .build();
     }
 
-    public AddExamTermResponse getAddExamTermResponse(@RequestBody AddExamTermRequest addExamTermRequest) {
+    public AddExamTermResponse getAddExamTermResponse(AddExamTermRequest addExamTermRequest) {
         CourseOfStudy courseOfStudy = courseOfStudyRepository
                 .findById(addExamTermRequest.getCosId())
                 .get();
