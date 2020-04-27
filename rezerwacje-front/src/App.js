@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import { Switch, Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import UserForm from './components/Users/UserForm'
+import UserForm from './components/Users/UserForm';
 import Home from "./components/Home/Home";
 import Rooms from "./components/Rooms/Rooms"
 
