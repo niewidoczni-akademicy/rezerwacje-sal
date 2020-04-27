@@ -5,7 +5,6 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfS
 import org.niewidoczniakademicy.rezerwacje.service.CourseOfStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,15 +17,17 @@ public class CourseOfStudyController {
     private final CourseOfStudyService courseOfStudyService;
 
     @GetMapping
-    public ResponseEntity<GetCourseOfStudiesResponse> getAll() {
-        GetCourseOfStudiesResponse response = courseOfStudyService.getAllResponse();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetCourseOfStudiesResponse getAll() {
+        return courseOfStudyService.getAllResponse();
     }
 
     @PostMapping(path = "upload")
-    public ResponseEntity<GetCourseOfStudiesResponse> uploadCourseOfStudies(@RequestParam MultipartFile file) {
-        GetCourseOfStudiesResponse response = courseOfStudyService.uploadCourseOfStudiesResponse(file);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public GetCourseOfStudiesResponse uploadCourseOfStudies(@RequestParam MultipartFile file) {
+        return courseOfStudyService.uploadCourseOfStudiesResponse(file);
 
     }
 }

@@ -7,6 +7,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserRe
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
 import org.niewidoczniakademicy.rezerwacje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,29 +19,34 @@ public class SystemUserController {
     private final UserService userService;
 
     @PostMapping
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<AddSystemUserResponse> addSystemUser(@RequestBody AddSystemUserRequest request) {
         AddSystemUserResponse response = userService.saveSystemUser(request);
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping(params = {"login"})
-    public ResponseEntity<GetSystemUserResponse> getSystemUserByUniqueUserId(@RequestParam String login) {
-        GetSystemUserResponse response = userService.getSystemUserByLogin(login);
-        return ResponseEntity.ok().body(response);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetSystemUserResponse getSystemUserByUniqueUserId(@RequestParam String login) {
+        return userService.getSystemUserByLogin(login);
     }
 
     @GetMapping(params = {"firstName", "lastName"})
-    public ResponseEntity<GetSystemUsersResponse> getSystemUsersByFirstNameAndLastName(@RequestParam String firstName,
-                                                                                       @RequestParam String lastName) {
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(@RequestParam String firstName,
+                                                                       @RequestParam String lastName) {
 
-        GetSystemUsersResponse response = userService.getSystemUsersByFirstNameAndLastName(firstName, lastName);
-        return ResponseEntity.ok().body(response);
+        return userService.getSystemUsersByFirstNameAndLastName(firstName, lastName);
     }
 
     @GetMapping(path = "all")
-    public ResponseEntity<GetSystemUsersResponse> getAllSystemUsers() {
-        GetSystemUsersResponse response = userService.getAllSystemUsers();
-        return ResponseEntity.ok().body(response);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetSystemUsersResponse getAllSystemUsers() {
+        return userService.getAllSystemUsers();
     }
 
 }

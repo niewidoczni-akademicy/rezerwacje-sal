@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,22 +22,25 @@ public class RecruitmentPeriodController {
     private final RecruitmentPeriodService recruitmentPeriodService;
 
     @PostMapping
-    public ResponseEntity<AddRecruitmentPeriodResponse> addRecruitmentPeriod(@RequestBody AddRecruitmentPeriodRequest request) {
-        AddRecruitmentPeriodResponse response = recruitmentPeriodService.saveRecruitmentPeriod(request);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public AddRecruitmentPeriodResponse addRecruitmentPeriod(@RequestBody AddRecruitmentPeriodRequest request) {
+        return recruitmentPeriodService.saveRecruitmentPeriod(request);
     }
 
     @GetMapping(params = {"start-date", "end-date"})
-    public ResponseEntity<GetRecruitmentPeriodsResponse> getRecruitmentPeriods(
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(
             @RequestParam(value = "start-date") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
             @RequestParam(value = "end-date") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
-        GetRecruitmentPeriodsResponse response = recruitmentPeriodService.getRecruitmentPeriods(startDate, endDate);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return recruitmentPeriodService.getRecruitmentPeriods(startDate, endDate);
     }
 
     @GetMapping(params = {"id"})
-    public ResponseEntity<GetRecruitmentPeriodResponse> getRecruitmentPeriod(@RequestParam String id) {
-        GetRecruitmentPeriodResponse response = recruitmentPeriodService.getRecruitmentPeriod(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(@RequestParam String id) {
+        return recruitmentPeriodService.getRecruitmentPeriod(id);
     }
 }

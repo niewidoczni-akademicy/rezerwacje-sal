@@ -8,7 +8,6 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsRespo
 import org.niewidoczniakademicy.rezerwacje.service.ExamTermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,39 +18,45 @@ public class ExamTermController {
     private final ExamTermService examTermService;
 
     @GetMapping
-    public ResponseEntity<GetExamTermsResponse> getAll() {
-        GetExamTermsResponse response = examTermService.getAllResponse();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetExamTermsResponse getAll() {
+        return examTermService.getAllResponse();
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<GetExamTermResponse> getOne(@PathVariable Long id) {
-        GetExamTermResponse response = examTermService.getOneResponse(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetExamTermResponse getOne(@PathVariable Long id) {
+        return examTermService.getOneResponse(id);
     }
 
     @GetMapping(path = "room/{id}")
-    public ResponseEntity<GetExamTermsResponse> getByRoomId(@PathVariable Long id) {
-        GetExamTermsResponse response = examTermService.getByRoomIdResponse(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetExamTermsResponse getByRoomId(@PathVariable Long id) {
+        return examTermService.getByRoomIdResponse(id);
     }
 
     @GetMapping(path = "cos/{id}")
-    public ResponseEntity<GetExamTermsResponse> getByCourseOfStudyRepositoryId(@PathVariable Long id) {
-        GetExamTermsResponse response = examTermService.getByCourseOfStudyRepositoryIdResponse(id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetExamTermsResponse getByCourseOfStudyRepositoryId(@PathVariable Long id) {
+        return examTermService.getByCourseOfStudyRepositoryIdResponse(id);
     }
 
     @GetMapping(path = {"room/{roomId}/cos/{cosId}", "cos/{cosId}/room/{roomId}"})
-    public ResponseEntity<GetExamTermResponse> getOneByRoomIdAndCourseOfStudyId(@PathVariable Long roomId,
-                                                                                @PathVariable Long cosId) {
-        GetExamTermResponse response = examTermService.getByRoomIdAndCourseOfStudyRepositoryIdResponse(roomId, cosId);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetExamTermResponse getOneByRoomIdAndCourseOfStudyId(@PathVariable Long roomId,
+                                                                @PathVariable Long cosId) {
+        return examTermService.getByRoomIdAndCourseOfStudyRepositoryIdResponse(roomId, cosId);
     }
 
     @PostMapping
-    public ResponseEntity<AddExamTermResponse> addExamTerm(@RequestBody AddExamTermRequest addExamTermRequest) {
-        AddExamTermResponse response = examTermService.getAddExamTermResponse(addExamTermRequest);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public AddExamTermResponse addExamTerm(@RequestBody AddExamTermRequest addExamTermRequest) {
+        return examTermService.getAddExamTermResponse(addExamTermRequest);
     }
 }
