@@ -1,10 +1,10 @@
 package org.niewidoczniakademicy.rezerwacje.service.converter;
 
 import lombok.AllArgsConstructor;
-import org.niewidoczniakademicy.rezerwacje.core.model.database.RecruitmentPeriod;
-import org.niewidoczniakademicy.rezerwacje.core.model.database.SystemUser;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.recruitment.AddRecruitmentPeriodRequest;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.user.AddSystemUserRequest;
+import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
+import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

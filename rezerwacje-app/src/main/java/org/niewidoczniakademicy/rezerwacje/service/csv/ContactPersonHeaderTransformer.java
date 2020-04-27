@@ -1,0 +1,19 @@
+package org.niewidoczniakademicy.rezerwacje.service.csv;
+
+import com.univocity.parsers.annotations.HeaderTransformer;
+
+import java.lang.reflect.Field;
+
+public class ContactPersonHeaderTransformer extends HeaderTransformer {
+
+    private String prefix;
+
+    public ContactPersonHeaderTransformer(String... args) {
+        prefix = args[0];
+    }
+
+    @Override
+    public String transformName(Field field, String name) {
+        return prefix + " " + name;
+    }
+}
