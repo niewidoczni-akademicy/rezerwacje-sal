@@ -31,7 +31,23 @@ class UploadFileForm extends React.Component {
           type="button"
           value="Prześlij"
           onClick={this.uploadFileAction.bind(this)}
-        ></input>
+        />
+        {/* <input
+          id="contained-button-file"
+          hidden
+          type="file"
+        />
+        <label htmlFor="contained-button-file">
+          <Button 
+            variant="contained" 
+            color="primary" 
+            component="span" 
+            startIcon={<CloudUploadIcon />}
+            onClick={this.uploadFileAction.bind(this)}
+          >
+            upload .csv
+          </Button>
+        </label> */}
       </form>
     );
   }
