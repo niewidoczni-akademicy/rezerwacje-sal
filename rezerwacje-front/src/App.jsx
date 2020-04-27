@@ -10,24 +10,18 @@ import Routes from './common'
 
 const App = () => (
   <ThemeProvider theme={theme}>
-    <StandardLayout>
-      <Route 
-        exact
-        path={Routes.map(route => route.href)}
-        render={() =>       
-          <Switch>
-            {
-              Routes.map(route => 
-                <Route 
-                  key={route.title} 
-                  exact 
-                  path={route.href} 
-                  render={() => route.view}
-                />)
-            }
-          </Switch> 
-        } 
-      />
+    <StandardLayout>    
+      <Switch>
+        {
+          Routes.map(route => 
+            <Route 
+              key={route.title} 
+              exact 
+              path={route.href} 
+              render={() => route.view}
+            />)
+        }
+      </Switch> 
     </StandardLayout>
   </ThemeProvider>
 )
