@@ -6,11 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetRecruitmentPeriodResponse {
 
+    @NotNull
     private RecruitmentPeriod recruitmentPeriod;
 }
