@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Sql(scripts = "classpath:db_init/cos_insert.sql")
+@Sql(scripts = "classpath:database/cos_insert.sql")
 class CsvCourseOfStudyControllerTest {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
