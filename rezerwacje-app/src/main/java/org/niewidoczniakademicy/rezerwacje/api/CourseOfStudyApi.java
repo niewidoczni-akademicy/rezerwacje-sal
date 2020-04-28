@@ -38,7 +38,7 @@ public final class CourseOfStudyApi {
 
     @PostMapping(path = "upload")
     @ResponseStatus(value = HttpStatus.OK)
-    public List<CourseOfStudy> uploadCourseOfStudies(@RequestParam MultipartFile file) {
+    public List<CourseOfStudy> uploadCourseOfStudies(@RequestParam final MultipartFile file) {
         // TODO: provide better error messages
         try {
             List<CsvCourseOfStudy> csvCourseOfStudies =

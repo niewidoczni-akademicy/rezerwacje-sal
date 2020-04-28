@@ -1,9 +1,13 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.csv;
 
 import com.opencsv.bean.CsvBindByName;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @NoArgsConstructor
 public class CsvRoom {

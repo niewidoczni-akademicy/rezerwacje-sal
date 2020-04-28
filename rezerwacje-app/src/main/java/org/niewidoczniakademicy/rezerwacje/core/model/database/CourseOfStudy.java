@@ -2,7 +2,14 @@ package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import org.niewidoczniakademicy.rezerwacje.core.model.enums.CourseType;
 
 import javax.persistence.CascadeType;

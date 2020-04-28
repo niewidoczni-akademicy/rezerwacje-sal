@@ -1,7 +1,13 @@
 package org.niewidoczniakademicy.rezerwacje.core.model.database;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.Entity;
@@ -19,7 +25,8 @@ import java.util.Set;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"building", "name"})
 })
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode(exclude = {"examTerms"})
 @Builder

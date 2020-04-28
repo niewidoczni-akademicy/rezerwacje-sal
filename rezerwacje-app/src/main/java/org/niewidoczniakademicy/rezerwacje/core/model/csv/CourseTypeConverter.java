@@ -16,7 +16,7 @@ public class CourseTypeConverter extends AbstractBeanField<CourseType> {
     }};
 
     @Override
-    protected Object convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
+    protected final Object convert(String value) throws CsvDataTypeMismatchException, CsvConstraintViolationException {
         CourseType courseType = conversion.get(value);
         if (courseType != null) {
             return courseType;

@@ -17,7 +17,7 @@ import java.util.List;
 class CSVServiceTest {
 
     @Autowired
-    CSVService service;
+    private CSVService service;
 
     @Test
     void parseRoomsFile() throws IOException, ParseException {
