@@ -49,7 +49,7 @@ const ExamsContent = () => {
           value={values.space}
           variant="outlined"
         >
-          {recruitmentSpaces.map(space => (
+          {recruitmentPeriods.map(period => (
             <option key={space} value={space}></option>
           ))}
         </TextField> 
