@@ -28,9 +28,12 @@ public class RecruitmentPeriodServiceTest {
 
     @Test
     public void shouldSaveRecruitmentPeriod_andReturnItCorrectly() {
+        final LocalDate recruitmentPeriodStartDate = LocalDate.now();
+        final LocalDate recruitmentPeriodEndDate = LocalDate.now().plusDays(10);
+
         AddRecruitmentPeriodRequest request = AddRecruitmentPeriodRequest.builder()
-                .startDate(LocalDate.parse("2020-04-28"))
-                .endDate(LocalDate.parse("2020-05-04"))
+                .startDate(recruitmentPeriodStartDate)
+                .endDate(recruitmentPeriodEndDate)
                 .build();
 
         AddRecruitmentPeriodResponse addingResponse = recruitmentPeriodService.saveRecruitmentPeriod(request);
@@ -39,23 +42,29 @@ public class RecruitmentPeriodServiceTest {
                 .getRecruitmentPeriod(recruitmentPeriodId);
         RecruitmentPeriod result = gettingResponse.getRecruitmentPeriod();
 
-        assertEquals(LocalDate.parse("2020-04-28"), result.getStartDate());
-        assertEquals(LocalDate.parse("2020-05-04"), result.getEndDate());
+        assertEquals(recruitmentPeriodStartDate, result.getStartDate());
+        assertEquals(recruitmentPeriodEndDate, result.getEndDate());
     }
 
     @Test
     public void shouldFindTwoRecruitmentPeriods_whenTheyExistInDatabase() {
-        GetRecruitmentPeriodsResponse response = recruitmentPeriodService
-                .getRecruitmentPeriods(LocalDate.parse("2020-04-01"), LocalDate.parse("2020-04-30"));
+        final LocalDate filterStartDate = LocalDate.parse("2020-04-01");
+        final LocalDate filterEndDate = LocalDate.parse("2020-04-30");
+        final int expectedPeriods = 2;
 
-        assertEquals(2, response.getRecruitmentPeriods().size());
+        GetRecruitmentPeriodsResponse response = recruitmentPeriodService
+                .getRecruitmentPeriods(filterStartDate, filterEndDate);
+
+        assertEquals(expectedPeriods, response.getRecruitmentPeriods().size());
     }
 
     @Test
     public void shouldThrowRecruitmentPeriodEndDateBeforeStartDateException_whenEndDateBeforeStartDate() {
+        final LocalDate recruitmentPeriodStartDate = LocalDate.now().plusDays(5);
+        final LocalDate recruitmentPeriodEndDate = LocalDate.now().plusDays(2);
         AddRecruitmentPeriodRequest request = AddRecruitmentPeriodRequest.builder()
-                .startDate(LocalDate.parse("2020-04-02"))
-                .endDate(LocalDate.parse("2020-04-01"))
+                .startDate(recruitmentPeriodStartDate)
+                .endDate(recruitmentPeriodEndDate)
                 .build();
 
         assertThrows(
