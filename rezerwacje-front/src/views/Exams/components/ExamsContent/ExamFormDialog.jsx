@@ -4,11 +4,11 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {
   Grid,
-  Typography
+  Typography,
+  Divider
 }
   from "@material-ui/core"
 import DateFnsUtils from '@date-io/date-fns';
@@ -21,7 +21,7 @@ import {
 
 export default function ExamFormDialog(props) {
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date(''));
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -41,6 +41,12 @@ export default function ExamFormDialog(props) {
           <Typography variant="h3">
             Nowy egzamin
           </Typography>
+          <Typography variant="h5">
+            Rekrutacja: {props.space}
+          </Typography>
+          <Typography variant="h5">
+            Cykl: {props.period}
+          </Typography>
         </DialogTitle>
         <DialogContent>
           <form
@@ -53,60 +59,99 @@ export default function ExamFormDialog(props) {
             >
               <Grid
                 item
-                md={12}
+                md={6}
                 xs={12}
               >
                 <TextField
-                    fullWidth
-                    helperText="Kierunek"
-                    margin="dense"
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    variant="outlined"
+                  fullWidth
+                  helperText="Kierunek"
+                  margin="dense"
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  variant="outlined"
                 >
-                    {courses.map(course => (
-                        <option key={course} value={course}>{course}</option>
-                    ))}
+                  {courses.map(course => (
+                    <option key={course} value={course}>{course}</option>
+                  ))}
+                </TextField>
+              </Grid>
+              <Grid
+                item
+                md={6}
+                xs={12}
+              >
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  helperText="Sala"
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  variant="outlined"
+                >
+                  {rooms.map(room => (
+                    <option key={room} value={room}>{room}</option>
+                  ))}
                 </TextField>
               </Grid>
               <Grid
                 item
                 md={12}
-                xs={12}
+                md={12}
               >
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    helperText="Sala"
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    variant="outlined"
-                >
-                    {rooms.map(room => (
-                        <option key={room} value={room}>{room}</option>
-                    ))}
-                </TextField>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    label="Data"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    color="primary"
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
               </Grid>
-              <Grid 
-              item
-              md={12}
-              md={12}
+              <Grid
+                item
+                md={6}
+                md={12}
               >
-                <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+                  <KeyboardTimePicker
+                    margin="normal"
+                    label="Od godziny"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change time',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </Grid>
+              <Grid
+                item
+                md={6}
+                md={12}
+              >
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+                  <KeyboardTimePicker
+                    margin="normal"
+                    label="Od godziny"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change time',
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+
               </Grid>
             </Grid>
           </form>

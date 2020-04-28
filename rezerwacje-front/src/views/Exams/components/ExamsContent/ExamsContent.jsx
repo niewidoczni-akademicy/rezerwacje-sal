@@ -7,7 +7,7 @@ import {
     Typography,
     Button
 }
-from "@material-ui/core"
+    from "@material-ui/core"
 import ExamFormDialog from "./ExamFormDialog";
 
 
@@ -15,7 +15,7 @@ const ExamsContent = () => {
 
     const [values, setValues] = useState({
         space: '',
-        period: 0
+        period: ''
     });
 
     const [modalShow, setModalShow] = useState(false);
@@ -36,70 +36,70 @@ const ExamsContent = () => {
 
     return (
         <React.Fragment>
-        <Grid>
-            <Grid item>
-                <Typography variant="h2" gutterBottom>
-                       Egzaminy
-            </Typography>
-            </Grid>
-            <br/>
-            <Grid item sm={6} xs={12}>
-                <Typography variant="h4" gutterBottom>
-                    Rekrutacja
-            </Typography>
-            </Grid>
-            <Grid item sm={6} xs={12}>
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    name="space"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.space}
-                    variant="outlined"
-                >
-                    {recruitmentSpaces.map(space => (
-                        <option key={space} value={space}>{space}</option>
-                    ))}
-                </TextField>
-            </Grid>
             <Grid>
-                <Typography variant="h4" gutterBottom>
-                    Cykl
+                <Grid item>
+                    <Typography variant="h2" gutterBottom>
+                        Egzaminy
             </Typography>
-            </Grid>
-            <Grid item xs={6}>
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    name="state"
-                    onChange={handleChange}
-                    required
-                    select
-                    SelectProps={{ native: true }}
-                    value={values.per}
-                    variant="outlined"
-                >
-                    {recruitmentPeriods.map(period => (
-                        <option key={period} value={period}>{period}</option>
-                    ))}
-                </TextField>
-            </Grid>
-            <Grid>
-            <Button
-                color="primary"
-                variant="contained"
-                onClick={() => 
-                setModalShow(true)}
-              >
-                DODAJ EGZAMIN
+                </Grid>
+                <br />
+                <Grid item sm={6} xs={12}>
+                    <Typography variant="h4" gutterBottom>
+                        Rekrutacja
+            </Typography>
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                    <TextField
+                        fullWidth
+                        margin="dense"
+                        name="space"
+                        onChange={handleChange}
+                        required
+                        select
+                        SelectProps={{ native: true }}
+                        value={values.space}
+                        variant="outlined"
+                    >
+                        {recruitmentSpaces.map(space => (
+                            <option key={space} value={space}>{space}</option>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid>
+                    <Typography variant="h4" gutterBottom>
+                        Cykl
+            </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        margin="dense"
+                        name="state"
+                        onChange={handleChange}
+                        required
+                        select
+                        SelectProps={{ native: true }}
+                        value={values.per}
+                        variant="outlined"
+                    >
+                        {recruitmentPeriods.map(period => (
+                            <option key={period} value={period}>{period}</option>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() =>
+                            setModalShow(true)}
+                    >
+                        DODAJ EGZAMIN
             </Button>
+                </Grid>
             </Grid>
-            </Grid>
-            <ExamFormDialog open={modalShow} handleClose={handleClose} space={values.space} period={values.period}/>
-           </React.Fragment>);
+            <ExamFormDialog open={modalShow} handleClose={handleClose} space={values.space} period={values.period} />
+        </React.Fragment>);
 };
 
 export default ExamsContent;
