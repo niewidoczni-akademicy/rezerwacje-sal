@@ -1,11 +1,10 @@
-package org.niewidoczniakademicy.rezerwacje.core;
+package org.niewidoczniakademicy.rezerwacje.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
-import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -19,9 +18,7 @@ import java.util.List;
 class CSVServiceTest {
 
     @Autowired
-    CSVService service;
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private CSVService service;
 
     @Test
     void parseRoomsFile() throws IOException, ParseException {
@@ -38,7 +35,7 @@ class CSVServiceTest {
                 "test_data/cos.csv",
                 this.getClass().getResourceAsStream("/" + "test_data/cos.csv"));
 
-        List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+        List<CsvCourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
         assert cosList.size() == 2;
     }
 
@@ -48,7 +45,7 @@ class CSVServiceTest {
                 "test_data/cos_crlf.csv",
                 this.getClass().getResourceAsStream("/" + "test_data/cos_crlf.csv"));
 
-        List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+        List<CsvCourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
         assert cosList.size() == 2;
     }
 
@@ -58,7 +55,7 @@ class CSVServiceTest {
                 "test_data/cos_cr.csv",
                 this.getClass().getResourceAsStream("/" + "test_data/cos_cr.csv"));
 
-        List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+        List<CsvCourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
         assert cosList.size() == 2;
     }
 
@@ -69,7 +66,7 @@ class CSVServiceTest {
                 this.getClass().getResourceAsStream("/" + "test_data/cos_bad.csv"));
 
         Assertions.assertThrows(ParseException.class, () -> {
-            List<CourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
+            List<CsvCourseOfStudy> cosList = service.parseCoursesOfStudy(mf);
         });
     }
 }

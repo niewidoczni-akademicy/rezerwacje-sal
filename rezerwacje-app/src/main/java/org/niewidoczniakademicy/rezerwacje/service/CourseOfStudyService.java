@@ -2,6 +2,9 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
+import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
@@ -23,6 +26,7 @@ public final class CourseOfStudyService {
 
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;
+    private final CourseOfStudyMapper courseOfStudyMapper;
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());
@@ -33,14 +37,20 @@ public final class CourseOfStudyService {
     }
 
     public GetCourseOfStudiesResponse uploadCourseOfStudiesResponse(MultipartFile file) {
+        // TODO: provide better error messages
         try {
-            List<CourseOfStudy> courseOfStudies = csvService.parseCoursesOfStudy(file);
-            courseOfStudies = courseOfStudyRepository.saveAll(courseOfStudies);
+            List<CsvCourseOfStudy> csvCourseOfStudies = csvService.parseCoursesOfStudy(file);
+            Set<CourseOfStudy> courseOfStudies = courseOfStudyMapper.convert(csvCourseOfStudies);
+            courseOfStudyRepository.saveAll(courseOfStudies);
+
             return GetCourseOfStudiesResponse.builder()
-                    .courseOfStudies(new HashSet<>(courseOfStudies))
+                    .courseOfStudies(courseOfStudies)
                     .build();
-        } catch (ParseException parseException) {
-            throw new InvalidInputException();
+        } catch (ParseException e) {
+            // TODO: extract more details from CSV parser
+            throw new InvalidInputException("Error occurred while parsing CSV file!");
+        } catch (DatabaseException e) {
+            throw new InvalidInputException(e.getMessage());
         }
     }
 }

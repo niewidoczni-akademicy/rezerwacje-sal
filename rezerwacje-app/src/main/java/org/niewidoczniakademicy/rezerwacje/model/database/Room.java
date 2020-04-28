@@ -1,7 +1,8 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.univocity.parsers.annotations.Parsed;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,24 +29,24 @@ import java.util.Set;
 @Setter
 @ToString
 @EqualsAndHashCode(exclude = {"examTerms"})
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Parsed
     @NonNull
     private String building;
 
-    @Parsed
     @NonNull
     private String name;
 
-    @Parsed
     @NonNull
     private Integer capacity;
 
+    @Builder.Default
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")

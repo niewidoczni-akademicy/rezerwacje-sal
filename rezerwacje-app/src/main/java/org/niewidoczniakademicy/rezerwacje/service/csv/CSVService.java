@@ -1,10 +1,9 @@
 package org.niewidoczniakademicy.rezerwacje.service.csv;
 
-import com.univocity.parsers.common.processor.BeanListProcessor;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
-import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
-import org.niewidoczniakademicy.rezerwacje.model.database.Room;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.model.csv.CsvRoom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,17 +30,10 @@ public final class CSVService {
             try (InputStream inputStream = file.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream)) {
 
-                BeanListProcessor<T> rowProcessor = new BeanListProcessor<T>(clazz);
-
-                CsvParserSettings parserSettings = new CsvParserSettings();
-                parserSettings.setLineSeparatorDetectionEnabled(true);
-                parserSettings.setProcessor(rowProcessor);
-                parserSettings.setHeaderExtractionEnabled(true);
-
-                CsvParser parser = new CsvParser(parserSettings);
-                parser.parse(reader);
-
-                return rowProcessor.getBeans();
+                    CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
+                            .withType(clazz)
+                            .build();
+                    return toBean.parse();
             }
         } catch (IOException | RuntimeException e) {
             logger.info("Error parsing CSV: " + e.getLocalizedMessage());
@@ -49,11 +41,11 @@ public final class CSVService {
         }
     }
 
-    public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
-        return parseFile(file, Room.class);
+    public List<CsvRoom> parseRoomsFile(MultipartFile file) throws ParseException {
+        return parseFile(file, CsvRoom.class);
     }
 
-    public List<CourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
-        return parseFile(file, CourseOfStudy.class);
+    public List<CsvCourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
+        return parseFile(file, CsvCourseOfStudy.class);
     }
 }

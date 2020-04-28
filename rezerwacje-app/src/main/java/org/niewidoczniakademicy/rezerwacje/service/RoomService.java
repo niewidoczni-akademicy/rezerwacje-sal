@@ -2,9 +2,11 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.niewidoczniakademicy.rezerwacje.model.csv.CsvRoom;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
+import org.niewidoczniakademicy.rezerwacje.service.csv.RoomMapper;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.util.Set;
 public final class RoomService {
     private final CSVService csvService;
     private final RoomRepository roomRepository;
+    private final RoomMapper roomMapper;
 
     public GetRoomsResponse getAllResponse() {
         Set<Room> rooms = new HashSet<>(this.roomRepository.findAll());
@@ -33,14 +36,16 @@ public final class RoomService {
 
     public GetRoomsResponse uploadRoomsResponse(MultipartFile file) {
         try {
-            List<Room> rooms = csvService.parseRoomsFile(file);
-            rooms = roomRepository.saveAll(rooms);
-            return GetRoomsResponse.builder()
-                    .rooms(new HashSet<>(rooms))
-                    .build();
-        } catch (ParseException parseException) {
-            throw new InvalidInputException();
-        }
+            List<CsvRoom> csvRooms = csvService.parseRoomsFile(file);
+            Set<Room> rooms = roomMapper.convert(csvRooms);
+            roomRepository.saveAll(rooms);
 
+            return GetRoomsResponse.builder()
+                    .rooms(rooms)
+                    .build();
+        } catch (ParseException e) {                // TODO: handle database errors
+            // TODO: extract more details from CSV parser
+            throw new InvalidInputException("Error occurred while parsing CSV file!");
+        }
     }
 }

@@ -34,7 +34,8 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// CSV parsing
-	implementation 'com.univocity:univocity-parsers:2.8.4'
+	// implementation 'com.univocity:univocity-parsers:2.8.4'
+	implementation 'com.opencsv:opencsv:4.0'
 
 	testCompile 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
