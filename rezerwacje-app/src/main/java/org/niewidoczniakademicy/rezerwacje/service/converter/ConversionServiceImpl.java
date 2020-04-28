@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ConversionServiceImpl implements ConversionService {
+public final class ConversionServiceImpl implements ConversionService {
 
     private final SystemUserConverter systemUserConverter;
     private final RecruitmentPeriodConverter recruitmentPeriodConverter;

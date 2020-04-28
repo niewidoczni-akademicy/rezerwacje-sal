@@ -4,7 +4,7 @@ import com.univocity.parsers.annotations.HeaderTransformer;
 
 import java.lang.reflect.Field;
 
-public class ContactPersonHeaderTransformer extends HeaderTransformer {
+public final class ContactPersonHeaderTransformer extends HeaderTransformer {
 
     private String prefix;
 

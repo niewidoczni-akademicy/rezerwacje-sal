@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 @Slf4j
 @ControllerAdvice
-public class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
+public final class RestControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class})
     @ResponseBody

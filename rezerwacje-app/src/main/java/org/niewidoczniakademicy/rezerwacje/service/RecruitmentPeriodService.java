@@ -21,7 +21,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentPeriodService {
+public final class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
     private final ConversionService conversionService;
@@ -48,8 +48,9 @@ public class RecruitmentPeriodService {
 
     public GetRecruitmentPeriodResponse getRecruitmentPeriod(String id) {
         Optional<RecruitmentPeriod> result = recruitmentPeriodRepository.findById(Long.parseLong(id));
-        if (result.isEmpty())
+        if (result.isEmpty()) {
             return null;
+        }
 
         return GetRecruitmentPeriodResponse.builder()
                 .recruitmentPeriod(result.get())
@@ -64,14 +65,17 @@ public class RecruitmentPeriodService {
     private void validateEndDateNotBeforeStartDate(AddRecruitmentPeriodRequest request) {
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
-        if (endDate.isBefore(startDate))
+        if (endDate.isBefore(startDate)) {
             throw new RecruitmentPeriodEndDateBeforeStartDateException();
+        }
+
     }
 
     private void validateStartDateNotBeforeCurrentDate(AddRecruitmentPeriodRequest request) {
         LocalDate startDate = request.getStartDate();
         LocalDate currentDate = LocalDate.now();
-        if (startDate.isBefore(currentDate))
+        if (startDate.isBefore(currentDate)) {
             throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
+        }
     }
 }

@@ -7,5 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RecruitmentPeriodRepository extends JpaRepository<RecruitmentPeriod, Long> {
-    List<RecruitmentPeriod> findByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate, LocalDate endDate);
+    List<RecruitmentPeriod> findByStartDateGreaterThanEqualAndEndDateLessThanEqual(LocalDate startDate,
+                                                                                   LocalDate endDate);
 }

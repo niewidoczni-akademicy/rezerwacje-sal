@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ReservationsApplication {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(ReservationsApplication.class, args);
     }
 
     @GetMapping
-    public String hello() {
+    public final String hello() {
         return "Backend";
     }
 }

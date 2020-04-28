@@ -5,7 +5,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecru
 import org.springframework.stereotype.Component;
 
 @Component
-public class RecruitmentPeriodConverter
+public final class RecruitmentPeriodConverter
         implements GenericConverter<AddRecruitmentPeriodRequest, RecruitmentPeriod> {
 
     @Override
