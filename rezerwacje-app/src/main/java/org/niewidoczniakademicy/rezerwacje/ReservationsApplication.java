@@ -3,19 +3,18 @@ package org.niewidoczniakademicy.rezerwacje;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
 public class ReservationsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ReservationsApplication.class, args);
-	}
+    public static void main(final String[] args) {
+        SpringApplication.run(ReservationsApplication.class, args);
+    }
 
-	@GetMapping
-	public String hello() {
-		return String.format("Backend"); // TODO return existing endpoints
-	}
+    @GetMapping
+    public final String hello() {
+        return "Backend";
+    }
 }
