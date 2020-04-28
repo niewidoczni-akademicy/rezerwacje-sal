@@ -1,13 +1,13 @@
 package org.niewidoczniakademicy.rezerwacje.service.converter;
 
-import org.niewidoczniakademicy.rezerwacje.core.model.database.SystemUser;
-import org.niewidoczniakademicy.rezerwacje.core.model.rest.user.AddSystemUserRequest;
+import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
-public class SystemUserConverter
+public final class SystemUserConverter
         implements GenericConverter<AddSystemUserRequest, SystemUser> {
 
     @Override
