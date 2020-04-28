@@ -6,7 +6,7 @@ import lombok.*;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-public class Room {
+public class CsvRoom {
     @CsvBindByName(column = "building", required = true)
     private String building;
 

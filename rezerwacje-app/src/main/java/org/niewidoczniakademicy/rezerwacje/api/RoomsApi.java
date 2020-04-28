@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.api.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.core.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.core.csv.RoomMapper;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.CsvRoom;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.dao.RoomDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,13 @@ public final class RoomsApi {
     @ResponseStatus(value = HttpStatus.OK)
     public List<Room> addRoom(@RequestParam MultipartFile file) {
         try {
-            List<org.niewidoczniakademicy.rezerwacje.core.model.csv.Room> csvRooms =
+            List<CsvRoom> csvRooms =
                     csvService.parseRoomsFile(file);
             List<Room> rooms = roomMapper.convert(csvRooms);
             return roomDAO.save(rooms);
         } catch (ParseException e) {                // TODO: handle database errors
-            throw new InvalidInputException("");
+            // TODO: extract more details from CSV parser
+            throw new InvalidInputException("Error occurred while parsing CSV file!");
         }
     }
 }

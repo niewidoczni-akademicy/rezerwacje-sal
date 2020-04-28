@@ -11,8 +11,8 @@ import java.util.Map;
 public class CourseTypeConverter extends AbstractBeanField<CourseType> {
 
     private Map<String, CourseType> conversion = new HashMap<>() {{
-        put(CourseType.FULL_TIME.typeCode, CourseType.FULL_TIME);
-        put(CourseType.EXTERNAL.typeCode, CourseType.EXTERNAL);
+        put(CourseType.FULL_TIME.getTypeCode(), CourseType.FULL_TIME);
+        put(CourseType.EXTERNAL.getTypeCode(), CourseType.EXTERNAL);
     }};
 
     @Override

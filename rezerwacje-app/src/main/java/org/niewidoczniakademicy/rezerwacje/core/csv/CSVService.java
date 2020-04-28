@@ -2,8 +2,8 @@ package org.niewidoczniakademicy.rezerwacje.core.csv;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy;
-import org.niewidoczniakademicy.rezerwacje.core.model.csv.Room;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.CsvCourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.CsvRoom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -41,11 +41,11 @@ public final class CSVService {
         }
     }
 
-    public List<Room> parseRoomsFile(MultipartFile file) throws ParseException {
-        return parseFile(file, Room.class);
+    public List<CsvRoom> parseRoomsFile(MultipartFile file) throws ParseException {
+        return parseFile(file, CsvRoom.class);
     }
 
-    public List<CourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
-        return parseFile(file, CourseOfStudy.class);
+    public List<CsvCourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
+        return parseFile(file, CsvCourseOfStudy.class);
     }
 }

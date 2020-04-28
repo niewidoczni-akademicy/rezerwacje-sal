@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.core.csv;
 
 import lombok.AllArgsConstructor;
+import org.niewidoczniakademicy.rezerwacje.core.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.core.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.core.model.database.Faculty;
@@ -20,19 +21,15 @@ public class CourseOfStudyMapper {
     private final UserRepository userRepository;
     private final FacultyRepository facultyRepository;
 
-    public CourseOfStudy convert(org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy cos) {
-        return CourseOfStudy.builder().build();
-    }
-
-    public List<CourseOfStudy> convert(List<org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy> cos)
+    public List<CourseOfStudy> convert(List<CsvCourseOfStudy> courseOfStudies)
             throws DatabaseException {
-        Set<String> logins = collectLogins(cos);
-        Set<String> faculties = collectFaculties(cos);
+        Set<String> logins = collectLogins(courseOfStudies);
+        Set<String> faculties = collectFaculties(courseOfStudies);
 
         Map<String, SystemUser> login2user = collectUsers(logins);
         Map<String, Faculty> name2faculty = collectFaculties(faculties);
 
-        return cos.stream().map(course ->
+        return courseOfStudies.stream().map(course ->
             CourseOfStudy.builder()
                     .name(course.getName())
                     .faculty(name2faculty.get(course.getFaculty()))
@@ -45,9 +42,9 @@ public class CourseOfStudyMapper {
         ).collect(Collectors.toList());
     }
 
-    private Set<String> collectLogins(List<org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy> cos) {
+    private Set<String> collectLogins(List<CsvCourseOfStudy> courseOfStudies) {
         Set<String> logins = new HashSet<>();
-        cos.forEach(c ->  {
+        courseOfStudies.forEach(c ->  {
             logins.add(c.getContactPerson1Login());
             if (c.getContactPerson2Login() != null) {
                 logins.add(c.getContactPerson2Login());
@@ -56,9 +53,9 @@ public class CourseOfStudyMapper {
         return logins;
     }
 
-    private Set<String> collectFaculties(List<org.niewidoczniakademicy.rezerwacje.core.model.csv.CourseOfStudy> cos) {
+    private Set<String> collectFaculties(List<CsvCourseOfStudy> courseOfStudies) {
         Set<String> faculties = new HashSet<>();
-        cos.forEach(c -> faculties.add(c.getFaculty()));
+        courseOfStudies.forEach(c -> faculties.add(c.getFaculty()));
         return faculties;
     }
 

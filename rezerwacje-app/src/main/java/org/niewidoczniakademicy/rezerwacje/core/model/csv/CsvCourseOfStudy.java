@@ -10,7 +10,7 @@ import org.niewidoczniakademicy.rezerwacje.core.model.enums.CourseType;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseOfStudy {
+public class CsvCourseOfStudy {
     @CsvBindByName(column = "course name", required = true)
     private String name;
 
