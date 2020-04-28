@@ -14,5 +14,5 @@ import javax.validation.constraints.NotNull;
 public class AddExamTermResponse {
 
     @NotNull
-    Long examTermId;
+    private Long examTermId;
 }

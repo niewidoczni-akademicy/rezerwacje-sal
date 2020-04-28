@@ -15,17 +15,17 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class AddExamTermRequest {
     @NotNull
-    LocalDate day;
+    private LocalDate day;
 
     @NotNull
-    LocalTime timeStart;
+    private LocalTime timeStart;
 
     @NotNull
-    LocalTime timeEnd;
+    private LocalTime timeEnd;
 
     @NotNull
-    Long cosId;
+    private Long cosId;
 
     @NotNull
-    Long roomId;
+    private Long roomId;
 }

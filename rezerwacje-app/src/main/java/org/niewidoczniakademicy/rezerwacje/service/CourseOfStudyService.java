@@ -19,7 +19,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CourseOfStudyService {
+public final class CourseOfStudyService {
 
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;

@@ -19,7 +19,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RoomService {
+public final class RoomService {
     private final CSVService csvService;
     private final RoomRepository roomRepository;
 

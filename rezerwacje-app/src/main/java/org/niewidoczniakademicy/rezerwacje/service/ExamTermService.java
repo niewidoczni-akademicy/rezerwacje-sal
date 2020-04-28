@@ -14,7 +14,6 @@ import org.niewidoczniakademicy.rezerwacje.service.repository.ExamTermRepository
 import org.niewidoczniakademicy.rezerwacje.service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,7 @@ import java.util.Set;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ExamTermService { // Validations will be fixed in [NIAK -25]
+public final class ExamTermService { // Validations will be fixed in [NIAK -25]
 
     private final ExamTermRepository examTermRepository;
     private final CourseOfStudyRepository courseOfStudyRepository;
