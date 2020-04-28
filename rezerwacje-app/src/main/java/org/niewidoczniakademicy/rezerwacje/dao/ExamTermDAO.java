@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ExamTermDAO implements GenericDAO<ExamTerm> {
+public final class ExamTermDAO implements GenericDAO<ExamTerm> {
     private final ExamTermRepository examTermRepository;
 
     @Override

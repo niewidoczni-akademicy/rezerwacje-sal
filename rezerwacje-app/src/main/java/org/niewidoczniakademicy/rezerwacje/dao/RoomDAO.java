@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RoomDAO implements GenericDAO<Room> {
+public final class RoomDAO implements GenericDAO<Room> {
     private final RoomRepository roomRepository;
 
     @Override

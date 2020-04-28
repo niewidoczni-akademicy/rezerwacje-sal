@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'checkstyle'
 }
 
 group = 'org.niewidoczni-akademicy'
@@ -44,4 +45,16 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+checkstyle {
+	toolVersion '8.31'
+}
+
+tasks.withType(Checkstyle) {
+	reports {
+		xml.enabled true
+		html.enabled true
+		html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-severity-sorted.xsl')
+	}
 }

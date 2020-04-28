@@ -8,7 +8,12 @@ import org.niewidoczniakademicy.rezerwacje.core.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.dao.RoomDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
@@ -17,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "rooms")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RoomsApi {
+public final class RoomsApi {
 
     private final RoomDAO roomDAO;
     private final CSVService csvService;

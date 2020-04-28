@@ -10,7 +10,13 @@ import org.niewidoczniakademicy.rezerwacje.dao.RoomDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -23,7 +29,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestController
 @RequestMapping(path = "exam-terms")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ExamTermApi {
+public final class ExamTermApi {
 
     private final ExamTermDAO examTermDAO;
     private final CourseOfStudyDAO courseOfStudyDAO;
@@ -69,8 +75,10 @@ public class ExamTermApi {
                             @RequestParam Long roomId
     ) {
         // TODO date/time validations
-        CourseOfStudy cos = courseOfStudyDAO.find(cosId).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unable to find Course Of Study with id " + cosId));
-        Room room = roomDAO.find(roomId).orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Unable to find Room with id " + roomId));
+        CourseOfStudy cos = courseOfStudyDAO.find(cosId).orElseThrow(() ->
+                new ResponseStatusException(NOT_FOUND, "Unable to find Course Of Study with id " + cosId));
+        Room room = roomDAO.find(roomId).orElseThrow(() ->
+                new ResponseStatusException(NOT_FOUND, "Unable to find Room with id " + roomId));
 
         ExamTerm examTerm = new ExamTerm(day, timeStart, timeEnd, cos, room);
         examTermDAO.save(examTerm);

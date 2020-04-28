@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CSVService {
+public final class CSVService {
 
     private Logger logger = LoggerFactory.getLogger(CSVService.class);
 

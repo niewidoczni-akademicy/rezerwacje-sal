@@ -11,19 +11,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
 @RestController
 @RequestMapping("recruitment-period")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentPeriodApi {
+public final class RecruitmentPeriodApi {
 
     private final RecruitmentPeriodService recruitmentPeriodService;
 
     @PostMapping
-    public ResponseEntity<AddRecruitmentPeriodResponse> addRecruitmentPeriod(@RequestBody AddRecruitmentPeriodRequest request) {
+    public ResponseEntity<AddRecruitmentPeriodResponse> addRecruitmentPeriod(
+            @RequestBody AddRecruitmentPeriodRequest request) {
         AddRecruitmentPeriodResponse response = recruitmentPeriodService.saveRecruitmentPeriod(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
