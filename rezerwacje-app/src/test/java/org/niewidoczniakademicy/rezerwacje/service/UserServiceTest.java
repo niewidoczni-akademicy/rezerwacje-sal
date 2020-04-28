@@ -2,8 +2,9 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import org.junit.jupiter.api.Test;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
-import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
 import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
+import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +29,7 @@ public class UserServiceTest {
     public void shouldReturnExactlyTwoUsers_whenThereAreExactlyTwoUsersInTheDatabase() {
         List<SystemUser> users = userService.getAllSystemUsers().getSystemUsers();
 
-        assertEquals("Testing whether the user service " +
+        assertEquals("Verifying whether the user service " +
                         "returns exactly 2 users if there are only 2 in the database",
                 2, users.size());
     }
@@ -38,9 +39,9 @@ public class UserServiceTest {
         final String login = "ojtaktakbyczq";
         final SystemUser systemUser = userService.getSystemUserByLogin(login).getSystemUser();
 
-        assertNotNull("Testing whether returned user is exists", systemUser);
-        assertEquals("Testing user data", UserType.STANDARD, systemUser.getUserType());
-        assertEquals("Testing user data", "Siema", systemUser.getFirstName());
+        assertNotNull("Verifying whether returned user is exists", systemUser);
+        assertEquals("Verifying user data", UserType.STANDARD, systemUser.getUserType());
+        assertEquals("Verifying user data", "Siema", systemUser.getFirstName());
     }
 
     @Test
@@ -53,5 +54,74 @@ public class UserServiceTest {
         );
     }
 
+    @Test
+    public void shouldSaveSystemUser_andReturnHimAfterAdditionCorrectly() {
+        final String uniqueLogin = "UNIQUE_LOGIN_FOR_TESTING";
+        final String emailAddressToVerify = "email_address_to_verify@gmail.com";
+
+        final AddSystemUserRequest request = AddSystemUserRequest.builder()
+                .emailAddress(emailAddressToVerify)
+                .firstName("Essa")
+                .lastName("Kozak")
+                .login(uniqueLogin)
+                .password("xdxdxdxdxd")
+                .phoneNumber("123456789")
+                .userType(UserType.ADMINISTRATOR)
+                .build();
+
+        userService.saveSystemUser(request);
+
+        final SystemUser user = userService.getSystemUserByLogin(uniqueLogin).getSystemUser();
+
+        assertNotNull("Testing getting recently added user from the database", user);
+        assertEquals("Verifying the user", emailAddressToVerify, user.getEmailAddress());
+    }
+
+    @Test
+    public void shouldFindUserByHisFirstAndLastName_whenHeExistsInTheDatabase() {
+        final String firstName = "Essasito";
+        final String lastName = "Wariacie";
+
+        final List<SystemUser> users = userService
+                .getSystemUsersByFirstNameAndLastName(firstName, lastName)
+                .getSystemUsers();
+
+        assertEquals("Verifying whether there is only one user with such first and last name",
+                1, users.size());
+
+        final SystemUser user = users.get(0);
+        assertEquals("Verifying user data", "nielegalne", user.getLogin());
+    }
+
+    @Test
+    public void shouldThrowUserNotFoundException_whenThereIsNoUserWithSuchFirstAndLastNameInTheDatabase() {
+        final String firstName = "I DO NOT";
+        final String lastName = "EXIST";
+
+        assertThrows(
+                UserNotFoundException.class,
+                () -> userService.getSystemUsersByFirstNameAndLastName(firstName, lastName)
+        );
+    }
+
+    @Test
+    public void shouldThrowInvalidEmailAddressException_whenTryingToSaveUserWithIncorrectAddress() {
+        final String invalidEmailAddress = "invalid_email_address@gmail.";
+
+        final AddSystemUserRequest request = AddSystemUserRequest.builder()
+                .emailAddress(invalidEmailAddress)
+                .firstName("Essa")
+                .lastName("Kozak")
+                .login("qwertyuiop")
+                .password("xdxdxdxdxd")
+                .phoneNumber("123456789")
+                .userType(UserType.ADMINISTRATOR)
+                .build();
+
+        assertThrows(
+                InvalidEmailAddressException.class,
+                () -> userService.saveSystemUser(request)
+        );
+    }
 
 }
