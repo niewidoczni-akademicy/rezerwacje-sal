@@ -15,6 +15,6 @@ public class ReservationsApplication {
 
     @GetMapping
     public final String hello() {
-        return String.format("Backend"); // TODO return existing endpoints
+        return "Backend";
     }
 }
