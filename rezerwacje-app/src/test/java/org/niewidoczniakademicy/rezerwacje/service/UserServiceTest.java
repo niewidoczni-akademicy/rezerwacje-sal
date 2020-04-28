@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
@@ -124,4 +125,21 @@ public class UserServiceTest {
         );
     }
 
+
+    @Test
+    public void shouldNotThrowInvalidEmailAddressException_whenTryingToSaveUserWithCorrectAddress() {
+        final String validEmailAddress = "valid_email_address@gmail.com";
+
+        final AddSystemUserRequest request = AddSystemUserRequest.builder()
+                .emailAddress(validEmailAddress)
+                .firstName("Essa")
+                .lastName("Kozak")
+                .login("qwertyuiop")
+                .password("xdxdxdxdxd")
+                .phoneNumber("123456789")
+                .userType(UserType.ADMINISTRATOR)
+                .build();
+
+        assertDoesNotThrow(() -> userService.saveSystemUser(request));
+    }
 }
