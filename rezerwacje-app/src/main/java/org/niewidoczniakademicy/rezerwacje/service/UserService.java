@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserService {
+public final class UserService {
 
     private final ConversionService conversionService;
     private final UserRepository userRepository;
@@ -49,7 +49,9 @@ public class UserService {
     public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(String firstName, String lastName) {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName)
-                .orElseThrow(() -> new UserNotFoundException("No user with first name: " + firstName + " and last name : " + lastName + " found"));
+                .orElseThrow(() -> new UserNotFoundException("No user with first name: "
+                                                            + firstName + " and last name : "
+                                                            + lastName + " found"));
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -59,8 +61,9 @@ public class UserService {
     public GetSystemUsersResponse getAllSystemUsers() {
         final List<SystemUser> systemUsers = userRepository.findAll();
 
-        if (systemUsers == null)
+        if (systemUsers == null) {
             throw new UserNotFoundException("No users in the system found");
+        }
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -70,8 +73,9 @@ public class UserService {
     public void validateAddSystemUserRequest(AddSystemUserRequest request) {
         boolean isEmailValid = EmailValidator.getInstance().isValid(request.getEmailAddress());
 
-        if (!isEmailValid)
+        if (!isEmailValid) {
             throw new InvalidEmailAddressException();
+        }
     }
 
 }

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Slf4j
-public class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
+public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
 
     private static final List<MediaType> VISIBLE_TYPES = Arrays.asList(
             MediaType.valueOf("text/*"),
@@ -97,7 +97,9 @@ public class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         if (isAsyncDispatch(request)) {
             filterChain.doFilter(request, response);
         } else {
@@ -105,7 +107,9 @@ public class RequestAndResponseLoggingFilter extends OncePerRequestFilter {
         }
     }
 
-    protected void doFilterWrapped(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterWrapped(ContentCachingRequestWrapper request,
+                                   ContentCachingResponseWrapper response,
+                                   FilterChain filterChain) throws ServletException, IOException {
         try {
             beforeRequest(request, response);
             filterChain.doFilter(request, response);

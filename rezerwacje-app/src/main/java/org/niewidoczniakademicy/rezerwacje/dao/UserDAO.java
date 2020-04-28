@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserDAO implements GenericDAO<SystemUser> {
+public final class UserDAO implements GenericDAO<SystemUser> {
     private final UserRepository userRepository;
 
     @Override
