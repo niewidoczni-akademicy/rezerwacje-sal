@@ -37,7 +37,7 @@ public class RecruitmentPeriodServiceTest {
                 .build();
 
         AddRecruitmentPeriodResponse addingResponse = recruitmentPeriodService.saveRecruitmentPeriod(request);
-        String recruitmentPeriodId = addingResponse.getRecruitmentPeriodId().toString();
+        Long recruitmentPeriodId = addingResponse.getRecruitmentPeriodId();
         GetRecruitmentPeriodResponse gettingResponse = recruitmentPeriodService
                 .getRecruitmentPeriod(recruitmentPeriodId);
         RecruitmentPeriod result = gettingResponse.getRecruitmentPeriod();
