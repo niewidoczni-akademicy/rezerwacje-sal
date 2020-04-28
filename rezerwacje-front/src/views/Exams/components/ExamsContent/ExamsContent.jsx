@@ -4,17 +4,21 @@ import { useState } from "react"
 import {
     TextField,
     Grid,
-    Typography
+    Typography,
+    Button
 }
-    from "@material-ui/core"
+from "@material-ui/core"
+import ExamFormDialog from "./ExamFormDialog";
 
 
 const ExamsContent = () => {
 
     const [values, setValues] = useState({
-        space: "",
-        period: ""
+        space: '',
+        period: 0
     });
+
+    const [modalShow, setModalShow] = useState(false);
 
     const handleChange = event => {
         const { name, value } = event.target;
@@ -28,7 +32,10 @@ const ExamsContent = () => {
 
     const recruitmentPeriods = [1, 2];
 
+    const handleClose = () => setModalShow(false)
+
     return (
+        <React.Fragment>
         <Grid>
             <Grid item>
                 <Typography variant="h2" gutterBottom>
@@ -45,7 +52,7 @@ const ExamsContent = () => {
                 <TextField
                     fullWidth
                     margin="dense"
-                    name="state"
+                    name="space"
                     onChange={handleChange}
                     required
                     select
@@ -81,10 +88,18 @@ const ExamsContent = () => {
                 </TextField>
             </Grid>
             <Grid>
-                <Button></Button>
+            <Button
+                color="primary"
+                variant="contained"
+                onClick={() => 
+                setModalShow(true)}
+              >
+                DODAJ EGZAMIN
+            </Button>
             </Grid>
-        </Grid>
-    );
+            </Grid>
+            <ExamFormDialog open={modalShow} handleClose={handleClose} space={values.space} period={values.period}/>
+           </React.Fragment>);
 };
 
 export default ExamsContent;
