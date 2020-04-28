@@ -47,7 +47,7 @@ public final class RecruitmentPeriodController {
     @GetMapping(params = {"id"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetRecruitmentPeriodResponse getRecruitmentPeriod(@RequestParam String id) {
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(@RequestParam Long id) {
         return recruitmentPeriodService.getRecruitmentPeriod(id);
     }
 }

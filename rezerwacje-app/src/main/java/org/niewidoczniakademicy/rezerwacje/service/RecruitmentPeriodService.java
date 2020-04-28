@@ -9,6 +9,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecru
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentPeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,14 +46,13 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
-    public GetRecruitmentPeriodResponse getRecruitmentPeriod(String id) {
-        Optional<RecruitmentPeriod> result = recruitmentPeriodRepository.findById(Long.parseLong(id));
-        if (result.isEmpty()) {
-            return null;
-        }
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(Long id) {
+        RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
+                .findById(id)
+                .orElseThrow(() -> new RecruitmentPeriodNotFoundException("No recruitment period with id " + id));
 
         return GetRecruitmentPeriodResponse.builder()
-                .recruitmentPeriod(result.get())
+                .recruitmentPeriod(recruitmentPeriod)
                 .build();
     }
 
