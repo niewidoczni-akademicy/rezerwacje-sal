@@ -24,7 +24,6 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     public ErrorResponse handleUserNotFoundException(UserNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
-                .status(HttpStatus.NOT_FOUND)
                 .build();
 
         log.warn(e.getMessage());
@@ -39,7 +38,6 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     public ErrorResponse handleInvalidEmailAddressException(InvalidEmailAddressException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
-                .status(HttpStatus.BAD_REQUEST)
                 .build();
 
         log.warn(e.getMessage());
@@ -55,7 +53,6 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     public ErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMostSpecificCause().getMessage())
-                .status(HttpStatus.BAD_REQUEST)
                 .build();
 
         log.warn(e.getMessage());

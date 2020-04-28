@@ -8,7 +8,6 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersR
 import org.niewidoczniakademicy.rezerwacje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +27,8 @@ public final class SystemUserController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<AddSystemUserResponse> addSystemUser(@RequestBody AddSystemUserRequest request) {
-        AddSystemUserResponse response = userService.saveSystemUser(request);
-        return ResponseEntity.ok().body(response);
+    public AddSystemUserResponse addSystemUser(@RequestBody AddSystemUserRequest request) {
+        return userService.saveSystemUser(request);
     }
 
     @GetMapping(params = {"login"})
