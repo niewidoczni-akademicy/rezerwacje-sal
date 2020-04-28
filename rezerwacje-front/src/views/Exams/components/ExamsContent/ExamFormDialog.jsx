@@ -48,7 +48,7 @@ export default function ExamFormDialog(props) {
             Cykl: {props.period}
           </Typography>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent dividers>
           <form
             autoComplete="off"
             noValidate
@@ -59,7 +59,6 @@ export default function ExamFormDialog(props) {
             >
               <Grid
                 item
-                md={6}
                 xs={12}
               >
                 <TextField
@@ -78,7 +77,6 @@ export default function ExamFormDialog(props) {
               </Grid>
               <Grid
                 item
-                md={6}
                 xs={12}
               >
                 <TextField

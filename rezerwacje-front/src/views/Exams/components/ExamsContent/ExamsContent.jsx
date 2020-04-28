@@ -5,7 +5,12 @@ import {
     TextField,
     Grid,
     Typography,
-    Button
+    Button,
+    Card,
+    CardContent,
+    CardActions,
+    CardHeader,
+    Divider
 }
     from "@material-ui/core"
 import ExamFormDialog from "./ExamFormDialog";
@@ -36,58 +41,59 @@ const ExamsContent = () => {
 
     return (
         <React.Fragment>
-            <Grid>
-                <Grid item>
-                    <Typography variant="h2" gutterBottom>
-                        Egzaminy
+            <Card>
+                <CardHeader title="Egzaminy" />
+                <Divider />
+                <CardContent>
+                    <Grid>
+                        <Grid item sm={6} xs={12}>
+                            <Typography variant="h4" gutterBottom>
+                                Rekrutacja
             </Typography>
-                </Grid>
-                <br />
-                <Grid item sm={6} xs={12}>
-                    <Typography variant="h4" gutterBottom>
-                        Rekrutacja
+                        </Grid>
+                        <Grid item sm={6} xs={12}>
+                            <TextField
+                                fullWidth
+                                margin="dense"
+                                name="space"
+                                onChange={handleChange}
+                                required
+                                select
+                                SelectProps={{ native: true }}
+                                value={values.space}
+                                variant="outlined"
+                            >
+                                {recruitmentSpaces.map(space => (
+                                    <option key={space} value={space}>{space}</option>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid>
+                            <Typography variant="h4" gutterBottom>
+                                Cykl
             </Typography>
-                </Grid>
-                <Grid item sm={6} xs={12}>
-                    <TextField
-                        fullWidth
-                        margin="dense"
-                        name="space"
-                        onChange={handleChange}
-                        required
-                        select
-                        SelectProps={{ native: true }}
-                        value={values.space}
-                        variant="outlined"
-                    >
-                        {recruitmentSpaces.map(space => (
-                            <option key={space} value={space}>{space}</option>
-                        ))}
-                    </TextField>
-                </Grid>
-                <Grid>
-                    <Typography variant="h4" gutterBottom>
-                        Cykl
-            </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        margin="dense"
-                        name="state"
-                        onChange={handleChange}
-                        required
-                        select
-                        SelectProps={{ native: true }}
-                        value={values.per}
-                        variant="outlined"
-                    >
-                        {recruitmentPeriods.map(period => (
-                            <option key={period} value={period}>{period}</option>
-                        ))}
-                    </TextField>
-                </Grid>
-                <Grid>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                margin="dense"
+                                name="state"
+                                onChange={handleChange}
+                                required
+                                select
+                                SelectProps={{ native: true }}
+                                value={values.per}
+                                variant="outlined"
+                            >
+                                {recruitmentPeriods.map(period => (
+                                    <option key={period} value={period}>{period}</option>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+                <Divider />
+                <CardActions>
                     <Button
                         color="primary"
                         variant="contained"
@@ -96,8 +102,8 @@ const ExamsContent = () => {
                     >
                         DODAJ EGZAMIN
             </Button>
-                </Grid>
-            </Grid>
+                </CardActions>
+            </Card>
             <ExamFormDialog open={modalShow} handleClose={handleClose} space={values.space} period={values.period} />
         </React.Fragment>);
 };
