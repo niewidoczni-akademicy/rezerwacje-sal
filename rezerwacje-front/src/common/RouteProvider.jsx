@@ -2,6 +2,7 @@ import React from 'react';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
+import TodayIcon from '@material-ui/icons/Today';
 import {
   Home as HomeView,
   Rooms as RoomsView,

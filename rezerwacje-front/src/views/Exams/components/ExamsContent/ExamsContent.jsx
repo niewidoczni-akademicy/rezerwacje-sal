@@ -35,7 +35,7 @@ const ExamsContent = () => {
 
     const recruitmentSpaces = ["lato 2020", "zima 2021"];
 
-    const recruitmentPeriods = [1, 2];
+    const recruitmentPeriods = ['1', '2'];
 
     const handleClose = () => setModalShow(false)
 
@@ -77,12 +77,12 @@ const ExamsContent = () => {
                             <TextField
                                 fullWidth
                                 margin="dense"
-                                name="state"
+                                name="period"
                                 onChange={handleChange}
                                 required
                                 select
                                 SelectProps={{ native: true }}
-                                value={values.per}
+                                value={values.period}
                                 variant="outlined"
                             >
                                 {recruitmentPeriods.map(period => (
