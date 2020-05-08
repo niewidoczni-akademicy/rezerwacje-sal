@@ -2,28 +2,10 @@ package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.niewidoczniakademicy.rezerwacje.model.shared.CourseType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,6 +58,18 @@ public class CourseOfStudy {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
     private Set<ExamTerm> examTerms = new HashSet<>();
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "CourseOfStudy_SystemUser",
+            joinColumns = {@JoinColumn(name = "course_of_study_id")},
+            inverseJoinColumns = {@JoinColumn(name = "system_user_id")}
+    )
+    private Set<SystemUser> systemUsers = new HashSet<>();
+
+    private void addSystemUser(SystemUser systemUser) {
+        systemUsers.add(systemUser);
+    }
+
     private void addFacultyTerm(Faculty faculty) {
         faculty.getCourseOfStudies().add(this);
         this.faculty = faculty;
@@ -85,4 +79,5 @@ public class CourseOfStudy {
         examTerm.setCourseOfStudy(this);
         this.examTerms.add(examTerm);
     }
+
 }
