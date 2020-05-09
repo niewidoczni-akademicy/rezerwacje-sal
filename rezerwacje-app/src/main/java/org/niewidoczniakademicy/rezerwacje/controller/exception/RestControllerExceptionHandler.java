@@ -2,7 +2,16 @@ package org.niewidoczniakademicy.rezerwacje.controller.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.error.ErrorResponse;
-import org.niewidoczniakademicy.rezerwacje.service.exception.*;
+import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RoomNotFoundException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

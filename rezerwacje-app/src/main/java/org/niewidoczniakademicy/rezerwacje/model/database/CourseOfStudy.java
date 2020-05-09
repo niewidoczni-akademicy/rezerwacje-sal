@@ -2,10 +2,30 @@ package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import org.niewidoczniakademicy.rezerwacje.model.shared.CourseType;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,7 +84,7 @@ public class CourseOfStudy {
             joinColumns = {@JoinColumn(name = "course_of_study_id")},
             inverseJoinColumns = {@JoinColumn(name = "system_user_id")}
     )
-    private Set<SystemUser> systemUsers = new HashSet<>();
+    private final Set<SystemUser> systemUsers = new HashSet<>();
 
     public final void addSystemUser(final SystemUser systemUser) {
         systemUsers.add(systemUser);

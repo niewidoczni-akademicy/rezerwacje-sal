@@ -11,7 +11,11 @@ import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +36,13 @@ public class CourseOfStudyMapper {
         return courseOfStudies.stream().map(course ->
                 CourseOfStudy.builder()
                         .name(course.getName())
-                    .faculty(name2faculty.get(course.getFaculty()))
-                    .courseType(course.getCourseType())
-                    .contactPerson1(login2user.get(course.getContactPerson1Login()))
-                    .contactPerson2(login2user.getOrDefault(course.getContactPerson1Login(), null))
-                    .isJoined(course.getIsJoined())
-                    .remarks(course.getRemarks())
-                    .build()
+                        .faculty(name2faculty.get(course.getFaculty()))
+                        .courseType(course.getCourseType())
+                        .contactPerson1(login2user.get(course.getContactPerson1Login()))
+                        .contactPerson2(login2user.getOrDefault(course.getContactPerson1Login(), null))
+                        .isJoined(course.getIsJoined())
+                        .remarks(course.getRemarks())
+                        .build()
         ).collect(Collectors.toSet());
     }
 
