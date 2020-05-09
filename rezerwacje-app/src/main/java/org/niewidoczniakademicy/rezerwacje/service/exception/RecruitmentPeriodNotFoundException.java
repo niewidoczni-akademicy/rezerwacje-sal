@@ -2,7 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.service.exception;
 
 public class RecruitmentPeriodNotFoundException extends RuntimeException {
 
-    public RecruitmentPeriodNotFoundException(String message) {
+    public RecruitmentPeriodNotFoundException(final String message) {
         super(message);
     }
 }

@@ -29,7 +29,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({UserNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFoundException(UserNotFoundException e) {
+    public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -43,7 +43,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({InvalidEmailAddressException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleInvalidEmailAddressException(InvalidEmailAddressException e) {
+    public ErrorResponse handleInvalidEmailAddressException(final InvalidEmailAddressException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -58,7 +58,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({DataIntegrityViolationException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+    public ErrorResponse handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMostSpecificCause().getMessage())
                 .build();
@@ -72,7 +72,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({ExamTermNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse examTermNotFoundException(ExamTermNotFoundException e) {
+    public ErrorResponse examTermNotFoundException(final ExamTermNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -86,7 +86,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({RoomNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse roomNotFoundException(RoomNotFoundException e) {
+    public ErrorResponse roomNotFoundException(final RoomNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -100,7 +100,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({CourseOfStudyNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse courseOfStudyNotFoundException(CourseOfStudyNotFoundException e) {
+    public ErrorResponse courseOfStudyNotFoundException(final CourseOfStudyNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -114,7 +114,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({ExamTermTimeEndBeforeTimeStartException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse examTermTimeEndBeforeTimeStart(ExamTermTimeEndBeforeTimeStartException e) {
+    public ErrorResponse examTermTimeEndBeforeTimeStart(final ExamTermTimeEndBeforeTimeStartException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -129,7 +129,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse recruitmentPeriodStartDateBeforeCurrentDateException(
-            RecruitmentPeriodStartDateBeforeCurrentDateException e) {
+            final RecruitmentPeriodStartDateBeforeCurrentDateException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -144,7 +144,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse recruitmentPeriodEndDateBeforeStartDateException(
-            RecruitmentPeriodEndDateBeforeStartDateException e) {
+            final RecruitmentPeriodEndDateBeforeStartDateException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -158,7 +158,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({InvalidInputException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse invalidInputException(InvalidInputException e) {
+    public ErrorResponse invalidInputException(final InvalidInputException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();
@@ -172,7 +172,7 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler({RecruitmentPeriodNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse recruitmentPeriodNotFoundException(RecruitmentPeriodNotFoundException e) {
+    public ErrorResponse recruitmentPeriodNotFoundException(final RecruitmentPeriodNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

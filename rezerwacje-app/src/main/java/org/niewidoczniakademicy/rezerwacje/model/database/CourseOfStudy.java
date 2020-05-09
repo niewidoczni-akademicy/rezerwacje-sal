@@ -21,6 +21,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,7 +34,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2"})
+@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2", "systemUsers"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -76,13 +78,26 @@ public class CourseOfStudy {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
     private Set<ExamTerm> examTerms = new HashSet<>();
 
-    private void addFacultyTerm(Faculty faculty) {
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "CourseOfStudy_SystemUser",
+            joinColumns = {@JoinColumn(name = "course_of_study_id")},
+            inverseJoinColumns = {@JoinColumn(name = "system_user_id")}
+    )
+    private final Set<SystemUser> systemUsers = new HashSet<>();
+
+    public final void addSystemUser(final SystemUser systemUser) {
+        systemUsers.add(systemUser);
+    }
+
+    private void addFacultyTerm(final Faculty faculty) {
         faculty.getCourseOfStudies().add(this);
         this.faculty = faculty;
     }
 
-    private void addExamTerm(ExamTerm examTerm) {
+    private void addExamTerm(final ExamTerm examTerm) {
         examTerm.setCourseOfStudy(this);
         this.examTerms.add(examTerm);
     }
+
 }

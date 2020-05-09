@@ -11,7 +11,7 @@ public final class SystemUserConverter
         implements GenericConverter<AddSystemUserRequest, SystemUser> {
 
     @Override
-    public SystemUser createFrom(AddSystemUserRequest dto) {
+    public SystemUser createFrom(final AddSystemUserRequest dto) {
         return SystemUser.builder()
                 .userType(dto.getUserType())
                 .additionTime(LocalDateTime.now())

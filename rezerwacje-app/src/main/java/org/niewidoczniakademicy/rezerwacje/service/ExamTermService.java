@@ -41,7 +41,7 @@ public final class ExamTermService {
                 .build();
     }
 
-    public GetExamTermResponse getOneResponse(Long id) {
+    public GetExamTermResponse getOneResponse(final Long id) {
         ExamTerm examTerm = this.examTermRepository.findById(id)
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with id " + id));
 
@@ -50,7 +50,7 @@ public final class ExamTermService {
                 .build();
     }
 
-    public GetExamTermsResponse getByRoomIdResponse(Long id) {
+    public GetExamTermsResponse getByRoomIdResponse(final Long id) {
         Set<ExamTerm> examTerms = this.roomRepository.findById(id)
                 .map(Room::getExamTerms)
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + id));
@@ -60,7 +60,7 @@ public final class ExamTermService {
                 .build();
     }
 
-    public GetExamTermsResponse getByCourseOfStudyRepositoryIdResponse(Long id) {
+    public GetExamTermsResponse getByCourseOfStudyRepositoryIdResponse(final Long id) {
         Set<ExamTerm> examTerms = this.courseOfStudyRepository.findById(id)
                 .map(CourseOfStudy::getExamTerms)
                 .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + id));
@@ -70,7 +70,7 @@ public final class ExamTermService {
                 .build();
     }
 
-    public GetExamTermResponse getByRoomIdAndCourseOfStudyRepositoryIdResponse(Long roomId, Long cosId) {
+    public GetExamTermResponse getByRoomIdAndCourseOfStudyRepositoryIdResponse(final Long roomId, final Long cosId) {
         ExamTerm examTerm = this.examTermRepository.findByRoomIdAndCourseOfStudyId(roomId, cosId)
                 .orElseThrow(() -> new ExamTermNotFoundException(String.format(
                         "No exam term with room id %d and course of study id %d", roomId, cosId)));
@@ -80,7 +80,7 @@ public final class ExamTermService {
                 .build();
     }
 
-    public AddExamTermResponse getAddExamTermResponse(AddExamTermRequest addExamTermRequest) {
+    public AddExamTermResponse getAddExamTermResponse(final AddExamTermRequest addExamTermRequest) {
         Long cosId = addExamTermRequest.getCosId();
         Long roomId = addExamTermRequest.getRoomId();
         LocalDate day = addExamTermRequest.getDay();
@@ -112,7 +112,7 @@ public final class ExamTermService {
 
     }
 
-    private void validateExamTermTime(LocalTime timeStart, LocalTime timeEnd) {
+    private void validateExamTermTime(final LocalTime timeStart, final LocalTime timeEnd) {
         if (timeEnd.isBefore(timeStart)) {
             final String exceptionMessage = String.format(
                     "Exam ending time %s cannot be before starting time %s", timeEnd.toString(), timeStart.toString());

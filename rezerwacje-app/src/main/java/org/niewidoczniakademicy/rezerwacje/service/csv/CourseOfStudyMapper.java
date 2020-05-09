@@ -3,18 +3,18 @@ package org.niewidoczniakademicy.rezerwacje.service.csv;
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
-import org.niewidoczniakademicy.rezerwacje.service.repository.FacultyRepository;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.database.Faculty;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
+import org.niewidoczniakademicy.rezerwacje.service.repository.FacultyRepository;
 import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,7 @@ public class CourseOfStudyMapper {
     private final UserRepository userRepository;
     private final FacultyRepository facultyRepository;
 
-    public final Set<CourseOfStudy> convert(List<CsvCourseOfStudy> courseOfStudies)
+    public final Set<CourseOfStudy> convert(final List<CsvCourseOfStudy> courseOfStudies)
             throws DatabaseException {
         Set<String> logins = collectLogins(courseOfStudies);
         Set<String> faculties = collectFaculties(courseOfStudies);
@@ -34,21 +34,21 @@ public class CourseOfStudyMapper {
         Map<String, Faculty> name2faculty = collectFaculties(faculties);
 
         return courseOfStudies.stream().map(course ->
-            CourseOfStudy.builder()
-                    .name(course.getName())
-                    .faculty(name2faculty.get(course.getFaculty()))
-                    .courseType(course.getCourseType())
-                    .contactPerson1(login2user.get(course.getContactPerson1Login()))
-                    .contactPerson2(login2user.getOrDefault(course.getContactPerson1Login(), null))
-                    .isJoined(course.getIsJoined())
-                    .remarks(course.getRemarks())
-                    .build()
+                CourseOfStudy.builder()
+                        .name(course.getName())
+                        .faculty(name2faculty.get(course.getFaculty()))
+                        .courseType(course.getCourseType())
+                        .contactPerson1(login2user.get(course.getContactPerson1Login()))
+                        .contactPerson2(login2user.getOrDefault(course.getContactPerson1Login(), null))
+                        .isJoined(course.getIsJoined())
+                        .remarks(course.getRemarks())
+                        .build()
         ).collect(Collectors.toSet());
     }
 
-    private Set<String> collectLogins(List<CsvCourseOfStudy> courseOfStudies) {
+    private Set<String> collectLogins(final List<CsvCourseOfStudy> courseOfStudies) {
         Set<String> logins = new HashSet<>();
-        courseOfStudies.forEach(c ->  {
+        courseOfStudies.forEach(c -> {
             logins.add(c.getContactPerson1Login());
             if (c.getContactPerson2Login() != null) {
                 logins.add(c.getContactPerson2Login());
@@ -57,13 +57,13 @@ public class CourseOfStudyMapper {
         return logins;
     }
 
-    private Set<String> collectFaculties(List<CsvCourseOfStudy> courseOfStudies) {
+    private Set<String> collectFaculties(final List<CsvCourseOfStudy> courseOfStudies) {
         Set<String> faculties = new HashSet<>();
         courseOfStudies.forEach(c -> faculties.add(c.getFaculty()));
         return faculties;
     }
 
-    private Map<String, SystemUser> collectUsers(Set<String> logins) throws DatabaseException {
+    private Map<String, SystemUser> collectUsers(final Set<String> logins) throws DatabaseException {
         List<SystemUser> users = userRepository.findSystemUsersByLoginIn(logins);
         Map<String, SystemUser> login2user = new HashMap<>();
 
@@ -79,7 +79,7 @@ public class CourseOfStudyMapper {
         return login2user;
     }
 
-    private Map<String, Faculty> collectFaculties(Set<String> facultyNames) throws DatabaseException {
+    private Map<String, Faculty> collectFaculties(final Set<String> facultyNames) throws DatabaseException {
         List<Faculty> faculties = facultyRepository.findFacultiesByNameIn(facultyNames);
         Map<String, Faculty> name2faculty = new HashMap<>();
 

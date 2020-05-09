@@ -26,7 +26,7 @@ public final class RecruitmentPeriodService {
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
     private final ConversionService conversionService;
 
-    public AddRecruitmentPeriodResponse saveRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
+    public AddRecruitmentPeriodResponse saveRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
         validateRecruitmentPeriod(request);
 
         RecruitmentPeriod recruitmentPeriod = conversionService.convert(request);
@@ -37,7 +37,7 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
-    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(LocalDate startDate, LocalDate endDate) {
+    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(final LocalDate startDate, final LocalDate endDate) {
         List<RecruitmentPeriod> recruitmentPeriods = recruitmentPeriodRepository
                 .findByStartDateGreaterThanEqualAndEndDateLessThanEqual(startDate, endDate);
 
@@ -46,7 +46,7 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
-    public GetRecruitmentPeriodResponse getRecruitmentPeriod(Long id) {
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(final Long id) {
         RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
                 .findById(id)
                 .orElseThrow(() -> new RecruitmentPeriodNotFoundException("No recruitment period with id " + id));
@@ -56,12 +56,12 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
-    private void validateRecruitmentPeriod(AddRecruitmentPeriodRequest request) {
+    private void validateRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
         validateEndDateNotBeforeStartDate(request);
         validateStartDateNotBeforeCurrentDate(request);
     }
 
-    private void validateEndDateNotBeforeStartDate(AddRecruitmentPeriodRequest request) {
+    private void validateEndDateNotBeforeStartDate(final AddRecruitmentPeriodRequest request) {
         LocalDate startDate = request.getStartDate();
         LocalDate endDate = request.getEndDate();
         if (endDate.isBefore(startDate)) {
@@ -70,7 +70,7 @@ public final class RecruitmentPeriodService {
 
     }
 
-    private void validateStartDateNotBeforeCurrentDate(AddRecruitmentPeriodRequest request) {
+    private void validateStartDateNotBeforeCurrentDate(final AddRecruitmentPeriodRequest request) {
         LocalDate startDate = request.getStartDate();
         LocalDate currentDate = LocalDate.now();
         if (startDate.isBefore(currentDate)) {
