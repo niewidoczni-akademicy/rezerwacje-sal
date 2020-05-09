@@ -99,6 +99,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "ConnectCourseOfStudyAndSystemUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{course-of-study-path}}/{{connect-course-and-user-path}}?{{user-login-param}}={{user-login-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{course-of-study-path}}",
+						"{{connect-course-and-user-path}}"
+					],
+					"query": [
+						{
+							"key": "{{user-login-param}}",
+							"value": "{{user-login-value}}"
+						},
+						{
+							"key": "{{course-of-study-id-param}}",
+							"value": "{{course-of-study-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
