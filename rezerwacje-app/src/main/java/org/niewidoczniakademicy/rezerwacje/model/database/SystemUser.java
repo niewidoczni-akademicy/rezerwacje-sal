@@ -8,10 +8,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Table
 @Entity
 @Builder
+@ToString
+@EqualsAndHashCode(exclude = {"coursesOfStudies"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SystemUser {

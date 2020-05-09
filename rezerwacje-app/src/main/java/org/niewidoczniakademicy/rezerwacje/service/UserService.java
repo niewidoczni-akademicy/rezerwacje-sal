@@ -37,9 +37,7 @@ public final class UserService {
     }
 
     public GetSystemUserResponse getSystemUserByLogin(String login) {
-        final SystemUser systemUser = userRepository
-                .findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
+        final SystemUser systemUser = getSystemUserFromDatabaseByLogin(login);
 
         return GetSystemUserResponse.builder()
                 .systemUser(systemUser)
@@ -50,8 +48,8 @@ public final class UserService {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName)
                 .orElseThrow(() -> new UserNotFoundException("No user with first name: "
-                                                            + firstName + " and last name : "
-                                                            + lastName + " found"));
+                        + firstName + " and last name : "
+                        + lastName + " found"));
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -72,6 +70,12 @@ public final class UserService {
         if (!isEmailValid) {
             throw new InvalidEmailAddressException();
         }
+    }
+
+    public SystemUser getSystemUserFromDatabaseByLogin(String login) {
+        return userRepository
+                .findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
     }
 
 }

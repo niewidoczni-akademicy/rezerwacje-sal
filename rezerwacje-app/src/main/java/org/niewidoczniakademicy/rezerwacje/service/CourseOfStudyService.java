@@ -2,12 +2,15 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
+import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
+import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.CourseOfStudyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ public final class CourseOfStudyService {
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;
     private final CourseOfStudyMapper courseOfStudyMapper;
+    private final UserService userService;
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());
@@ -53,4 +57,24 @@ public final class CourseOfStudyService {
             throw new InvalidInputException(e.getMessage());
         }
     }
+
+    public CourseAndUserConnectionResponse connectCourseOfStudyWithSystemUser(String login, Long courseOfStudyId) {
+        final SystemUser systemUser = userService.getSystemUserFromDatabaseByLogin(login);
+        final CourseOfStudy courseOfStudy = getCourseOfStudyById(courseOfStudyId);
+
+        courseOfStudy.addSystemUser(systemUser);
+        courseOfStudyRepository.save(courseOfStudy);
+
+        return CourseAndUserConnectionResponse.builder()
+                .courseOfStudyId(courseOfStudy.getId())
+                .systemUserId(systemUser.getId())
+                .build();
+    }
+
+    public CourseOfStudy getCourseOfStudyById(Long courseOfStudyId) {
+        return courseOfStudyRepository
+                .findById(courseOfStudyId)
+                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id: " + courseOfStudyId));
+    }
+
 }

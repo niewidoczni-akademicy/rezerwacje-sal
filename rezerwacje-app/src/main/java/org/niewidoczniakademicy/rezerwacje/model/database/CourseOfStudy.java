@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2"})
+@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2", "systemUsers"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -66,7 +66,7 @@ public class CourseOfStudy {
     )
     private Set<SystemUser> systemUsers = new HashSet<>();
 
-    private void addSystemUser(SystemUser systemUser) {
+    public void addSystemUser(SystemUser systemUser) {
         systemUsers.add(systemUser);
     }
 
