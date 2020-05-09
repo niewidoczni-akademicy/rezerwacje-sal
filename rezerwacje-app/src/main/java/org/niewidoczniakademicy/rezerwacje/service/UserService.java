@@ -8,11 +8,15 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRe
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.security.UserPrincipal;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class UserService {
+public final class UserService implements UserDetailsService {
 
     private final ConversionService conversionService;
     private final UserRepository userRepository;
@@ -36,13 +40,15 @@ public final class UserService {
                 .build();
     }
 
-    public GetSystemUserResponse getSystemUserByLogin(String login) {
-        final SystemUser systemUser = userRepository
+    private SystemUser getSystemUserByLoginInternal(String login) {
+        return userRepository
                 .findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
+    }
 
+    public GetSystemUserResponse getSystemUserByLogin(String login) {
         return GetSystemUserResponse.builder()
-                .systemUser(systemUser)
+                .systemUser(getSystemUserByLoginInternal(login))
                 .build();
     }
 
@@ -74,4 +80,14 @@ public final class UserService {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.debug(username + " tries to log in");
+        try {
+            return new UserPrincipal(getSystemUserByLoginInternal(username));
+        } catch (UserNotFoundException e) {
+            log.debug(username + " not found", e);
+            throw new UsernameNotFoundException(username + " not found", e);
+        }
+    }
 }
