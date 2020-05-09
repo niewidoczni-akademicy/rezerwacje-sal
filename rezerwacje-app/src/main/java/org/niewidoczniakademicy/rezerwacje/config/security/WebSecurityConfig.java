@@ -20,11 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .anonymous().authorities("ROLE_ANON").and()
             .formLogin()
-//                .loginProcessingUrl("/user/login/process")
                 .and()
             .exceptionHandling()
-//                .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
-//                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
                 .defaultAuthenticationEntryPointFor(
                         new Http403ForbiddenEntryPoint(),
                         new NegatedRequestMatcher(new AntPathRequestMatcher("/login")))

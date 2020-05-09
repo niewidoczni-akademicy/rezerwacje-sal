@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.springframework.security.access.annotation.Jsr250SecurityConfig.DENY_ALL_ATTRIBUTE;
 
-public final class CustomMethodSecurityMetadataSource extends AbstractFallbackMethodSecurityMetadataSource {
+public final class DenyByDefaultMethodSecurityMetadataSource extends AbstractFallbackMethodSecurityMetadataSource {
 
     @Override
     protected Collection<ConfigAttribute> findAttributes(Method method, Class<?> targetClass) {

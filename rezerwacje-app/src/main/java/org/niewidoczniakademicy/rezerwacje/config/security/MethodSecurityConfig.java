@@ -8,6 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
     @Override
     protected final MethodSecurityMetadataSource customMethodSecurityMetadataSource() {
-        return new CustomMethodSecurityMetadataSource();
+        return new DenyByDefaultMethodSecurityMetadataSource();
     }
 }
