@@ -59,3 +59,9 @@ tasks.withType(Checkstyle) {
 		html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-severity-sorted.xsl')
 	}
 }
+
+bootRun {
+	if (project.hasProperty("debug")) {
+		jvmArgs += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"
+	}
+}
