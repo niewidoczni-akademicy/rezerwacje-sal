@@ -121,7 +121,9 @@
 
         <!-- Checks for imports                              -->
         <!-- See https://checkstyle.org/config_import.html -->
-<!--        <module name="AvoidStarImport"/>-->
+        <module name="AvoidStarImport">
+            <property name="severity" value="warning"/>
+        </module>
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <module name="RedundantImport"/>
         <module name="UnusedImports">

@@ -39,6 +39,7 @@ dependencies {
 	implementation 'com.opencsv:opencsv:4.0'
 
 	testCompile 'com.h2database:h2'
+	testCompile 'org.springframework.security:spring-security-test'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
