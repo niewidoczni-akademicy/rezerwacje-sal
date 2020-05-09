@@ -40,7 +40,7 @@ public final class CourseOfStudyService {
                 .build();
     }
 
-    public GetCourseOfStudiesResponse uploadCourseOfStudiesResponse(MultipartFile file) {
+    public GetCourseOfStudiesResponse uploadCourseOfStudiesResponse(final MultipartFile file) {
         // TODO: provide better error messages
         try {
             List<CsvCourseOfStudy> csvCourseOfStudies = csvService.parseCoursesOfStudy(file);
@@ -58,7 +58,9 @@ public final class CourseOfStudyService {
         }
     }
 
-    public CourseAndUserConnectionResponse connectCourseOfStudyWithSystemUser(String login, Long courseOfStudyId) {
+    public CourseAndUserConnectionResponse connectCourseOfStudyWithSystemUser(final String login,
+                                                                              final Long courseOfStudyId) {
+
         final SystemUser systemUser = userService.getSystemUserFromDatabaseByLogin(login);
         final CourseOfStudy courseOfStudy = getCourseOfStudyById(courseOfStudyId);
 
@@ -71,10 +73,11 @@ public final class CourseOfStudyService {
                 .build();
     }
 
-    public CourseOfStudy getCourseOfStudyById(Long courseOfStudyId) {
+    public CourseOfStudy getCourseOfStudyById(final Long courseOfStudyId) {
         return courseOfStudyRepository
                 .findById(courseOfStudyId)
-                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id: " + courseOfStudyId));
+                .orElseThrow(
+                        () -> new CourseOfStudyNotFoundException("No course of study with id: " + courseOfStudyId));
     }
 
 }

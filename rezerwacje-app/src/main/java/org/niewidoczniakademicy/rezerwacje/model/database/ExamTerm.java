@@ -1,21 +1,9 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -56,7 +44,11 @@ public class ExamTerm {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public ExamTerm(LocalDate day, LocalTime timeStart, LocalTime timeEnd, CourseOfStudy courseOfStudy, Room room) {
+    public ExamTerm(final LocalDate day,
+                    final LocalTime timeStart,
+                    final LocalTime timeEnd,
+                    final CourseOfStudy courseOfStudy,
+                    final Room room) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
@@ -64,12 +56,12 @@ public class ExamTerm {
         this.addRoom(room);
     }
 
-    private void addCourseOfStudy(CourseOfStudy courseOfStudy) {
+    private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
         this.courseOfStudy = courseOfStudy;
         courseOfStudy.getExamTerms().add(this);
     }
 
-    private void addRoom(Room room) {
+    private void addRoom(final Room room) {
         this.room = room;
         room.getExamTerms().add(this);
     }

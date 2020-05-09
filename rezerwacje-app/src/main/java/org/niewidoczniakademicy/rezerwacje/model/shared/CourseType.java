@@ -6,7 +6,7 @@ public enum CourseType {
 
     private final String typeCode;
 
-    CourseType(String typeCode) {
+    CourseType(final String typeCode) {
         this.typeCode = typeCode;
     }
 

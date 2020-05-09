@@ -25,7 +25,7 @@ public final class UserService {
     private final ConversionService conversionService;
     private final UserRepository userRepository;
 
-    public AddSystemUserResponse saveSystemUser(AddSystemUserRequest request) {
+    public AddSystemUserResponse saveSystemUser(final AddSystemUserRequest request) {
         validateAddSystemUserRequest(request);
 
         SystemUser systemUser = conversionService.convert(request);
@@ -36,7 +36,7 @@ public final class UserService {
                 .build();
     }
 
-    public GetSystemUserResponse getSystemUserByLogin(String login) {
+    public GetSystemUserResponse getSystemUserByLogin(final String login) {
         final SystemUser systemUser = getSystemUserFromDatabaseByLogin(login);
 
         return GetSystemUserResponse.builder()
@@ -44,7 +44,7 @@ public final class UserService {
                 .build();
     }
 
-    public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(String firstName, String lastName) {
+    public GetSystemUsersResponse getSystemUsersByFirstNameAndLastName(final String firstName, final String lastName) {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName)
                 .orElseThrow(() -> new UserNotFoundException("No user with first name: "
@@ -64,7 +64,7 @@ public final class UserService {
                 .build();
     }
 
-    public void validateAddSystemUserRequest(AddSystemUserRequest request) {
+    public void validateAddSystemUserRequest(final AddSystemUserRequest request) {
         boolean isEmailValid = EmailValidator.getInstance().isValid(request.getEmailAddress());
 
         if (!isEmailValid) {
@@ -72,7 +72,7 @@ public final class UserService {
         }
     }
 
-    public SystemUser getSystemUserFromDatabaseByLogin(String login) {
+    public SystemUser getSystemUserFromDatabaseByLogin(final String login) {
         return userRepository
                 .findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));

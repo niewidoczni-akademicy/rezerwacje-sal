@@ -66,16 +66,16 @@ public class CourseOfStudy {
     )
     private Set<SystemUser> systemUsers = new HashSet<>();
 
-    public void addSystemUser(SystemUser systemUser) {
+    public final void addSystemUser(final SystemUser systemUser) {
         systemUsers.add(systemUser);
     }
 
-    private void addFacultyTerm(Faculty faculty) {
+    private void addFacultyTerm(final Faculty faculty) {
         faculty.getCourseOfStudies().add(this);
         this.faculty = faculty;
     }
 
-    private void addExamTerm(ExamTerm examTerm) {
+    private void addExamTerm(final ExamTerm examTerm) {
         examTerm.setCourseOfStudy(this);
         this.examTerms.add(examTerm);
     }

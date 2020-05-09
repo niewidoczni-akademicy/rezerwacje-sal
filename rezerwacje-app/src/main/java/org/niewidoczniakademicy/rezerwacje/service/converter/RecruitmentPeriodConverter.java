@@ -9,7 +9,7 @@ public final class RecruitmentPeriodConverter
         implements GenericConverter<AddRecruitmentPeriodRequest, RecruitmentPeriod> {
 
     @Override
-    public RecruitmentPeriod createFrom(AddRecruitmentPeriodRequest dto) {
+    public RecruitmentPeriod createFrom(final AddRecruitmentPeriodRequest dto) {
         return RecruitmentPeriod.builder()
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())

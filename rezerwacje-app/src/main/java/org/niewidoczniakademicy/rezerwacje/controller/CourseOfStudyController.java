@@ -27,15 +27,15 @@ public final class CourseOfStudyController {
     @PostMapping(path = "upload")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public GetCourseOfStudiesResponse uploadCourseOfStudies(@RequestParam MultipartFile file) {
+    public GetCourseOfStudiesResponse uploadCourseOfStudies(final @RequestParam MultipartFile file) {
         return courseOfStudyService.uploadCourseOfStudiesResponse(file);
     }
 
     @PostMapping(path = "connect", params = {"login", "courseOfStudyId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public CourseAndUserConnectionResponse addCourseOfStudyToUser(@RequestParam String login,
-                                                                  @RequestParam Long courseOfStudyId) {
+    public CourseAndUserConnectionResponse addCourseOfStudyToUser(@RequestParam final String login,
+                                                                  @RequestParam final Long courseOfStudyId) {
 
         return courseOfStudyService.connectCourseOfStudyWithSystemUser(login, courseOfStudyId);
     }
