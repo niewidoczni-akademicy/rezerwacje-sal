@@ -8,6 +8,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsRespo
 import org.niewidoczniakademicy.rezerwacje.service.ExamTermService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "exam-terms")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class ExamTermController {
+public class ExamTermController {
 
     private final ExamTermService examTermService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -31,6 +33,7 @@ public final class ExamTermController {
         return examTermService.getAllResponse();
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -38,6 +41,7 @@ public final class ExamTermController {
         return examTermService.getOneResponse(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "room/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -45,6 +49,7 @@ public final class ExamTermController {
         return examTermService.getByRoomIdResponse(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "cos/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -52,6 +57,7 @@ public final class ExamTermController {
         return examTermService.getByCourseOfStudyRepositoryIdResponse(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = {"room/{roomId}/cos/{cosId}", "cos/{cosId}/room/{roomId}"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -60,6 +66,7 @@ public final class ExamTermController {
         return examTermService.getByRoomIdAndCourseOfStudyRepositoryIdResponse(roomId, cosId);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)

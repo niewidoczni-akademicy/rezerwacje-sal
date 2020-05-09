@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,10 +25,11 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("recruitment-period")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class RecruitmentPeriodController {
+public class RecruitmentPeriodController {
 
     private final RecruitmentPeriodService recruitmentPeriodService;
 
+    @Secured({"ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -35,6 +37,7 @@ public final class RecruitmentPeriodController {
         return recruitmentPeriodService.saveRecruitmentPeriod(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(params = {"start-date", "end-date"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -44,6 +47,7 @@ public final class RecruitmentPeriodController {
         return recruitmentPeriodService.getRecruitmentPeriods(startDate, endDate);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(params = {"id"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)

@@ -5,6 +5,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfS
 import org.niewidoczniakademicy.rezerwacje.service.CourseOfStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping(path = "course-of-study")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class CourseOfStudyController {
+public class CourseOfStudyController {
 
     private final CourseOfStudyService courseOfStudyService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -29,6 +31,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.getAllResponse();
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "upload")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
