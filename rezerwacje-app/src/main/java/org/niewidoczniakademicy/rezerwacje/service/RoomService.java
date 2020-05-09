@@ -34,7 +34,7 @@ public final class RoomService {
                 .build();
     }
 
-    public GetRoomsResponse uploadRoomsResponse(MultipartFile file) {
+    public GetRoomsResponse uploadRoomsResponse(final MultipartFile file) {
         try {
             List<CsvRoom> csvRooms = csvService.parseRoomsFile(file);
             Set<Room> rooms = roomMapper.convert(csvRooms);

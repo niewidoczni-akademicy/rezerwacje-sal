@@ -22,7 +22,8 @@ import java.util.Set;
 
 @Entity
 @Table
-@Getter @Setter
+@Getter
+@Setter
 @ToString
 @EqualsAndHashCode(exclude = {"courseOfStudies"})
 @NoArgsConstructor
@@ -40,7 +41,7 @@ public class Faculty {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "faculty", cascade = CascadeType.ALL)
     private Set<CourseOfStudy> courseOfStudies = new HashSet<>();
 
-    private void addCourseOfStudy(CourseOfStudy courseOfStudy) {
+    private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
         courseOfStudy.setFaculty(this);
         this.courseOfStudies.add(courseOfStudy);
     }

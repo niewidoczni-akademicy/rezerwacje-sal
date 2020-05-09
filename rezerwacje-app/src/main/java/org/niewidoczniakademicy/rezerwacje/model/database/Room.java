@@ -52,7 +52,7 @@ public class Room {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
     private Set<ExamTerm> examTerms = new HashSet<>();
 
-    private void addExamTerm(ExamTerm examTerm) {
+    private void addExamTerm(final ExamTerm examTerm) {
         examTerm.setRoom(this);
         this.examTerms.add(examTerm);
     }

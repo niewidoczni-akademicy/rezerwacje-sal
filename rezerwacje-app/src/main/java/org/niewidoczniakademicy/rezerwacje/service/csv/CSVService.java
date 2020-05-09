@@ -21,7 +21,7 @@ public final class CSVService {
 
     private Logger logger = LoggerFactory.getLogger(CSVService.class);
 
-    private <T> List<T> parseFile(MultipartFile file, Class<T> clazz) throws ParseException {
+    private <T> List<T> parseFile(final MultipartFile file, final Class<T> clazz) throws ParseException {
         try {
             if (file.isEmpty()) {
                 return new ArrayList<>();
@@ -30,8 +30,8 @@ public final class CSVService {
             try (InputStream inputStream = file.getInputStream();
                  InputStreamReader reader = new InputStreamReader(inputStream)) {
 
-                    CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
-                            .withType(clazz)
+                CsvToBean<T> toBean = new CsvToBeanBuilder<T>(reader)
+                        .withType(clazz)
                             .build();
                     return toBean.parse();
             }
@@ -41,11 +41,11 @@ public final class CSVService {
         }
     }
 
-    public List<CsvRoom> parseRoomsFile(MultipartFile file) throws ParseException {
+    public List<CsvRoom> parseRoomsFile(final MultipartFile file) throws ParseException {
         return parseFile(file, CsvRoom.class);
     }
 
-    public List<CsvCourseOfStudy> parseCoursesOfStudy(MultipartFile file) throws ParseException {
+    public List<CsvCourseOfStudy> parseCoursesOfStudy(final MultipartFile file) throws ParseException {
         return parseFile(file, CsvCourseOfStudy.class);
     }
 }

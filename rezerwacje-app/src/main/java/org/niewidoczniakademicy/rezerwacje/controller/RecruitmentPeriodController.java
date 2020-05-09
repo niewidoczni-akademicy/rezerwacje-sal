@@ -33,7 +33,7 @@ public class RecruitmentPeriodController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public AddRecruitmentPeriodResponse addRecruitmentPeriod(@RequestBody AddRecruitmentPeriodRequest request) {
+    public AddRecruitmentPeriodResponse addRecruitmentPeriod(@RequestBody final AddRecruitmentPeriodRequest request) {
         return recruitmentPeriodService.saveRecruitmentPeriod(request);
     }
 
@@ -42,8 +42,8 @@ public class RecruitmentPeriodController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public GetRecruitmentPeriodsResponse getRecruitmentPeriods(
-            @RequestParam(value = "start-date") @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
-            @RequestParam(value = "end-date") @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+            @RequestParam(value = "start-date") @DateTimeFormat(iso = ISO.DATE) final LocalDate startDate,
+            @RequestParam(value = "end-date") @DateTimeFormat(iso = ISO.DATE) final LocalDate endDate) {
         return recruitmentPeriodService.getRecruitmentPeriods(startDate, endDate);
     }
 
@@ -51,7 +51,7 @@ public class RecruitmentPeriodController {
     @GetMapping(params = {"id"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetRecruitmentPeriodResponse getRecruitmentPeriod(@RequestParam Long id) {
+    public GetRecruitmentPeriodResponse getRecruitmentPeriod(@RequestParam final Long id) {
         return recruitmentPeriodService.getRecruitmentPeriod(id);
     }
 }

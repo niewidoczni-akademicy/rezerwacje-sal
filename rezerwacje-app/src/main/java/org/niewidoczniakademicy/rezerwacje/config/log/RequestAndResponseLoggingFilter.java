@@ -32,7 +32,7 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
             MediaType.MULTIPART_FORM_DATA
     );
 
-    private static void logRequestHeader(ContentCachingRequestWrapper request, String prefix) {
+    private static void logRequestHeader(final ContentCachingRequestWrapper request, final String prefix) {
         val queryString = request.getQueryString();
         if (queryString == null) {
             log.info("{} {} {}", prefix, request.getMethod(), request.getRequestURI());
@@ -45,14 +45,14 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         log.info("{}", prefix);
     }
 
-    private static void logRequestBody(ContentCachingRequestWrapper request, String prefix) {
+    private static void logRequestBody(final ContentCachingRequestWrapper request, final String prefix) {
         val content = request.getContentAsByteArray();
         if (content.length > 0) {
             logContent(content, request.getContentType(), request.getCharacterEncoding(), prefix);
         }
     }
 
-    private static void logResponse(ContentCachingResponseWrapper response, String prefix) {
+    private static void logResponse(final ContentCachingResponseWrapper response, final String prefix) {
         val status = response.getStatus();
         log.info("{} {} {}", prefix, status, HttpStatus.valueOf(status).getReasonPhrase());
         response.getHeaderNames().forEach(headerName ->
@@ -65,7 +65,10 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         }
     }
 
-    private static void logContent(byte[] content, String contentType, String contentEncoding, String prefix) {
+    private static void logContent(final byte[] content,
+                                   final String contentType,
+                                   final String contentEncoding,
+                                   final String prefix) {
         val mediaType = MediaType.valueOf(contentType);
         val visible = VISIBLE_TYPES.stream().anyMatch(visibleType -> visibleType.includes(mediaType));
         if (visible) {
@@ -80,7 +83,7 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         }
     }
 
-    private static ContentCachingRequestWrapper wrapRequest(HttpServletRequest request) {
+    private static ContentCachingRequestWrapper wrapRequest(final HttpServletRequest request) {
         if (request instanceof ContentCachingRequestWrapper) {
             return (ContentCachingRequestWrapper) request;
         } else {
@@ -88,7 +91,7 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         }
     }
 
-    private static ContentCachingResponseWrapper wrapResponse(HttpServletResponse response) {
+    private static ContentCachingResponseWrapper wrapResponse(final HttpServletResponse response) {
         if (response instanceof ContentCachingResponseWrapper) {
             return (ContentCachingResponseWrapper) response;
         } else {
@@ -97,9 +100,9 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain filterChain) throws ServletException, IOException {
         if (isAsyncDispatch(request)) {
             filterChain.doFilter(request, response);
         } else {
@@ -107,9 +110,9 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         }
     }
 
-    protected void doFilterWrapped(ContentCachingRequestWrapper request,
-                                   ContentCachingResponseWrapper response,
-                                   FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterWrapped(final ContentCachingRequestWrapper request,
+                                   final ContentCachingResponseWrapper response,
+                                   final FilterChain filterChain) throws ServletException, IOException {
         try {
             beforeRequest(request, response);
             filterChain.doFilter(request, response);
@@ -119,13 +122,15 @@ public final class RequestAndResponseLoggingFilter extends OncePerRequestFilter 
         }
     }
 
-    protected void beforeRequest(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
+    protected void beforeRequest(final ContentCachingRequestWrapper request,
+                                 final ContentCachingResponseWrapper response) {
         if (log.isInfoEnabled()) {
             logRequestHeader(request, request.getRemoteAddr() + "|>");
         }
     }
 
-    protected void afterRequest(ContentCachingRequestWrapper request, ContentCachingResponseWrapper response) {
+    protected void afterRequest(final ContentCachingRequestWrapper request,
+                                final ContentCachingResponseWrapper response) {
         if (log.isInfoEnabled()) {
             logRequestBody(request, request.getRemoteAddr() + "|>");
             logResponse(response, request.getRemoteAddr() + "|<");

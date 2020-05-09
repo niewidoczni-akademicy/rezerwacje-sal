@@ -2,6 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.service.CourseOfStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,16 @@ public class CourseOfStudyController {
     @PostMapping(path = "upload")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public GetCourseOfStudiesResponse uploadCourseOfStudies(@RequestParam MultipartFile file) {
+    public GetCourseOfStudiesResponse uploadCourseOfStudies(final @RequestParam MultipartFile file) {
         return courseOfStudyService.uploadCourseOfStudiesResponse(file);
+    }
 
+    @PostMapping(path = "connect", params = {"login", "courseOfStudyId"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public CourseAndUserConnectionResponse addCourseOfStudyToUser(@RequestParam final String login,
+                                                                  @RequestParam final Long courseOfStudyId) {
+
+        return courseOfStudyService.connectCourseOfStudyWithSystemUser(login, courseOfStudyId);
     }
 }

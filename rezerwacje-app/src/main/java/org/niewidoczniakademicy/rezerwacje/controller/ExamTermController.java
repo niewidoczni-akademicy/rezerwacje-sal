@@ -37,7 +37,7 @@ public class ExamTermController {
     @GetMapping(path = "{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetExamTermResponse getOne(@PathVariable Long id) {
+    public GetExamTermResponse getOne(@PathVariable final Long id) {
         return examTermService.getOneResponse(id);
     }
 
@@ -45,7 +45,7 @@ public class ExamTermController {
     @GetMapping(path = "room/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetExamTermsResponse getByRoomId(@PathVariable Long id) {
+    public GetExamTermsResponse getByRoomId(@PathVariable final Long id) {
         return examTermService.getByRoomIdResponse(id);
     }
 
@@ -53,7 +53,7 @@ public class ExamTermController {
     @GetMapping(path = "cos/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetExamTermsResponse getByCourseOfStudyRepositoryId(@PathVariable Long id) {
+    public GetExamTermsResponse getByCourseOfStudyRepositoryId(@PathVariable final Long id) {
         return examTermService.getByCourseOfStudyRepositoryIdResponse(id);
     }
 
@@ -61,8 +61,8 @@ public class ExamTermController {
     @GetMapping(path = {"room/{roomId}/cos/{cosId}", "cos/{cosId}/room/{roomId}"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetExamTermResponse getOneByRoomIdAndCourseOfStudyId(@PathVariable Long roomId,
-                                                                @PathVariable Long cosId) {
+    public GetExamTermResponse getOneByRoomIdAndCourseOfStudyId(@PathVariable final Long roomId,
+                                                                @PathVariable final Long cosId) {
         return examTermService.getByRoomIdAndCourseOfStudyRepositoryIdResponse(roomId, cosId);
     }
 
@@ -70,7 +70,7 @@ public class ExamTermController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public AddExamTermResponse addExamTerm(@RequestBody AddExamTermRequest addExamTermRequest) {
+    public AddExamTermResponse addExamTerm(@RequestBody final AddExamTermRequest addExamTermRequest) {
         return examTermService.getAddExamTermResponse(addExamTermRequest);
     }
 }

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoomMapper {
-    public final Room convert(CsvRoom csvRoom) {
+    public final Room convert(final CsvRoom csvRoom) {
         return Room.builder()
                 .building(csvRoom.getBuilding())
                 .name(csvRoom.getName())
@@ -18,7 +18,7 @@ public class RoomMapper {
                 .build();
     }
 
-    public final Set<Room> convert(List<CsvRoom> csvRooms) {
+    public final Set<Room> convert(final List<CsvRoom> csvRooms) {
         return csvRooms.stream()
                 .map(this::convert)
                 .collect(Collectors.toSet());

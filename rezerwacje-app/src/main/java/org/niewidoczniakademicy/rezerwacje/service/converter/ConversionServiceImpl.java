@@ -16,12 +16,12 @@ public final class ConversionServiceImpl implements ConversionService {
     private final RecruitmentPeriodConverter recruitmentPeriodConverter;
 
     @Override
-    public SystemUser convert(AddSystemUserRequest request) {
+    public SystemUser convert(final AddSystemUserRequest request) {
         return systemUserConverter.createFrom(request);
     }
 
     @Override
-    public RecruitmentPeriod convert(AddRecruitmentPeriodRequest request) {
+    public RecruitmentPeriod convert(final AddRecruitmentPeriodRequest request) {
         return recruitmentPeriodConverter.createFrom(request);
     }
 

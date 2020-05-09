@@ -34,7 +34,7 @@ public class RoomsController {
     @PostMapping(path = "upload")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public GetRoomsResponse uploadRooms(@RequestParam MultipartFile file) {
+    public GetRoomsResponse uploadRooms(@RequestParam final MultipartFile file) {
         return roomService.uploadRoomsResponse(file);
 
     }

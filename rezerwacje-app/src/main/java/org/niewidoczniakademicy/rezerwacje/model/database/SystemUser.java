@@ -2,9 +2,12 @@ package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
 import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 
 import javax.persistence.Column;
@@ -14,13 +17,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Table
 @Entity
 @Builder
+@ToString
+@EqualsAndHashCode(exclude = {"coursesOfStudies"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SystemUser {
@@ -54,4 +63,7 @@ public class SystemUser {
 
     @NonNull
     private LocalDateTime additionTime;
+
+    @ManyToMany(mappedBy = "systemUsers")
+    private final Set<CourseOfStudy> coursesOfStudies = new HashSet<>();
 }

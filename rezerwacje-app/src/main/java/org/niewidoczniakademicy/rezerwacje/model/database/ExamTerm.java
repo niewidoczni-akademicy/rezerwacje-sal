@@ -56,7 +56,11 @@ public class ExamTerm {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public ExamTerm(LocalDate day, LocalTime timeStart, LocalTime timeEnd, CourseOfStudy courseOfStudy, Room room) {
+    public ExamTerm(final LocalDate day,
+                    final LocalTime timeStart,
+                    final LocalTime timeEnd,
+                    final CourseOfStudy courseOfStudy,
+                    final Room room) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
@@ -64,12 +68,12 @@ public class ExamTerm {
         this.addRoom(room);
     }
 
-    private void addCourseOfStudy(CourseOfStudy courseOfStudy) {
+    private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
         this.courseOfStudy = courseOfStudy;
         courseOfStudy.getExamTerms().add(this);
     }
 
-    private void addRoom(Room room) {
+    private void addRoom(final Room room) {
         this.room = room;
         room.getExamTerms().add(this);
     }

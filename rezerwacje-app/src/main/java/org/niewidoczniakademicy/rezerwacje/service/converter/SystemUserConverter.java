@@ -17,7 +17,7 @@ public final class SystemUserConverter
     private final PasswordEncoder encoder;
 
     @Override
-    public SystemUser createFrom(AddSystemUserRequest dto) {
+    public SystemUser createFrom(final AddSystemUserRequest dto) {
         return SystemUser.builder()
                 .userType(dto.getUserType())
                 .additionTime(LocalDateTime.now())
