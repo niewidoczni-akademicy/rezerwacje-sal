@@ -7,7 +7,8 @@ import {
   Home as HomeView,
   Rooms as RoomsView,
   Users as UsersView,
-  Exams as ExamsView
+  Exams as ExamsView,
+  UsersPrivileges as PrivilegesView
 } from '../views';
 
 const Routes = [
@@ -34,6 +35,12 @@ const Routes = [
     href: '/users/add',
     icon: <PersonIcon />,
     view: <UsersView />
+  },
+  {
+    title: 'Standard Users',
+    href: '/users/standard',
+    icon: <PersonIcon />,
+    view: <PrivilegesView />
   }
 ];
 
