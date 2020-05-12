@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -11,12 +12,14 @@ import org.springframework.lang.NonNull;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -54,6 +57,11 @@ public class Recruitment {
     )
     private final Set<Room> rooms = new HashSet<>();
 
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
+    private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
 
 
 }
