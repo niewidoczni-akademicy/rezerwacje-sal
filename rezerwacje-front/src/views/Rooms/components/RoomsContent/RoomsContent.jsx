@@ -12,11 +12,7 @@ import {
 import { ImportRoomsDialog, RoomsForm, RoomsTable } from "../";
 
 const RoomsContent = (props) => {
-  const [showImport, setShowImport] = useState(false);
-
-  const closeImport = () => {
-    setShowImport(false);
-  };
+  const [showImportDialog, setShowImportDialog] = useState(false);
 
   return (
     <React.Fragment>
@@ -38,13 +34,18 @@ const RoomsContent = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => setShowImport(true)}
+            onClick={() => setShowImportDialog(true)}
           >
             Importuj z CSV
           </Button>
         </CardActions>
       </Card>
-      <ImportRoomsDialog open={showImport} handleClose={closeImport} />
+      <ImportRoomsDialog
+        open={showImportDialog}
+        handleClose={() => {
+          setShowImportDialog(false);
+        }}
+      />
     </React.Fragment>
   );
 };
