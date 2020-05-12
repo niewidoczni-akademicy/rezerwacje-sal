@@ -1,79 +1,56 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { Card, CardContent, Grid, Typography, Avatar } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { RoomsForm } from "../";
+import React from "react";
+import PropTypes from "prop-types";
+import { useState, useRef } from "react";
+import {
+  Button,
+  Card,
+  CardActions,
+  Divider,
+  CardContent,
+  CardHeader,
+} from "@material-ui/core";
+import { ImportRoomsDialog, RoomsForm, RoomsTable } from "../";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    height: '100%'
-  },
-  content: {
-    alignItems: 'center',
-    display: 'flex'
-  },
-  title: {
-    fontWeight: 700
-  },
-  avatar: {
-    backgroundColor: theme.palette.error.main,
-    height: 56,
-    width: 56
-  },
-  icon: {
-    height: 32,
-    width: 32
-  },
-  difference: {
-    marginTop: theme.spacing(2),
-    display: 'flex',
-    alignItems: 'center'
-  },
-  differenceIcon: {
-    color: theme.palette.error.dark
-  },
-  differenceValue: {
-    color: theme.palette.error.dark,
-    marginRight: theme.spacing(1)
-  }
-}));
+const RoomsContent = (props) => {
+  const [showImport, setShowImport] = useState(false);
 
-const RoomsContent = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
+  const closeImport = () => {
+    setShowImport(false);
+  };
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <CardContent>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid item>
-            <Typography
-              className={classes.title}
-              color="textSecondary"
-              gutterBottom
-              variant="body2"
-            >
-              ROOMS
-            </Typography>
-          </Grid>
-          <RoomsForm />
-        </Grid>
-      </CardContent>
-    </Card>
+    <React.Fragment>
+      <Card style={{ width: 900 }}>
+        <CardHeader title="Sale" />
+        <Divider />
+        <CardContent>
+          <RoomsTable />
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => alert("idź sobie")}
+          >
+            Dodaj salę
+          </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => setShowImport(true)}
+          >
+            Importuj z CSV
+          </Button>
+        </CardActions>
+      </Card>
+      <ImportRoomsDialog open={showImport} handleClose={closeImport} />
+    </React.Fragment>
   );
 };
 
 RoomsContent.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default RoomsContent;
