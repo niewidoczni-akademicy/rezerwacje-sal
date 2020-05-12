@@ -1,5 +1,5 @@
 import React from "react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -40,10 +40,15 @@ const ImportRoomsDialog = (props) => {
     setFiles(fileList);
   };
 
+  const onClose = () => {
+    setFiles([]);
+    props.handleClose();
+  };
+
   return (
     <Dialog
       open={props.open}
-      onClose={props.handleClose}
+      onClose={onClose}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle>Import z pliku CSV</DialogTitle>

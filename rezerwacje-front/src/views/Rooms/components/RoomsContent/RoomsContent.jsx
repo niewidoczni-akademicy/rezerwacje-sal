@@ -9,7 +9,7 @@ import {
   CardContent,
   CardHeader,
 } from "@material-ui/core";
-import { ImportRoomsDialog, RoomsForm, RoomsTable } from "../";
+import { ImportRoomsDialog, RoomsTable } from "../";
 
 const RoomsContent = (props) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
@@ -27,7 +27,7 @@ const RoomsContent = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => alert("idź sobie")}
+            onClick={() => alert("not implemented")}
           >
             Dodaj salę
           </Button>
