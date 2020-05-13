@@ -64,11 +64,13 @@ public class RecruitmentService {
                 .build();
     }
 
-    public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentAndRecruitmentPeriod(final String name,
-                                                                                                    final Long recruitmentPeriodId) {
+    public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentAndRecruitmentPeriod(
+            final String name,
+            final Long recruitmentPeriodId) {
 
         final Recruitment recruitment = getRecruitmentFromDatabaseByName(name);
-        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodService.getRecruitmentPeriodFromDatabaseById(recruitmentPeriodId);
+        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodService
+                .getRecruitmentPeriodFromDatabaseById(recruitmentPeriodId);
 
         recruitmentPeriod.addRecruitment(recruitment);
         recruitmentPeriodRepository.save(recruitmentPeriod);
