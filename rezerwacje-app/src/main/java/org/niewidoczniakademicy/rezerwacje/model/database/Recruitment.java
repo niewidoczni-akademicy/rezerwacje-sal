@@ -11,6 +11,7 @@ import lombok.ToString;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,6 +42,7 @@ public class Recruitment {
     private Long id;
 
     @NonNull
+    @Column(unique = true)
     private String name;
 
     @NonNull
