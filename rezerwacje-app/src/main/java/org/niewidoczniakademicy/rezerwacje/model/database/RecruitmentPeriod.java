@@ -35,7 +35,6 @@ public class RecruitmentPeriod {
     @NonNull
     private LocalDate endDate;
 
-    @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recruitment_id")
     @JsonBackReference
