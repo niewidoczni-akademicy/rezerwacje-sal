@@ -62,7 +62,7 @@ public final class CourseOfStudyService {
                                                                               final Long courseOfStudyId) {
 
         final SystemUser systemUser = userService.getSystemUserFromDatabaseByLogin(login);
-        final CourseOfStudy courseOfStudy = getCourseOfStudyById(courseOfStudyId);
+        final CourseOfStudy courseOfStudy = getCourseOfStudyFromDatabaseById(courseOfStudyId);
 
         courseOfStudy.addSystemUser(systemUser);
         courseOfStudyRepository.save(courseOfStudy);
@@ -73,7 +73,7 @@ public final class CourseOfStudyService {
                 .build();
     }
 
-    public CourseOfStudy getCourseOfStudyById(final Long courseOfStudyId) {
+    public CourseOfStudy getCourseOfStudyFromDatabaseById(final Long courseOfStudyId) {
         return courseOfStudyRepository
                 .findById(courseOfStudyId)
                 .orElseThrow(

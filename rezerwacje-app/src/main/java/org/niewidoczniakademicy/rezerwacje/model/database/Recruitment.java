@@ -69,4 +69,8 @@ public class Recruitment {
         rooms.add(room);
     }
 
+    public final void addRecruitmentPeriod(final RecruitmentPeriod recruitmentPeriod) {
+        recruitmentPeriods.add(recruitmentPeriod);
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRecruitmentPeriodConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
@@ -47,5 +48,14 @@ public class RecruitmentController {
         return recruitmentService.connectRecruitmentAndRoom(name, roomId);
     }
 
+    @PostMapping(path = "connect", params = {"name", "recruitmentPeriodId"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public RecruitmentAndRecruitmentPeriodConnectionResponse addRecruitmentPeriodToRecruitment(
+            @RequestParam final String name,
+            @RequestParam final Long recruitmentPeriodId) {
+
+        return recruitmentService.connectRecruitmentAndRecruitmentPeriod(name, recruitmentPeriodId);
+    }
 
 }

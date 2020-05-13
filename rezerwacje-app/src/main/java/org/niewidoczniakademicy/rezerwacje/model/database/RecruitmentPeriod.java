@@ -40,4 +40,9 @@ public class RecruitmentPeriod {
     @JoinColumn(name = "recruitment_id")
     @JsonBackReference
     private Recruitment recruitment;
+
+    public final void addRecruitment(final Recruitment recruitment) {
+        this.recruitment = recruitment;
+        recruitment.getRecruitmentPeriods().add(this);
+    }
 }

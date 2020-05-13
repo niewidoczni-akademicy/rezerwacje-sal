@@ -3,8 +3,9 @@ package org.niewidoczniakademicy.rezerwacje.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
+import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
-import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRecruitmentPeriodConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
@@ -12,6 +13,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitment
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.StartDateNotBeforeEndDateException;
+import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentPeriodRepository;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +23,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RecruitmentService {
 
-    private final ConversionService conversionService;
     private final RecruitmentRepository recruitmentRepository;
+    private final RecruitmentPeriodRepository recruitmentPeriodRepository;
+
+    private final ConversionService conversionService;
     private final RoomService roomService;
+    private final RecruitmentPeriodService recruitmentPeriodService;
 
     public AddRecruitmentResponse saveRecruitment(final AddRecruitmentRequest request) {
         validateAddRecruitmentRequest(request);
@@ -56,6 +61,21 @@ public class RecruitmentService {
         return RecruitmentAndRoomConnectionResponse.builder()
                 .recruitmentId(recruitment.getId())
                 .roomId(room.getId())
+                .build();
+    }
+
+    public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentAndRecruitmentPeriod(final String name,
+                                                                                                    final Long recruitmentPeriodId) {
+
+        final Recruitment recruitment = getRecruitmentFromDatabaseByName(name);
+        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodService.getRecruitmentPeriodFromDatabaseById(recruitmentPeriodId);
+
+        recruitmentPeriod.addRecruitment(recruitment);
+        recruitmentPeriodRepository.save(recruitmentPeriod);
+
+        return RecruitmentAndRecruitmentPeriodConnectionResponse.builder()
+                .recruitmentId(recruitment.getId())
+                .recruitmentPeriodId(recruitmentPeriod.getId())
                 .build();
     }
 
