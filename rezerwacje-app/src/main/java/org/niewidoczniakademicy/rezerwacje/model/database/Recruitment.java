@@ -6,9 +6,9 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +32,7 @@ import java.util.Set;
 @Entity
 @Builder
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"rooms", "recruitmentPeriods"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recruitment {
@@ -41,8 +41,8 @@ public class Recruitment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(unique = true)
+    @NonNull
     private String name;
 
     @NonNull
