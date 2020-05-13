@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("recruitment")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentController {
+public final class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 

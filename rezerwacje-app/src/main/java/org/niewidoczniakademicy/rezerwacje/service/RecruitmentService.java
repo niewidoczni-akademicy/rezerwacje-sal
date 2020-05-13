@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentService {
+public final class RecruitmentService {
 
     private final RecruitmentRepository recruitmentRepository;
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
