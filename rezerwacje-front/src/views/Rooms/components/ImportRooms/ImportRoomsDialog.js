@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { Typography } from "@material-ui/core";
 
 const uploadRoomFiles = (files) => {
   for (let i = 0; i < files.length; i++) {
@@ -51,7 +52,9 @@ const ImportRoomsDialog = (props) => {
       onClose={onClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle>Import z pliku CSV</DialogTitle>
+      <DialogTitle>
+        <Typography variant="h3">Import z pliku CSV</Typography>
+      </DialogTitle>
       <DialogContent>
         <List component="nav" aria-label="main mailbox folders">
           {Array.from(files).map((f) => (
