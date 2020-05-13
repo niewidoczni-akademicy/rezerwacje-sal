@@ -3,6 +3,9 @@ package org.niewidoczniakademicy.rezerwacje.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
+import org.niewidoczniakademicy.rezerwacje.model.database.Room;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
@@ -20,6 +23,7 @@ public class RecruitmentService {
 
     private final ConversionService conversionService;
     private final RecruitmentRepository recruitmentRepository;
+    private final RoomService roomService;
 
     public AddRecruitmentResponse saveRecruitment(final AddRecruitmentRequest request) {
         validateAddRecruitmentRequest(request);
@@ -40,6 +44,20 @@ public class RecruitmentService {
                 .build();
     }
 
+    public RecruitmentAndRoomConnectionResponse connectRecruitmentAndRoom(final String name,
+                                                                          final Long roomId) {
+
+        final Recruitment recruitment = getRecruitmentFromDatabaseByName(name);
+        final Room room = roomService.getRoomFromDatabaseById(roomId);
+
+        recruitment.addRoom(room);
+        recruitmentRepository.save(recruitment);
+
+        return RecruitmentAndRoomConnectionResponse.builder()
+                .recruitmentId(recruitment.getId())
+                .roomId(room.getId())
+                .build();
+    }
 
     private void validateAddRecruitmentRequest(final AddRecruitmentRequest request) {
         if (request.getStartTime().isAfter(request.getEndTime())

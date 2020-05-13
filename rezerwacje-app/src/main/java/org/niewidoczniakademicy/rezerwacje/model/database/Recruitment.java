@@ -65,5 +65,8 @@ public class Recruitment {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
 
+    public final void addRoom(final Room room) {
+        rooms.add(room);
+    }
 
 }
