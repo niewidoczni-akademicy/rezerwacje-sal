@@ -28,7 +28,6 @@ public final class CourseOfStudyService {
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;
     private final CourseOfStudyMapper courseOfStudyMapper;
-    private final UserService userService;
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());

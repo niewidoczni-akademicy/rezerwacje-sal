@@ -23,6 +23,8 @@ public final class RecruitmentRoomService {
                 .room(room)
                 .build();
 
+        recruitmentRoom.addRecruitment(recruitment);
+        recruitmentRoom.addRoom(room);
         recruitmentRoomRepository.save(recruitmentRoom);
 
         return RecruitmentAndRoomConnectionResponse.builder()

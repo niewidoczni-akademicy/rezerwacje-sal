@@ -47,4 +47,14 @@ public class RecruitmentRoom {
     @JsonBackReference
     @JoinColumn(name = "room_id")
     private Room room;
+
+    public final void addRecruitment(final Recruitment recruitment) {
+        this.recruitment = recruitment;
+        this.recruitment.getRecruitmentRooms().add(this);
+    }
+
+    public final void addRoom(final Room room) {
+        this.room = room;
+        this.room.getRecruitmentRooms().add(this);
+    }
 }

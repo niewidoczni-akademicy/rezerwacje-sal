@@ -48,4 +48,14 @@ public class UserCourses {
     @JoinColumn(name = "user_id")
     private SystemUser systemUser;
 
+    public final void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
+        this.courseOfStudy = courseOfStudy;
+        this.courseOfStudy.getUserCourses().add(this);
+    }
+
+    public final void addSystemUser(final SystemUser systemUser) {
+        this.systemUser = systemUser;
+        this.systemUser.getUserCourses().add(this);
+    }
+
 }

@@ -22,6 +22,8 @@ public final class UserCourseService {
                 .courseOfStudy(courseOfStudy)
                 .build();
 
+        userCourses.addSystemUser(systemUser);
+        userCourses.addCourseOfStudy(courseOfStudy);
         userCoursesRepository.save(userCourses);
 
         return CourseAndUserConnectionResponse.builder()
