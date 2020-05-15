@@ -21,8 +21,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,7 +32,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2", "systemUsers"})
+@EqualsAndHashCode(exclude = {"examTerms", "faculty", "contactPerson1", "contactPerson2", "userCourses"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -78,17 +76,11 @@ public class CourseOfStudy {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
     private Set<ExamTerm> examTerms = new HashSet<>();
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "CourseOfStudy_SystemUser",
-            joinColumns = {@JoinColumn(name = "course_of_study_id")},
-            inverseJoinColumns = {@JoinColumn(name = "system_user_id")}
-    )
-    private final Set<SystemUser> systemUsers = new HashSet<>();
-
-    public final void addSystemUser(final SystemUser systemUser) {
-        systemUsers.add(systemUser);
-    }
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
+    private Set<UserCourses> userCourses = new HashSet<>();
 
     private void addFacultyTerm(final Faculty faculty) {
         faculty.getCourseOfStudies().add(this);

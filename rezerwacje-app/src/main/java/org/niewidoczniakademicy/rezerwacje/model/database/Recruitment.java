@@ -6,10 +6,11 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.lang.NonNull;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,51 +18,45 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"building", "name"})
-})
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode(exclude = {"examTerms"})
+@Table
+@Entity
 @Builder
+@ToString
+@EqualsAndHashCode(exclude = {"recruitmentRooms", "recruitmentPeriods"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Room {
+public class Recruitment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    private String building;
-
+    @Column(unique = true)
     @NonNull
     private String name;
 
     @NonNull
-    private Integer capacity;
+    private LocalDateTime startTime;
+
+    @NonNull
+    private LocalDateTime endTime;
 
     @Builder.Default
     @ToString.Exclude
     @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
-    private Set<ExamTerm> examTerms = new HashSet<>();
-
-    private void addExamTerm(final ExamTerm examTerm) {
-        examTerm.setRoom(this);
-        this.examTerms.add(examTerm);
-    }
-
-    @Builder.Default
-    @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
 
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
+    private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
 
 }
