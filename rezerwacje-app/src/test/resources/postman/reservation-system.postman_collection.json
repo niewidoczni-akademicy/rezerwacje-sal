@@ -106,18 +106,18 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/{{course-of-study-path}}/{{connect-path}}?{{user-login-param}}={{user-login-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{user-id-param}}={{user-id-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
 					"host": [
 						"{{base-url}}"
 					],
 					"path": [
-						"{{course-of-study-path}}",
+						"{{connection-path}}",
 						"{{connect-path}}"
 					],
 					"query": [
 						{
-							"key": "{{user-login-param}}",
-							"value": "{{user-login-value}}"
+							"key": "{{user-id-param}}",
+							"value": "{{user-id-value}}"
 						},
 						{
 							"key": "{{course-of-study-id-param}}",
@@ -184,18 +184,18 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/{{recruitment-path}}/{{connect-path}}?{{recruitment-name-param}}={{recruitment-name-param-value}}&{{room-id-param}}={{room-id-value}}",
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{recruitment-id-param}}={{recruitment-id-param-value}}&{{room-id-param}}={{room-id-value}}",
 					"host": [
 						"{{base-url}}"
 					],
 					"path": [
-						"{{recruitment-path}}",
+						"{{connection-path}}",
 						"{{connect-path}}"
 					],
 					"query": [
 						{
-							"key": "{{recruitment-name-param}}",
-							"value": "{{recruitment-name-param-value}}"
+							"key": "{{recruitment-id-param}}",
+							"value": "{{recruitment-id-param-value}}"
 						},
 						{
 							"key": "{{room-id-param}}",
@@ -212,18 +212,18 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/{{recruitment-path}}/{{connect-path}}?{{recruitment-name-param}}={{recruitment-name-param-value}}&{{recrutiment-period-id-param}}={{recrutiment-period-id-value}}",
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{recruitment-id-param}}={{recruitment-id-param-value}}&{{recrutiment-period-id-param}}={{recrutiment-period-id-value}}",
 					"host": [
 						"{{base-url}}"
 					],
 					"path": [
-						"{{recruitment-path}}",
+						"{{connection-path}}",
 						"{{connect-path}}"
 					],
 					"query": [
 						{
-							"key": "{{recruitment-name-param}}",
-							"value": "{{recruitment-name-param-value}}"
+							"key": "{{recruitment-id-param}}",
+							"value": "{{recruitment-id-param-value}}"
 						},
 						{
 							"key": "{{recrutiment-period-id-param}}",
