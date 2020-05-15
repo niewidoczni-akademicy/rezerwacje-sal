@@ -24,10 +24,7 @@ import org.springframework.stereotype.Service;
 public final class RecruitmentService {
 
     private final RecruitmentRepository recruitmentRepository;
-    private final RecruitmentPeriodRepository recruitmentPeriodRepository;
-
     private final ConversionService conversionService;
-    private final RecruitmentPeriodService recruitmentPeriodService;
 
     public AddRecruitmentResponse saveRecruitment(final AddRecruitmentRequest request) {
         validateAddRecruitmentRequest(request);
@@ -45,23 +42,6 @@ public final class RecruitmentService {
 
         return GetRecruitmentResponse.builder()
                 .recruitment(recruitment)
-                .build();
-    }
-
-    public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentAndRecruitmentPeriod(
-            final Long recruitmentId,
-            final Long recruitmentPeriodId) {
-
-        final Recruitment recruitment = getRecruitmentFromDatabaseById(recruitmentId);
-        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodService
-                .getRecruitmentPeriodFromDatabaseById(recruitmentPeriodId);
-
-        recruitmentPeriod.addRecruitment(recruitment);
-        recruitmentPeriodRepository.save(recruitmentPeriod);
-
-        return RecruitmentAndRecruitmentPeriodConnectionResponse.builder()
-                .recruitmentId(recruitment.getId())
-                .recruitmentPeriodId(recruitmentPeriod.getId())
                 .build();
     }
 

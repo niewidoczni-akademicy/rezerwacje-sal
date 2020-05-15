@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -14,10 +15,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,7 +32,7 @@ import java.util.Set;
 @Entity
 @Builder
 @ToString
-@EqualsAndHashCode(exclude = {"coursesOfStudies"})
+@EqualsAndHashCode(exclude = {"userCourses"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class SystemUser {
@@ -64,6 +67,9 @@ public class SystemUser {
     @NonNull
     private LocalDateTime additionTime;
 
-    @ManyToMany(mappedBy = "systemUsers")
-    private final Set<CourseOfStudy> coursesOfStudies = new HashSet<>();
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "systemUser")
+    private Set<UserCourses> userCourses = new HashSet<>();
 }

@@ -58,21 +58,6 @@ public final class CourseOfStudyService {
         }
     }
 
-    public CourseAndUserConnectionResponse connectCourseOfStudyWithSystemUser(final String login,
-                                                                              final Long courseOfStudyId) {
-
-        final SystemUser systemUser = userService.getSystemUserFromDatabaseByLogin(login);
-        final CourseOfStudy courseOfStudy = getCourseOfStudyFromDatabaseById(courseOfStudyId);
-
-        courseOfStudy.addSystemUser(systemUser);
-        courseOfStudyRepository.save(courseOfStudy);
-
-        return CourseAndUserConnectionResponse.builder()
-                .courseOfStudyId(courseOfStudy.getId())
-                .systemUserId(systemUser.getId())
-                .build();
-    }
-
     public CourseOfStudy getCourseOfStudyFromDatabaseById(final Long courseOfStudyId) {
         return courseOfStudyRepository
                 .findById(courseOfStudyId)

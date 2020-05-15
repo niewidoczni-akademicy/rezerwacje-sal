@@ -41,23 +41,4 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitmentByName(name);
     }
 
-    @PostMapping(path = "connect", params = {"recruitmentId", "roomId"})
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(@RequestParam final Long recruitmentId,
-                                                                     @RequestParam final Long roomId) {
-
-        return recruitmentRoomService.connectRecruitmentAndRoom(recruitmentId, roomId);
-    }
-
-    @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    public RecruitmentAndRecruitmentPeriodConnectionResponse addRecruitmentPeriodToRecruitment(
-            @RequestParam final Long recruitmentId,
-            @RequestParam final Long recruitmentPeriodId) {
-
-        return recruitmentService.connectRecruitmentAndRecruitmentPeriod(recruitmentId, recruitmentPeriodId);
-    }
-
 }

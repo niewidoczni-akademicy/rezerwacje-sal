@@ -13,15 +13,10 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RecruitmentRoomService {
 
-    private final RecruitmentService recruitmentService;
-    private final RoomService roomService;
     private final RecruitmentRoomRepository recruitmentRoomRepository;
 
-    public RecruitmentAndRoomConnectionResponse connectRecruitmentAndRoom(final Long recruitmentId,
-                                                                          final Long roomId) {
-
-        final Recruitment recruitment = recruitmentService.getRecruitmentFromDatabaseById(recruitmentId);
-        final Room room = roomService.getRoomFromDatabaseById(roomId);
+    public RecruitmentAndRoomConnectionResponse connectRecruitmentAndRoom(final Recruitment recruitment,
+                                                                          final Room room) {
 
         final RecruitmentRoom recruitmentRoom = RecruitmentRoom.builder()
                 .recruitment(recruitment)
