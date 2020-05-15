@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RecruitmentPeriodRecruitmentService {
+public final class RecruitmentPeriodRecruitmentService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
 

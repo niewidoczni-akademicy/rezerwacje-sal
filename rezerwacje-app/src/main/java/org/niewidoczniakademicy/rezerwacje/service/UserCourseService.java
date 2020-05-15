@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserCourseService {
+public final class UserCourseService {
 
     private final UserCoursesRepository userCoursesRepository;
 

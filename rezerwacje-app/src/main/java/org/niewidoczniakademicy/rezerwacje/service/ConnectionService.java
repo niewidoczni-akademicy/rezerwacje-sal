@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ConnectionService {
+public final class ConnectionService {
 
     private final UserService userService;
     private final RoomService roomService;

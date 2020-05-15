@@ -1,8 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
-import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRecruitmentPeriodConnectionResponse;
-import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
