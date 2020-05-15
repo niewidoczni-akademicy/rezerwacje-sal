@@ -27,7 +27,6 @@ public final class RecruitmentService {
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
 
     private final ConversionService conversionService;
-    private final RoomService roomService;
     private final RecruitmentPeriodService recruitmentPeriodService;
 
     public AddRecruitmentResponse saveRecruitment(final AddRecruitmentRequest request) {
@@ -49,26 +48,11 @@ public final class RecruitmentService {
                 .build();
     }
 
-    public RecruitmentAndRoomConnectionResponse connectRecruitmentAndRoom(final String name,
-                                                                          final Long roomId) {
-
-        final Recruitment recruitment = getRecruitmentFromDatabaseByName(name);
-        final Room room = roomService.getRoomFromDatabaseById(roomId);
-
-        recruitment.addRoom(room);
-        recruitmentRepository.save(recruitment);
-
-        return RecruitmentAndRoomConnectionResponse.builder()
-                .recruitmentId(recruitment.getId())
-                .roomId(room.getId())
-                .build();
-    }
-
     public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentAndRecruitmentPeriod(
-            final String name,
+            final Long recruitmentId,
             final Long recruitmentPeriodId) {
 
-        final Recruitment recruitment = getRecruitmentFromDatabaseByName(name);
+        final Recruitment recruitment = getRecruitmentFromDatabaseById(recruitmentId);
         final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodService
                 .getRecruitmentPeriodFromDatabaseById(recruitmentPeriodId);
 
@@ -79,6 +63,13 @@ public final class RecruitmentService {
                 .recruitmentId(recruitment.getId())
                 .recruitmentPeriodId(recruitmentPeriod.getId())
                 .build();
+    }
+
+    public Recruitment getRecruitmentFromDatabaseById(final Long recruitmentId) {
+        return recruitmentRepository
+                .findById(recruitmentId)
+                .orElseThrow(() ->
+                        new RecruitmentNotFoundException("Recruitment with id: " + recruitmentId + " does not exist"));
     }
 
     private void validateAddRecruitmentRequest(final AddRecruitmentRequest request) {

@@ -32,7 +32,7 @@ import java.util.Set;
 @Entity
 @Builder
 @ToString
-@EqualsAndHashCode(exclude = {"rooms", "recruitmentPeriods"})
+@EqualsAndHashCode(exclude = {"recruitmentRooms", "recruitmentPeriods"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recruitment {
@@ -51,26 +51,16 @@ public class Recruitment {
     @NonNull
     private LocalDateTime endTime;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "Recruitment_Room",
-            joinColumns = {@JoinColumn(name = "recruitment_id")},
-            inverseJoinColumns = {@JoinColumn(name = "room_id")}
-    )
-    private final Set<Room> rooms = new HashSet<>();
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
+    private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
 
     @Builder.Default
     @ToString.Exclude
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
-
-    public final void addRoom(final Room room) {
-        rooms.add(room);
-    }
-
-    public final void addRecruitmentPeriod(final RecruitmentPeriod recruitmentPeriod) {
-        recruitmentPeriods.add(recruitmentPeriod);
-    }
 
 }

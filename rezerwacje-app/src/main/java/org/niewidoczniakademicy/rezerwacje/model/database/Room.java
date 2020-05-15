@@ -15,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -31,8 +30,8 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(exclude = {"examTerms"})
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,8 +57,11 @@ public class Room {
         this.examTerms.add(examTerm);
     }
 
-    @ManyToMany(mappedBy = "rooms")
-    private final Set<Recruitment> recruitments = new HashSet<>();
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
 
 
 }

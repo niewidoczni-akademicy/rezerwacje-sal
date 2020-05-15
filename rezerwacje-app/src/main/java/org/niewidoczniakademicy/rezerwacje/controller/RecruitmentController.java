@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomCo
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
+import org.niewidoczniakademicy.rezerwacje.service.RecruitmentRoomService;
 import org.niewidoczniakademicy.rezerwacje.service.RecruitmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public final class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
+    private final RecruitmentRoomService recruitmentRoomService;
 
     @PostMapping
     @ResponseBody
@@ -39,23 +41,23 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitmentByName(name);
     }
 
-    @PostMapping(path = "connect", params = {"name", "roomId"})
+    @PostMapping(path = "connect", params = {"recruitmentId", "roomId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(@RequestParam final String name,
+    public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(@RequestParam final Long recruitmentId,
                                                                      @RequestParam final Long roomId) {
 
-        return recruitmentService.connectRecruitmentAndRoom(name, roomId);
+        return recruitmentRoomService.connectRecruitmentAndRoom(recruitmentId, roomId);
     }
 
-    @PostMapping(path = "connect", params = {"name", "recruitmentPeriodId"})
+    @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public RecruitmentAndRecruitmentPeriodConnectionResponse addRecruitmentPeriodToRecruitment(
-            @RequestParam final String name,
+            @RequestParam final Long recruitmentId,
             @RequestParam final Long recruitmentPeriodId) {
 
-        return recruitmentService.connectRecruitmentAndRecruitmentPeriod(name, recruitmentPeriodId);
+        return recruitmentService.connectRecruitmentAndRecruitmentPeriod(recruitmentId, recruitmentPeriodId);
     }
 
 }
