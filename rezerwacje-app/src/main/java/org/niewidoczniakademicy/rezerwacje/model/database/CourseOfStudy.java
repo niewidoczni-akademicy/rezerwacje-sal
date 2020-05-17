@@ -47,7 +47,7 @@ public class CourseOfStudy {
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "faculty_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Faculty faculty; // TODO Fix creating multiple times the same faculty
 
     @NonNull

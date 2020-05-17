@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
+import org.niewidoczniakademicy.rezerwacje.model.database.*;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
@@ -17,6 +19,7 @@ public final class ConversionServiceImpl implements ConversionService {
     private final SystemUserConverter systemUserConverter;
     private final RecruitmentPeriodConverter recruitmentPeriodConverter;
     private final RecruitmentConverter recruitmentConverter;
+    private final CourseOfStudyConverter courseOfStudyConverter;
 
     @Override
     public SystemUser convert(final AddSystemUserRequest request) {
@@ -31,6 +34,11 @@ public final class ConversionServiceImpl implements ConversionService {
     @Override
     public Recruitment convert(final AddRecruitmentRequest request) {
         return recruitmentConverter.createFrom(request);
+    }
+
+    @Override
+    public CourseOfStudy convert(AddCourseOfStudyRequest request) {
+        return courseOfStudyConverter.createFrom(request);
     }
 
 }
