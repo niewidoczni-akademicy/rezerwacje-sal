@@ -5,6 +5,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRe
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.niewidoczniakademicy.rezerwacje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,13 @@ public final class SystemUserController {
                                                                        @RequestParam final String lastName) {
 
         return userService.getSystemUsersByFirstNameAndLastName(firstName, lastName);
+    }
+
+    @GetMapping(params = {"type"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetSystemUsersResponse getSystemUsersByType(@RequestParam final UserType type) {
+        return userService.getSystemUsersByType(type);
     }
 
     @GetMapping(path = "all")
