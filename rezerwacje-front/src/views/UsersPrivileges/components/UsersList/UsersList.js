@@ -7,6 +7,8 @@ import {
   CardActions,
   CardContent,
   Avatar,
+  Divider,
+  CardHeader,
   Checkbox,
   Table,
   TableBody,
@@ -89,6 +91,8 @@ const UsersList = () => {
   return (
     <React.Fragment>
     <Card>
+    <CardHeader title="Użytkownicy standardowi" />
+     <Divider />
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
