@@ -1,6 +1,4 @@
 import React from "react";
-import UploadFileForm from "./UploadFile";
-import "./RoomsForm.scss";
 
 function Room(props) {
   return (
@@ -39,7 +37,6 @@ class RoomsForm extends React.Component {
     return (
       <div className="RoomsFormMain">
         <RoomList rooms={this.state.rooms} />
-        <UploadFileForm />
       </div>
     );
   }
