@@ -10,7 +10,7 @@ import org.springframework.lang.NonNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddSystemUserResponse {
+public class OperationOnSystemUserResponse {
 
     @NonNull
     private Long userId;
