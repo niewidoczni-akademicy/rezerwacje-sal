@@ -93,8 +93,8 @@ const AddRoomForm = (props) => {
 
       <DialogContent dividers>
         <Card>
-          <CardHeader title="Nowa sala" />
-          <Divider />
+          {/* <CardHeader title="Nowa sala" />
+          <Divider /> */}
           <CardContent>
             <Grid container spacing={3}>
               <Grid item md={6} xs={12}>
