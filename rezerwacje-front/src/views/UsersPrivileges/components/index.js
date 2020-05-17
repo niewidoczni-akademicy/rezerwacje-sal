@@ -1,2 +1,2 @@
-export { default as ChangePrivilegesForm } from './ChangePrivilegesForm';
+export { default as ChangeAccessForm } from './ChangeAccessForm';
 export { default as UsersList } from './UsersList';

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-import { makeStyles } from '@material-ui/styles';
-import clsx from 'clsx';
+import React, { useState, useEffect } from "react";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import { makeStyles } from "@material-ui/styles";
+import clsx from "clsx";
 import {
   Card,
   CardActions,
@@ -15,9 +15,9 @@ import {
   TableRow,
   Typography,
   TablePagination
-} from '@material-ui/core';
+} from "@material-ui/core";
 import "./UsersList.scss";
-import mockData from './data'
+import ChangeAccessForm from "../ChangeAccessForm/ChangeAccessForm";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -30,8 +30,8 @@ const useStyles = makeStyles(theme => ({
     minWidth: 1050
   },
   nameContainer: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center"
   },
   table: {
     border: 0
@@ -43,17 +43,15 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(2)
   },
   actions: {
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end"
   }
 }));
 
-
 const UsersList = () => {
-
-  const [selectedUser, setSelectedUser] = useState(-1);
-  const [users] = useState(mockData)
+  const [selectedUser, setSelectedUser] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [users, setUsers] = useState([]);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -66,22 +64,38 @@ const UsersList = () => {
   const classes = useStyles();
 
   const handleSelectOne = (event, id) => {
-    if (selectedUser === id)
-      setSelectedUser(-1);
-    else
-      setSelectedUser(id);
+    if (selectedUser === id) setSelectedUser(-1);
+    else setSelectedUser(id);
   };
 
+  useEffect(() => {
+    fetch("/api/system-user/all")
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        setUsers(json["systemUsers"]);
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  const getSelectedUser = () => {
+    if (selectedUser == -1) 
+      return null;
+    else {
+      return users.find(user => user.id === selectedUser);
+    }
+  }
+
   return (
-    <Card
-    >
+    <React.Fragment>
+    <Card>
       <CardContent className={classes.content}>
         <PerfectScrollbar>
           <div className={classes.inner}>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox"/>
+                  <TableCell padding="checkbox" />
                   <TableCell>Login</TableCell>
                   <TableCell>Imię</TableCell>
                   <TableCell>Nazwisko</TableCell>
@@ -90,34 +104,50 @@ const UsersList = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice(0, rowsPerPage).map(user => (
-                  <TableRow
-                    className={classes.tableRow}
-                    hover
-                    key={user.id}
-                    selected={user.id === selectedUser}
-                  >
-                    <TableCell padding="checkbox" className={classes.cell}>
-                      <Checkbox
-                        checked={user.id === selectedUser}
-                        color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
-                        value="true"
-                      />
-                    </TableCell>
-                    <TableCell className={classes.cell}>
-                      <div className={classes.nameContainer} >
-                        <Typography variant="body1">{user.name}</Typography>
-                      </div>
-                    </TableCell>
-                    <TableCell className={classes.cell}>{user.email}</TableCell>
-                    <TableCell className={classes.cell}>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
-                    </TableCell>
-                    <TableCell className={classes.cell}>{user.phone}</TableCell>
-                  </TableRow>
-                ))}
+                {users
+                  .filter(user => user.userType === "STANDARD")
+                  .map(user => (
+                    <TableRow
+                      className={classes.tableRow}
+                      hover
+                      key={user.id}
+                      selected={user.id == selectedUser}
+                    >
+                      <TableCell padding="checkbox" className={classes.cell}>
+                        <Checkbox
+                          checked={user.id == selectedUser}
+                          color="primary"
+                          onChange={event => handleSelectOne(event, user.id)}
+                          value="true"
+                        />
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">{user.login}</Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">
+                            {user.firstName}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">
+                            {user.lastName}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        {user.emailAddress}
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        {user.phoneNumber}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>
@@ -135,8 +165,10 @@ const UsersList = () => {
         />
       </CardActions>
     </Card>
+    <br/>
+    <ChangeAccessForm user={getSelectedUser()}/>
+    </React.Fragment>
   );
-
 };
 
 export default UsersList;
