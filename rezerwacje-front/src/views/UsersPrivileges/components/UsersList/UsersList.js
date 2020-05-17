@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 const UsersList = () => {
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(-1);
   const [users] = useState(mockData)
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -65,36 +65,11 @@ const UsersList = () => {
 
   const classes = useStyles();
 
-  const handleSelectAll = event => {
-    let selectedUsers;
-
-    if (event.target.checked) {
-      selectedUsers = users.map(user => user.id);
-    } else {
-      selectedUsers = [];
-    }
-
-    setSelectedUsers(selectedUsers);
-  };
-
   const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedUsers.indexOf(id);
-    let newSelectedUsers = [];
-
-    if (selectedIndex === -1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers, id);
-    } else if (selectedIndex === 0) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(1));
-    } else if (selectedIndex === selectedUsers.length - 1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedUsers = newSelectedUsers.concat(
-        selectedUsers.slice(0, selectedIndex),
-        selectedUsers.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedUsers(newSelectedUsers);
+    if (selectedUser === id)
+      setSelectedUser(-1);
+    else
+      setSelectedUser(id);
   };
 
   return (
@@ -106,21 +81,12 @@ const UsersList = () => {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedUsers.length === users.length}
-                      color="primary"
-                      indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
+                  <TableCell padding="checkbox"/>
+                  <TableCell>Login</TableCell>
+                  <TableCell>Imię</TableCell>
+                  <TableCell>Nazwisko</TableCell>
+                  <TableCell>Adres email</TableCell>
+                  <TableCell>Numer telefonu</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -129,11 +95,11 @@ const UsersList = () => {
                     className={classes.tableRow}
                     hover
                     key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
+                    selected={user.id === selectedUser}
                   >
                     <TableCell padding="checkbox" className={classes.cell}>
                       <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
+                        checked={user.id === selectedUser}
                         color="primary"
                         onChange={event => handleSelectOne(event, user.id)}
                         value="true"
