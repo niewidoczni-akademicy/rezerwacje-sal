@@ -106,13 +106,13 @@ public final class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " does not exist"));
     }
 
-    public SystemUser getSystemUserFromDatabaseByLogin(final String login) {
+    private SystemUser getSystemUserFromDatabaseByLogin(final String login) {
         return userRepository
                 .findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
     }
 
-    public List<SystemUser> getSystemUsersFromDatabaseByType(final UserType type) {
+    private List<SystemUser> getSystemUsersFromDatabaseByType(final UserType type) {
         return userRepository
                 .findSystemUsersByUserType(type)
                 .orElseThrow(() -> new UserNotFoundException("Unable to find users with type: " + type));
