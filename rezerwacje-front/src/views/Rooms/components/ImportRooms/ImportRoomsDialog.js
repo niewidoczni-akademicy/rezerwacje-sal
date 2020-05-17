@@ -1,6 +1,5 @@
 import React from "react";
 import { useRef, useState } from "react";
-import { useEffect, useRef, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";

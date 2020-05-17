@@ -9,8 +9,10 @@ import {
   TextField,
   Typography,
   DialogActions,
+  IconButton,
 } from "@material-ui/core";
-
+import { makeStyles, useTheme } from "@material-ui/styles";
+import CloseIcon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -18,7 +20,21 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import validateRoomForm from "./validateRoomForm.js";
 import useForm from "./useForm.jsx";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+}));
+
 const AddRoomForm = (props) => {
+  const classes = useStyles();
   const initState = {
     name: "",
     building: "",
@@ -64,9 +80,17 @@ const AddRoomForm = (props) => {
       onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle>
+      <DialogTitle className={classes.root}>
         <Typography variant="h3">Nowa sala</Typography>
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={props.handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
+
       <DialogContent dividers>
         <Card>
           <CardHeader title="Nowa sala" />
