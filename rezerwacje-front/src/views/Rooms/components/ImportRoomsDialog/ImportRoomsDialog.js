@@ -1,6 +1,10 @@
 import React from "react";
 import { useEffect, useRef, useState } from "react";
+import { makeStyles, useTheme } from "@material-ui/styles";
+
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -32,7 +36,21 @@ const uploadRoomFiles = (files) => {
   }
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+}));
+
 const ImportRoomsDialog = (props) => {
+  const classes = useStyles();
   const inputHandle = useRef(null);
   const [files, setFiles] = useState([]);
 
@@ -51,7 +69,16 @@ const ImportRoomsDialog = (props) => {
       onClose={onClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle>Import z pliku CSV</DialogTitle>
+      <DialogTitle className={classes.root}>
+        Import z pliku CSV
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         <List component="nav" aria-label="main mailbox folders">
           {Array.from(files).map((f) => (
