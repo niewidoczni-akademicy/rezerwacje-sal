@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
-import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
-import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
@@ -30,7 +28,6 @@ public final class CourseOfStudyService {
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;
     private final CourseOfStudyMapper courseOfStudyMapper;
-    private final UserService userService;
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());
@@ -58,22 +55,7 @@ public final class CourseOfStudyService {
         }
     }
 
-    public CourseAndUserConnectionResponse connectCourseOfStudyWithSystemUser(final String login,
-                                                                              final Long courseOfStudyId) {
-
-        final SystemUser systemUser = userService.getSystemUserFromDatabaseByLogin(login);
-        final CourseOfStudy courseOfStudy = getCourseOfStudyById(courseOfStudyId);
-
-        courseOfStudy.addSystemUser(systemUser);
-        courseOfStudyRepository.save(courseOfStudy);
-
-        return CourseAndUserConnectionResponse.builder()
-                .courseOfStudyId(courseOfStudy.getId())
-                .systemUserId(systemUser.getId())
-                .build();
-    }
-
-    public CourseOfStudy getCourseOfStudyById(final Long courseOfStudyId) {
+    public CourseOfStudy getCourseOfStudyFromDatabaseById(final Long courseOfStudyId) {
         return courseOfStudyRepository
                 .findById(courseOfStudyId)
                 .orElseThrow(

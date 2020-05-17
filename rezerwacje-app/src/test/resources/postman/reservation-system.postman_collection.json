@@ -18,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"firstName\": \"Usain\",\n\t\"lastName\": \"Bolt\",\n\t\"emailAddress\": \"usain.bolt2@gmail.com\",\n\t\"phoneNumber\": \"987654321\",\n\t\"login\": \"321_USAIN_BOLT3322\",\n\t\"password\": \"usb\",\n\t\"userType\": \"SUPERVISOR\"\n}"
+					"raw": "{\n\t\"firstName\": \"Usain\",\n\t\"lastName\": \"Bolt\",\n\t\"emailAddress\": \"usain.bolt2@gmail.com\",\n\t\"phoneNumber\": \"987654321\",\n\t\"login\": \"qwe\",\n\t\"password\": \"usb\",\n\t\"userType\": \"SUPERVISOR\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{user-path}}",
@@ -106,22 +106,128 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base-url}}/{{course-of-study-path}}/{{connect-course-and-user-path}}?{{user-login-param}}={{user-login-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{user-id-param}}={{user-id-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
 					"host": [
 						"{{base-url}}"
 					],
 					"path": [
-						"{{course-of-study-path}}",
-						"{{connect-course-and-user-path}}"
+						"{{connection-path}}",
+						"{{connect-path}}"
 					],
 					"query": [
 						{
-							"key": "{{user-login-param}}",
-							"value": "{{user-login-value}}"
+							"key": "{{user-id-param}}",
+							"value": "{{user-id-value}}"
 						},
 						{
 							"key": "{{course-of-study-id-param}}",
 							"value": "{{course-of-study-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddRecruitmentRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"firstR\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecruitmentByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-path}}?{{recruitment-name-path}}={{recruitment-name-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-path}}"
+					],
+					"query": [
+						{
+							"key": "{{recruitment-name-path}}",
+							"value": "{{recruitment-name-value}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConnectRecruitmentAndRoom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{recruitment-id-param}}={{recruitment-id-param-value}}&{{room-id-param}}={{room-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{connection-path}}",
+						"{{connect-path}}"
+					],
+					"query": [
+						{
+							"key": "{{recruitment-id-param}}",
+							"value": "{{recruitment-id-param-value}}"
+						},
+						{
+							"key": "{{room-id-param}}",
+							"value": "{{room-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConnectRecruitmentAndRecruitmentPeriod",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{connection-path}}/{{connect-path}}?{{recruitment-id-param}}={{recruitment-id-param-value}}&{{recrutiment-period-id-param}}={{recrutiment-period-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{connection-path}}",
+						"{{connect-path}}"
+					],
+					"query": [
+						{
+							"key": "{{recruitment-id-param}}",
+							"value": "{{recruitment-id-param-value}}"
+						},
+						{
+							"key": "{{recrutiment-period-id-param}}",
+							"value": "{{recrutiment-period-id-value}}"
 						}
 					]
 				}

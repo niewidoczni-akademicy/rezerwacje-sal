@@ -72,6 +72,12 @@ public final class UserService {
         }
     }
 
+    public SystemUser getSystemUserFromDatabaseById(final Long userId) {
+        return userRepository
+                .findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " does not exist"));
+    }
+
     public SystemUser getSystemUserFromDatabaseByLogin(final String login) {
         return userRepository
                 .findByLogin(login)
