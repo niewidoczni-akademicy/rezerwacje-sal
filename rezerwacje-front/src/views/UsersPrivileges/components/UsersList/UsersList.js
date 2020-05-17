@@ -71,7 +71,7 @@ const UsersList = () => {
   };
 
   useEffect(() => {
-    fetch("/api/system-user/all")
+    fetch("/api/system-user?type=STANDARD")
       .then(res => res.json())
       .then(json => {
         console.log(json);
@@ -109,7 +109,6 @@ const UsersList = () => {
               </TableHead>
               <TableBody>
                 {users
-                  .filter(user => user.userType === "STANDARD")
                   .map(user => (
                     <TableRow
                       className={classes.tableRow}
