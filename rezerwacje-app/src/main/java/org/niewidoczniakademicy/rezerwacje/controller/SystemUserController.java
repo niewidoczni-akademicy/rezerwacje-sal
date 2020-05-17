@@ -2,12 +2,13 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
-import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
 import org.niewidoczniakademicy.rezerwacje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +28,7 @@ public final class SystemUserController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public AddSystemUserResponse addSystemUser(@RequestBody final AddSystemUserRequest request) {
+    public OperationOnSystemUserResponse addSystemUser(@RequestBody final AddSystemUserRequest request) {
         return userService.saveSystemUser(request);
     }
 
@@ -54,4 +55,17 @@ public final class SystemUserController {
         return userService.getAllSystemUsers();
     }
 
+    @DeleteMapping(params = {"userId"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public OperationOnSystemUserResponse deleteSystemUserById(@RequestParam final Long userId) {
+        return userService.deleteSystemUserById(userId);
+    }
+
+    @DeleteMapping(params = {"login"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public OperationOnSystemUserResponse deleteSystemUserByLogin(@RequestParam final String login) {
+        return userService.deleteSystemUserByLogin(login);
+    }
 }
