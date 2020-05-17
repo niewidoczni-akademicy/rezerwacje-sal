@@ -8,6 +8,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRe
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
@@ -64,6 +65,14 @@ public final class UserService {
                 .build();
     }
 
+    public GetSystemUsersResponse getSystemUsersByType(final UserType type) {
+        final List<SystemUser> systemUsers = getSystemUsersFromDatabaseByType(type);
+
+        return GetSystemUsersResponse.builder()
+                .systemUsers(systemUsers)
+                .build();
+    }
+
     public OperationOnSystemUserResponse deleteSystemUserById(final Long userId) {
         final SystemUser systemUser = getSystemUserFromDatabaseById(userId);
         userRepository.delete(systemUser);
@@ -103,4 +112,9 @@ public final class UserService {
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
     }
 
+    public List<SystemUser> getSystemUsersFromDatabaseByType(final UserType type) {
+        return userRepository
+                .findSystemUsersByUserType(type)
+                .orElseThrow(() -> new UserNotFoundException("Unable to find users with type: " + type));
+    }
 }
