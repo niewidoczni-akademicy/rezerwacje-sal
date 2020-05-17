@@ -47,13 +47,17 @@ public final class RecruitmentPeriodService {
     }
 
     public GetRecruitmentPeriodResponse getRecruitmentPeriod(final Long id) {
-        RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
-                .findById(id)
-                .orElseThrow(() -> new RecruitmentPeriodNotFoundException("No recruitment period with id " + id));
+        RecruitmentPeriod recruitmentPeriod = getRecruitmentPeriodFromDatabaseById(id);
 
         return GetRecruitmentPeriodResponse.builder()
                 .recruitmentPeriod(recruitmentPeriod)
                 .build();
+    }
+
+    public RecruitmentPeriod getRecruitmentPeriodFromDatabaseById(final Long id) {
+        return recruitmentPeriodRepository
+                .findById(id)
+                .orElseThrow(() -> new RecruitmentPeriodNotFoundException("No recruitment period with id " + id));
     }
 
     private void validateRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
