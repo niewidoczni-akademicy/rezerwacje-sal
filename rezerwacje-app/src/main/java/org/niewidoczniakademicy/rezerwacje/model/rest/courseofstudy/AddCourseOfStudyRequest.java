@@ -1,12 +1,11 @@
 package org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
-import org.niewidoczniakademicy.rezerwacje.model.database.Faculty;
-import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
-import org.niewidoczniakademicy.rezerwacje.model.shared.CourseType;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Builder
