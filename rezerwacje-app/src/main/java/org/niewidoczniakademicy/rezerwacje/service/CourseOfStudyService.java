@@ -5,7 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudyResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCoursesOfStudiesForUserResponse;
+import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
@@ -25,6 +29,7 @@ import java.util.Set;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public final class CourseOfStudyService {
 
+    private final ConversionService conversionService;
     private final CourseOfStudyRepository courseOfStudyRepository;
     private final CSVService csvService;
     private final CourseOfStudyMapper courseOfStudyMapper;
@@ -62,4 +67,20 @@ public final class CourseOfStudyService {
                         () -> new CourseOfStudyNotFoundException("No course of study with id: " + courseOfStudyId));
     }
 
+    public GetCourseOfStudyResponse saveCourse(final AddCourseOfStudyRequest request) {
+        CourseOfStudy course = conversionService.convert(request);
+        courseOfStudyRepository.save(course);
+
+        return GetCourseOfStudyResponse.builder()
+                .courseOfStudy(course)
+                .build();
+    }
+
+    public GetCoursesOfStudiesForUserResponse getCoursesOfStudiesForUser(final Long userId) {
+        List<Long> coursesOfStudiesIdsForUser = courseOfStudyRepository.getCourseOfStudiesForUser(userId);
+
+        return GetCoursesOfStudiesForUserResponse.builder()
+                .coursesOfStudiesIdsForUser(coursesOfStudiesIdsForUser)
+                .build();
+    }
 }

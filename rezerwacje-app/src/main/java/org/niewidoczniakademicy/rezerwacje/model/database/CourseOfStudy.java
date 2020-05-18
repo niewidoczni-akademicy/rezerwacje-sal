@@ -47,7 +47,7 @@ public class CourseOfStudy {
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "faculty_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Faculty faculty; // TODO Fix creating multiple times the same faculty
 
     @NonNull
@@ -72,13 +72,13 @@ public class CourseOfStudy {
 
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
     private Set<ExamTerm> examTerms = new HashSet<>();
 
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseOfStudy")
     private Set<UserCourses> userCourses = new HashSet<>();
 
