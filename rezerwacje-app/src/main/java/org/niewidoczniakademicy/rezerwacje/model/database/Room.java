@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"examTerms"})
+@EqualsAndHashCode
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,20 +48,7 @@ public class Room {
 
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
-    private Set<ExamTerm> examTerms = new HashSet<>();
-
-    private void addExamTerm(final ExamTerm examTerm) {
-        examTerm.setRoom(this);
-        this.examTerms.add(examTerm);
-    }
-
-    @Builder.Default
-    @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
     private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
-
-
 }

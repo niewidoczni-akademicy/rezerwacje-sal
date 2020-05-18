@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(exclude = {"courseOfStudy", "room"})
+@EqualsAndHashCode(exclude = {"courseOfStudy", "recruitmentRoom"})
 @NoArgsConstructor
 public class ExamTerm {
 
@@ -47,25 +47,37 @@ public class ExamTerm {
 
     @NonNull
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
+    @JoinColumn(name = "recruitment_period_id")
+    private RecruitmentPeriod recruitmentPeriod;
+
+    @NonNull
+    @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "course_of_study_id")
     private CourseOfStudy courseOfStudy;
 
     @ManyToOne
-    @JsonBackReference
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JsonManagedReference
+    @JoinColumn(name = "recruitment_room_id")
+    private RecruitmentRoom recruitmentRoom;
 
     public ExamTerm(final LocalDate day,
                     final LocalTime timeStart,
                     final LocalTime timeEnd,
+                    final RecruitmentPeriod recruitmentPeriod,
                     final CourseOfStudy courseOfStudy,
-                    final Room room) {
+                    final RecruitmentRoom recruitmentRoom) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
+        this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
-        this.addRoom(room);
+        this.addRoom(recruitmentRoom);
+    }
+
+    private void addRecruitmentPeriod(final RecruitmentPeriod recruitmentPeriod) {
+        this.recruitmentPeriod = recruitmentPeriod;
     }
 
     private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
@@ -73,8 +85,8 @@ public class ExamTerm {
         courseOfStudy.getExamTerms().add(this);
     }
 
-    private void addRoom(final Room room) {
-        this.room = room;
-        room.getExamTerms().add(this);
+    private void addRoom(final RecruitmentRoom recruitmentRoom) {
+        this.recruitmentRoom = recruitmentRoom;
+        recruitmentRoom.getExamTerms().add(this);
     }
 }
