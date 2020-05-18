@@ -141,7 +141,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"firstR\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\"\n}"
+					"raw": "{\n\t\"name\": \"firstrrrrR\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{recruitment-path}}",
@@ -299,6 +299,17 @@
 							"value": "{{user-type-value}}"
 						}
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllRecruitments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
 				}
 			},
 			"response": []

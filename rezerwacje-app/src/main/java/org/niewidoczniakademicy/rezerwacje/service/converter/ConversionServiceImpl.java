@@ -35,7 +35,7 @@ public final class ConversionServiceImpl implements ConversionService {
     }
 
     @Override
-    public Room convert(AddRoomRequest request) {
+    public Room convert(final AddRoomRequest request) {
         return roomConverter.createFrom(request);
     }
 
@@ -45,7 +45,7 @@ public final class ConversionServiceImpl implements ConversionService {
     }
 
     @Override
-    public CourseOfStudy convert(AddCourseOfStudyRequest request) {
+    public CourseOfStudy convert(final AddCourseOfStudyRequest request) {
         return courseOfStudyConverter.createFrom(request);
     }
 
