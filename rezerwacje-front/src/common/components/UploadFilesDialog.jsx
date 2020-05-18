@@ -1,26 +1,27 @@
 import React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/styles';
-
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 
-import { UploadFilesDialog } from 'common';
-
-const uploadRoomFiles = (files) => {
+const uploadFiles = (url) => (files) => {
   for (let i = 0; i < files.length; i++) {
     const data = new FormData();
     data.append('file', files[i]);
 
-    fetch('/api/rooms/upload', {
+    fetch(url, {
       method: 'POST',
       body: data,
     }).then(
@@ -51,14 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImportRoomsDialog = (props) =>
-  UploadFilesDialog({
-    title: 'Import z CSV',
-    url: '/api/rooms/upload',
-    ...props,
-  });
-
-const ImportBoomsDialog = (props) => {
+function UploadFilesDialog(props) {
   const classes = useStyles();
   const inputHandle = useRef(null);
   const [files, setFiles] = useState([]);
@@ -72,24 +66,19 @@ const ImportBoomsDialog = (props) => {
     props.handleClose();
   };
 
+  const upload = uploadFiles(props.url);
+
   return (
-    <Dialog
-      open={props.open}
-      onClose={onClose}
-      aria-labelledby="form-dialog-title"
-    >
+    <Dialog open={props.open} onClose={onClose}>
       <DialogTitle className={classes.root}>
-        Import z pliku CSV
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
+        <Typography variant="h3">{props.title}</Typography>
+        <IconButton className={classes.closeButton} onClick={props.handleClose}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
+      <Divider />
       <DialogContent>
-        <List component="nav" aria-label="main mailbox folders">
+        <List>
           {Array.from(files).map((f) => (
             <ListItem>
               <ListItemText>{f.name}</ListItemText>
@@ -111,18 +100,18 @@ const ImportBoomsDialog = (props) => {
           variant="contained"
           onClick={() => inputHandle.current.click()}
         >
-          Wybierz plik
+          Wybierz pliki
         </Button>
         <Button
           color="primary"
           variant="contained"
-          onClick={() => uploadRoomFiles(files)}
+          onClick={() => upload(files)}
         >
           Importuj
         </Button>
       </DialogActions>
     </Dialog>
   );
-};
+}
 
-export default ImportRoomsDialog;
+export default UploadFilesDialog;
