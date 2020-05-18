@@ -22,22 +22,6 @@ export const buildExamTimebar = (startDate, endDate) => [
   },
 ]
 
-export const updateExamTimebar = (timebar, startDate, endDate) => {
-  const newDayCells = buildDayCells(startDate, endDate)
-  const newHourCells = buildHourCells(startDate, endDate)
-  replaceArrayElements(timebar[0].cells, newDayCells)
-  replaceArrayElements(timebar[1].cells, newHourCells)
-}
-
-const replaceArrayElements = (array, newElements) => {
-  for (var x in array) {
-    array.pop()
-  }
-  for (var x in newElements) {
-    array.push(x)
-  }
-}
-
 export const buildDayCells = (startDate, endDate) => {
   const cells = []
   const endDayDate = new Date(endDate.getTime())
