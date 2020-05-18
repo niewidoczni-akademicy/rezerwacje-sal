@@ -18,7 +18,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"firstName\": \"Usain\",\n\t\"lastName\": \"Bolt\",\n\t\"emailAddress\": \"usain.bolt2@gmail.com\",\n\t\"phoneNumber\": \"987654321\",\n\t\"login\": \"login1\",\n\t\"password\": \"usb\",\n\t\"userType\": \"SUPERVISOR\"\n}"
+					"raw": "{\n\t\"firstName\": \"Usain\",\n\t\"lastName\": \"Bolt\",\n\t\"emailAddress\": \"usain.bolt2@gmail.com\",\n\t\"phoneNumber\": \"987654321\",\n\t\"login\": \"login2\",\n\t\"password\": \"usb\",\n\t\"userType\": \"ADMINISTRATOR\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{user-path}}",
@@ -274,6 +274,29 @@
 						{
 							"key": "{{user-id-param}}",
 							"value": "{{user-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSystemUsersByType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{user-path}}?{{user-type-param}}={{user-type-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{user-path}}"
+					],
+					"query": [
+						{
+							"key": "{{user-type-param}}",
+							"value": "{{user-type-value}}"
 						}
 					]
 				}
