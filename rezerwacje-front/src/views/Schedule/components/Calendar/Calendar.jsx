@@ -1,18 +1,13 @@
-/* eslint-disable import/no-unresolved */
 import React, { Component } from 'react'
 import { 
   Card, 
   CardContent, 
-  Grid, 
-  Typography, 
-  Avatar, 
   CardActions, 
   Button 
 } from '@material-ui/core';
-
 import Timeline from 'react-timelines'
 import { START_DATE, END_DATE, ROOMS } from './constants'
-import { buildExamTimebar, updateExamTimebar, buildRoomTrack } from './builders'
+import { buildExamTimebar, buildRoomTrack } from './builders'
 
 import './style.scss'
 import './Calendar.scss'
@@ -81,11 +76,7 @@ class Calendar extends Component {
     this.state.start = this.prepareStartDate(from)
     this.state.end = this.prepareEndDate(to)
     this.state.timebar = buildExamTimebar(this.state.start, this.state.end)
-    console.log(this.state.tracksById)
-    console.log(Object.values(this.state.tracksById))
     this.state.tracksById = this.getRoomsTracks(rooms)
-    console.log(this.state.tracksById)
-    console.log(Object.values(this.state.tracksById))
     this.state.tracks = Object.values(this.state.tracksById)
     this.forceUpdate()
   }

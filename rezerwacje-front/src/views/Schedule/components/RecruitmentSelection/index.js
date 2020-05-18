@@ -1,1 +1,1 @@
-export { default } from './ScheduleContent';
+export { default } from './RecruitmentSelection';

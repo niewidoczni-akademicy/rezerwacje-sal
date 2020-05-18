@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { 
   Grid, 
@@ -22,7 +21,11 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 
 import {
   ScheduleContent,
-  Calendar
+  Calendar,
+  RecruitmentSelection,
+  CoursesSelection,
+  RoomsSelection,
+  TimeSelection,
 } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -57,21 +60,11 @@ const Schedule = () => {
     cycle: cycles.length > 0 ? cycles[0] : '',
     dateFrom: new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)),
     dateTo: new Date(Date.now()),
+    courses: courses.slice(0),
+    rooms: rooms.slice(0),
+    recruitments: recruitments.slice(0),
+    cycles: cycles.slice(0),
   });
-
-  const handleDateFromChange = date => {
-    setValues({
-      ...values,
-      ['dateFrom']: date
-    });
-  };
-
-  const handleDateToChange = date => {
-    setValues({
-      ...values,
-      ['dateTo']: date
-    });
-  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -81,24 +74,29 @@ const Schedule = () => {
     });
   };
 
-  const [selectedCourses, setSelectedCourses] = React.useState(courses.slice(0));
+  const updateRecruitment = value => {
+    setValues({
+      ...values,
+      ['recruitment']: value
+    });
+  }
 
-  const handleSelectedCoursesChange = event => {
-    setSelectedCourses(event.target.value)
-  };
+  const updateCycle = value => handleChange({target: {name: 'cycle', value: value }})
 
-  const [selectedRooms, setSelectedRooms] = React.useState(rooms.slice(0));
+  const updateCourses = value => handleChange({target: {name: 'courses', value: value }})
 
-  const handleSelectedRoomsChange = event => {
-    setSelectedRooms(event.target.value)
-  };
+  const updateRooms = value => handleChange({target: {name: 'rooms', value: value }})
+
+  const updateDateFrom = value => handleChange({target: {name: 'dateFrom', value: value }})
+
+  const updateDateTo = value => handleChange({target: {name: 'dateTo', value: value }})
 
   const getFilterValues = () => {
     return {
       from: values.dateFrom, 
       to: values.dateTo,
-      rooms: selectedRooms,
-      courses: selectedCourses,
+      rooms: values.rooms,
+      courses: values.courses,
     }
   }
 
@@ -109,156 +107,32 @@ const Schedule = () => {
         spacing={4}
       >
         <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4" gutterBottom>
-                Recruitment
-              </Typography>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  helperText="Recruitment"
-                  margin="dense"
-                  name="recruitment"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.recruitment}
-                  variant="outlined"
-                >
-                  {recruitments.map(recruitment => (
-                    <option key={recruitment} value={recruitment}>{recruitment}</option>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  helperText="Cycle"
-                  margin="dense"
-                  name="cycle"
-                  onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.cycle}
-                  variant="outlined"
-                >
-                  {cycles.map(cycle => (
-                    <option key={cycle} value={cycle}>{cycle}</option>
-                  ))}
-                </TextField>
-              </Grid>
-            </CardContent>
-          </Card>
+          <RecruitmentSelection 
+            updateRecruitment={updateRecruitment} 
+            updateCycle={updateCycle}
+            recruitments={values.recruitments}
+            cycles={values.cycles}
+          />
         </Grid>
         <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4" gutterBottom>
-                Courses
-              </Typography>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="multiple_selected_courses">Selected courses</InputLabel>
-                  <Select
-                    labelId="multiple_selected_courses"
-                    id="courses_selection_panel"
-                    multiple
-                    value={selectedCourses}
-                    onChange={handleSelectedCoursesChange}
-                    input={<Input id="courses_selection" />}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} className={classes.chip} />
-                        ))}
-                      </div>
-                    )}
-                  >
-                    {courses.map((course) => (
-                      <MenuItem key={course} value={course}>
-                        {course}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </CardContent>
-          </Card>
+          <CoursesSelection 
+            updateCourses={updateCourses} 
+            courses={values.courses}
+          />
         </Grid>
         <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4" gutterBottom>
-                Rooms
-              </Typography>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel id="multiple_selected_rooms">Selected rooms</InputLabel>
-                  <Select
-                    labelId="multiple_selected_rooms"
-                    id="rooms_selection_panel"
-                    multiple
-                    value={selectedRooms}
-                    onChange={handleSelectedRoomsChange}
-                    input={<Input id="rooms_selection" />}
-                    renderValue={(selected) => (
-                      <div className={classes.chips}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} className={classes.chip} />
-                        ))}
-                      </div>
-                    )}
-                  >
-                    {rooms.map((room) => (
-                      <MenuItem key={room} value={room}>
-                        {room}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-            </CardContent>
-          </Card>
+          <RoomsSelection 
+            updateRooms={updateRooms} 
+            rooms={values.rooms}
+          />
         </Grid>
         <Grid item xs={3}>
-          <Card>
-            <CardContent>
-              <Typography variant="h4" gutterBottom>
-                Time interval
-              </Typography>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
-                  helperText="From date"
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-from"
-                  value={values.dateFrom}
-                  onChange={handleDateFromChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-                <KeyboardDatePicker
-                  disableToolbar
-                  helperText="To date"
-                  variant="inline"
-                  format="MM/dd/yyyy"
-                  margin="normal"
-                  id="date-picker-to"
-                  value={values.dateTo}
-                  onChange={handleDateToChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-            </CardContent>
-          </Card>
+          <TimeSelection 
+            updateStart={updateDateFrom} 
+            updateEnd={updateDateTo} 
+            start={values.dateFrom}
+            end={values.dateTo}
+          />
         </Grid>
         <Grid item xs={12}>
           <Calendar 
