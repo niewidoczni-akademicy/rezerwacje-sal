@@ -1,33 +1,34 @@
-import React from "react";
-import { useRef, useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { Typography } from "@material-ui/core";
+import React from 'react';
+import { useRef, useState } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import { Divider } from '@material-ui/core';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import { Typography } from '@material-ui/core';
 
 const uploadCourseFiles = (files) => {
   for (let i = 0; i < files.length; i++) {
     const data = new FormData();
-    data.append("file", files[i]);
+    data.append('file', files[i]);
 
-    fetch("/api/course-of-study/upload", {
-      method: "POST",
+    fetch('/api/course-of-study/upload', {
+      method: 'POST',
       body: data,
     }).then(
       function (res) {
         if (res.ok) {
-          alert("Zapisano.");
+          alert('Zapisano.');
         } else {
-          alert("Wystąpił błąd.");
+          alert('Wystąpił błąd.');
         }
       },
       function (e) {
-        alert("Wystąpił błąd.");
+        alert('Wystąpił błąd.');
       }
     );
   }
@@ -55,6 +56,7 @@ const ImportCoursesDialog = (props) => {
       <DialogTitle>
         <Typography variant="h3">Import z pliku CSV</Typography>
       </DialogTitle>
+      <Divider />
       <DialogContent>
         <List component="nav" aria-label="main mailbox folders">
           {Array.from(files).map((f) => (
@@ -69,7 +71,7 @@ const ImportCoursesDialog = (props) => {
           ref={inputHandle}
           multiple="true"
           onInput={(e) => onFileInput(e.target.files)}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
         />
       </DialogContent>
       <DialogActions>

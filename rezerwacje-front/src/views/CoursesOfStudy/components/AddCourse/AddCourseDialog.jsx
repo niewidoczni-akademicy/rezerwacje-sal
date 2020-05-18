@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -11,27 +11,44 @@ import {
   FormLabel,
   FormControlLabel,
   Button,
+  IconButton,
   TextField,
   Typography,
   DialogActions,
-} from "@material-ui/core";
+} from '@material-ui/core';
 
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { makeStyles, useTheme } from '@material-ui/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-import validateCourseForm from "./validateCourseForm.js";
-import useForm from "./useForm.jsx";
+import validateCourseForm from './validateCourseForm.js';
+import useForm from './useForm.jsx';
 
-const AddCourseForm = (props) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+}));
+
+const AddCourseDialog = (props) => {
+  const classes = useStyles();
   const initState = {
-    name: "",
-    faculty: "",
-    courseType: "FULL_TIME",
-    contactPerson1: "",
-    contactPerson2: "",
-    isJoined: "false",
-    remarks: "",
+    name: '',
+    faculty: '',
+    courseType: 'FULL_TIME',
+    contactPerson1: '',
+    contactPerson2: '',
+    isJoined: 'false',
+    remarks: '',
   };
 
   const submit = () => {
@@ -45,9 +62,9 @@ const AddCourseForm = (props) => {
       remarks,
     } = values;
 
-    fetch("/api/course-of-study", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch('/api/course-of-study', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name,
         faculty: faculty,
@@ -62,13 +79,13 @@ const AddCourseForm = (props) => {
         if (res.ok) {
           setState(initState);
           console.log(values);
-          alert("Kierunek został dodany do bazy.");
+          alert('Kierunek został dodany do bazy.');
         } else {
-          alert("Wystąpił błąd.");
+          alert('Wystąpił błąd.');
         }
       },
       function (e) {
-        alert("Wystąpił błąd.");
+        alert('Wystąpił błąd.');
       }
     );
   };
@@ -85,8 +102,15 @@ const AddCourseForm = (props) => {
       onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle>
+      <DialogTitle className={classes.root}>
         <Typography variant="h3">Nowy kierunek</Typography>
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={props.handleClose}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent dividers>
         <Card>
@@ -174,13 +198,13 @@ const AddCourseForm = (props) => {
                     name="isJoined"
                   >
                     <FormControlLabel
-                      value={"true"}
+                      value={'true'}
                       control={<Radio />}
                       onChange={handleChange}
                       label="Tak"
                     />
                     <FormControlLabel
-                      value={"false"}
+                      value={'false'}
                       control={<Radio />}
                       onChange={handleChange}
                       label="Nie"
@@ -219,4 +243,4 @@ const AddCourseForm = (props) => {
   );
 };
 
-export default AddCourseForm;
+export default AddCourseDialog;
