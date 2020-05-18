@@ -49,6 +49,7 @@ public class RecruitmentPeriod {
     @NonNull
     private StudyDegree studyDegree;
 
+    @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recruitment_id")
     @JsonManagedReference

@@ -2,21 +2,26 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentPeriodRepository;
+import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -24,6 +29,7 @@ import java.util.List;
 public final class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
+    private final RecruitmentRepository recruitmentRepository;
     private final ConversionService conversionService;
 
     public AddRecruitmentPeriodResponse saveRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
@@ -46,6 +52,17 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
+    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(final Long recruitmentId) {
+        Set<RecruitmentPeriod> recruitmentPeriods = recruitmentRepository
+                .findById(recruitmentId)
+                .map(Recruitment::getRecruitmentPeriods)
+                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + recruitmentId));
+
+        return GetRecruitmentPeriodsResponse.builder()
+                .recruitmentPeriods(new ArrayList<>(recruitmentPeriods))
+                .build();
+    }
+
     public GetRecruitmentPeriodResponse getRecruitmentPeriod(final Long id) {
         RecruitmentPeriod recruitmentPeriod = getRecruitmentPeriodFromDatabaseById(id);
 
@@ -63,6 +80,7 @@ public final class RecruitmentPeriodService {
     private void validateRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
         validateEndDateNotBeforeStartDate(request);
         validateStartDateNotBeforeCurrentDate(request);
+        validateRecruitmentIdExists(request);
     }
 
     private void validateEndDateNotBeforeStartDate(final AddRecruitmentPeriodRequest request) {
@@ -80,5 +98,11 @@ public final class RecruitmentPeriodService {
         if (startDate.isBefore(currentDate)) {
             throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
         }
+    }
+
+    private void validateRecruitmentIdExists(final AddRecruitmentPeriodRequest request) {
+        recruitmentRepository
+                .findById(request.getRecruitmentId())
+                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + request.getRecruitmentId()));
     }
 }
