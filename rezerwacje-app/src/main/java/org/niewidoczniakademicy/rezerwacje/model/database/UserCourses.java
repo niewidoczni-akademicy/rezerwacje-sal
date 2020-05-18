@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -38,13 +38,13 @@ public class UserCourses {
 
     @NonNull
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "course_of_study_id")
     private CourseOfStudy courseOfStudy;
 
     @NonNull
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
     @JoinColumn(name = "user_id")
     private SystemUser systemUser;
 

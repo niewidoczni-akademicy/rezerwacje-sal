@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.database.ExamTerm;
-import org.niewidoczniakademicy.rezerwacje.model.database.Room;
+import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
+import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentRoom;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermResponse;
@@ -12,16 +13,20 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsRespo
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermsIntersectionException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RoomNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.CourseOfStudyRepository;
 import org.niewidoczniakademicy.rezerwacje.service.repository.ExamTermRepository;
-import org.niewidoczniakademicy.rezerwacje.service.repository.RoomRepository;
+import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentPeriodRepository;
+import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -31,7 +36,8 @@ public final class ExamTermService {
 
     private final ExamTermRepository examTermRepository;
     private final CourseOfStudyRepository courseOfStudyRepository;
-    private final RoomRepository roomRepository;
+    private final RecruitmentRoomRepository recruitmentRoomRepository;
+    private final RecruitmentPeriodRepository recruitmentPeriodRepository;
 
     public GetExamTermsResponse getAllResponse() {
         Set<ExamTerm> examTerms = new HashSet<>(this.examTermRepository.findAll());
@@ -51,8 +57,8 @@ public final class ExamTermService {
     }
 
     public GetExamTermsResponse getByRoomIdResponse(final Long id) {
-        Set<ExamTerm> examTerms = this.roomRepository.findById(id)
-                .map(Room::getExamTerms)
+        Set<ExamTerm> examTerms = this.recruitmentRoomRepository.findById(id)
+                .map(RecruitmentRoom::getExamTerms)
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + id));
 
         return GetExamTermsResponse.builder()
@@ -71,7 +77,7 @@ public final class ExamTermService {
     }
 
     public GetExamTermResponse getByRoomIdAndCourseOfStudyRepositoryIdResponse(final Long roomId, final Long cosId) {
-        ExamTerm examTerm = this.examTermRepository.findByRoomIdAndCourseOfStudyId(roomId, cosId)
+        ExamTerm examTerm = this.examTermRepository.findByRecruitmentRoomIdAndCourseOfStudyId(roomId, cosId)
                 .orElseThrow(() -> new ExamTermNotFoundException(String.format(
                         "No exam term with room id %d and course of study id %d", roomId, cosId)));
 
@@ -81,8 +87,9 @@ public final class ExamTermService {
     }
 
     public AddExamTermResponse getAddExamTermResponse(final AddExamTermRequest addExamTermRequest) {
-        Long cosId = addExamTermRequest.getCosId();
-        Long roomId = addExamTermRequest.getRoomId();
+        Long cosId = addExamTermRequest.getCourseOfStudyId();
+        Long rRoomId = addExamTermRequest.getRecruitmentRoomId();
+        Long recruitmentPeriodId = addExamTermRequest.getRecruitmentPeriodId();
         LocalDate day = addExamTermRequest.getDay();
         LocalTime timeStart = addExamTermRequest.getTimeStart();
         LocalTime timeEnd = addExamTermRequest.getTimeEnd();
@@ -92,17 +99,32 @@ public final class ExamTermService {
                 .findById(cosId)
                 .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + cosId));
 
-        Room room = roomRepository
-                .findById(roomId)
-                .orElseThrow(() -> new RoomNotFoundException("No room with id " + roomId));
+        RecruitmentRoom rRoom = recruitmentRoomRepository
+                .findById(rRoomId)
+                .orElseThrow(() -> new RoomNotFoundException("No room with id " + rRoomId));
 
+        RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
+                .findById(recruitmentPeriodId)
+                .orElseThrow(() -> new RecruitmentPeriodNotFoundException(
+                        "No course of study with id " + recruitmentPeriodId));
+
+        List<Long> interSectionIds = examTermRepository.getExamTermIdsByDates(
+                recruitmentPeriodId,
+                day,
+                timeStart,
+                timeEnd
+        );
+        if (interSectionIds.size() != 0) {
+            throw new ExamTermsIntersectionException(interSectionIds.size() + " exams already found in provided term");
+        }
 
         ExamTerm examTerm = new ExamTerm(
                 day,
                 timeStart,
                 timeEnd,
+                recruitmentPeriod,
                 courseOfStudy,
-                room);
+                rRoom);
 
         Long examTermId = examTermRepository.save(examTerm).getId();
 
