@@ -12,7 +12,6 @@ import { buildExamTimebar, buildRoomTrack } from './builders'
 import './style.scss'
 import './Calendar.scss'
 
-const now = new Date(Date.now())
 const MIN_ZOOM = 1300
 const MAX_ZOOM = 1300
 
@@ -35,6 +34,7 @@ class Calendar extends Component {
       start: this.prepareStartDate(props.defaults.from),
       end: this.prepareEndDate(props.defaults.to),
       timebar: buildExamTimebar(props.defaults.from, props.defaults.to),
+      now: new Date(Date.now()),
     }
   }
 
@@ -79,7 +79,7 @@ class Calendar extends Component {
   }
 
   render() {
-    const { open, zoom, tracks, start, end, timebar } = this.state
+    const { open, zoom, tracks, start, end, timebar, now } = this.state
 
     return (
       <Card>
