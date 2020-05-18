@@ -1,6 +1,5 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,7 +46,7 @@ public class CourseOfStudy {
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "faculty_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Faculty faculty; // TODO Fix creating multiple times the same faculty
 
     @NonNull
