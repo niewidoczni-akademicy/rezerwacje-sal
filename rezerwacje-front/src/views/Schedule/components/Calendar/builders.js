@@ -11,7 +11,7 @@ export const buildExamTimebar = (startDate, endDate) => [
     id: 'days',
     title: 'Days',
     cells: buildDayCells(startDate, endDate),
-    style: {},
+    style: {'text-align': 'left'},
   },
   {
     id: 'hours',
@@ -21,6 +21,22 @@ export const buildExamTimebar = (startDate, endDate) => [
     style: {},
   },
 ]
+
+export const updateExamTimebar = (timebar, startDate, endDate) => {
+  const newDayCells = buildDayCells(startDate, endDate)
+  const newHourCells = buildHourCells(startDate, endDate)
+  replaceArrayElements(timebar[0].cells, newDayCells)
+  replaceArrayElements(timebar[1].cells, newHourCells)
+}
+
+const replaceArrayElements = (array, newElements) => {
+  for (var x in array) {
+    array.pop()
+  }
+  for (var x in newElements) {
+    array.push(x)
+  }
+}
 
 export const buildDayCells = (startDate, endDate) => {
   const cells = []

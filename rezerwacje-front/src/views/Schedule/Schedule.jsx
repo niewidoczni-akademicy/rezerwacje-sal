@@ -55,8 +55,8 @@ const Schedule = () => {
   const [values, setValues] = useState({
     recruitment: recruitments.length > 0 ? recruitments[0] : '',
     cycle: cycles.length > 0 ? cycles[0] : '',
-    dateFrom: new Date(),
-    dateTo: new Date(),
+    dateFrom: new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)),
+    dateTo: new Date(Date.now()),
   });
 
   const handleDateFromChange = date => {
@@ -81,21 +81,25 @@ const Schedule = () => {
     });
   };
 
-  const [selectedCourses, setSelectedCourses] = React.useState([]);
+  const [selectedCourses, setSelectedCourses] = React.useState(courses.slice(0));
 
   const handleSelectedCoursesChange = event => {
     setSelectedCourses(event.target.value)
   };
 
-  const [selectedRooms, setSelectedRooms] = React.useState([]);
+  const [selectedRooms, setSelectedRooms] = React.useState(rooms.slice(0));
 
   const handleSelectedRoomsChange = event => {
     setSelectedRooms(event.target.value)
   };
 
   const getFilterValues = () => {
-    console.log("Clicked this dumb button")
-    return {value: "przekazane zostało hehe"}
+    return {
+      from: values.dateFrom, 
+      to: values.dateTo,
+      rooms: selectedRooms,
+      courses: selectedCourses,
+    }
   }
 
   return (
@@ -257,7 +261,10 @@ const Schedule = () => {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <Calendar getFilterValues={getFilterValues}/>
+          <Calendar 
+            getFilterValues={getFilterValues}
+            defaults={getFilterValues()}
+          />
         </Grid>
       </Grid>
     </div>
