@@ -18,6 +18,9 @@ import AddIcon from "@material-ui/icons/AddBox";
 const ChangeAccessForm = props => {
   const user = props.user;
   const [courses, setCourses] = useState([]);
+  const [userCourses, setUserCourses] = useState([]);
+
+  const getUserCourses = user => courses.filter(course => user.userCourses.find(idOb => idOb.id === course.id) != undefined);
 
   useEffect(() => {
     fetch("/api/course-of-study")
@@ -36,14 +39,11 @@ const ChangeAccessForm = props => {
   };
 
   const addCourse = course => {
-    console.log(course)
-    fetch("/api/connection/connect", {
+    console.log(course.id)
+    console.log(user.id)
+    fetch(`/api/connection/connect?userId=${user.id}&courseOfStudyId=${course.id}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: user.id,
-        courseOfStidyId: course.id
-      })
+      headers: { "Content-Type": "application/json" }
     }).then(
       function(res) {
         if (res.ok) {
@@ -54,6 +54,7 @@ const ChangeAccessForm = props => {
       },
       function(e) {
         alert("Wystąpił błąd.");
+        console.log(e);
       }
     );
   };
@@ -68,7 +69,7 @@ const ChangeAccessForm = props => {
             <Divider />
             <CardContent>
               <List>
-                {user.userCourses.map(course => (
+                {courses.map(course => (
                   <ListItem>
                     <ListItemText>{course.name}</ListItemText>
                     <ListItemSecondaryAction>
@@ -94,8 +95,8 @@ const ChangeAccessForm = props => {
                   .map(course => (
                     <ListItem value={course.id}>
                       <ListItemText>{course.name}</ListItemText>
-                      <ListItemSecondaryAction value={course.id}>
-                        <IconButton edge="end" aria-label="delete">
+                      <ListItemSecondaryAction value={course.id} key={course.id}>
+                        <IconButton edge="end" aria-label="delete" onClick={() => {addCourse(course);}}>
                           <AddIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
