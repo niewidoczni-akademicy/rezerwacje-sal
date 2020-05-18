@@ -45,18 +45,6 @@ const Sidebar = props => {
       icon: route.icon,
     }
   })
-  // const pages = [
-  //   {
-  //     title: 'Home',
-  //     href: '/home',
-  //     icon: <HomeIcon />
-  //   },
-  //   {
-  //     title: 'Rooms',
-  //     href: '/rooms',
-  //     icon: <MeetingRoomIcon />
-  //   }
-  // ];
 
   return (
     <Drawer
