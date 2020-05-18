@@ -6,16 +6,13 @@ import {
   Button 
 } from '@material-ui/core';
 import Timeline from 'react-timelines'
-import { START_DATE, END_DATE, ROOMS } from './constants'
+import { ROOMS } from './constants'
 import { buildExamTimebar, buildRoomTrack } from './builders'
 
 import './style.scss'
 import './Calendar.scss'
 
-const now = new Date('2021-01-01')
-
-const timebar = buildExamTimebar(new Date(START_DATE), new Date(END_DATE))
-
+const now = new Date(Date.now())
 const MIN_ZOOM = 1300
 const MAX_ZOOM = 1300
 
