@@ -15,7 +15,7 @@ const FacultiesContent = (props) => {
   return (
     <React.Fragment>
       <Card style={{ width: 900 }}>
-        <CardHeader title="Sale" />
+        <CardHeader title="Wydziały" />
         <Divider />
         <CardContent>
           <FacultiesTable />
@@ -27,7 +27,7 @@ const FacultiesContent = (props) => {
             variant="contained"
             onClick={() => alert('not implemented')}
           >
-            Dodaj salę
+            Dodaj wydział
           </Button>
         </CardActions>
       </Card>
