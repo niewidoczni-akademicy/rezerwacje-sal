@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "86b0a659-ae1b-4af1-8c40-af91567a18f7",
+		"_postman_id": "2fcdc615-db7b-4d1b-83ea-c527527a9d35",
 		"name": "reservation-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -309,7 +309,38 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "{{base-url}}/{{recruitment-path}}/{{recruitment-all-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-path}}",
+						"{{recruitment-all-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCoursesOfStudiesIdsForUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{course-of-study-path}}/{{courses-path}}?{{user-id-param}}={{user-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{course-of-study-path}}",
+						"{{courses-path}}"
+					],
+					"query": [
+						{
+							"key": "{{user-id-param}}",
+							"value": "{{user-id-value}}"
+						}
+					]
 				}
 			},
 			"response": []
