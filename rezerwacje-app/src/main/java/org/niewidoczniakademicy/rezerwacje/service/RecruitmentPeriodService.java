@@ -101,8 +101,9 @@ public final class RecruitmentPeriodService {
     }
 
     private void validateRecruitmentIdExists(final AddRecruitmentPeriodRequest request) {
+        Long recruitmentId = request.getRecruitmentId();
         recruitmentRepository
-                .findById(request.getRecruitmentId())
-                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + request.getRecruitmentId()));
+                .findById(recruitmentId)
+                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + recruitmentId));
     }
 }
