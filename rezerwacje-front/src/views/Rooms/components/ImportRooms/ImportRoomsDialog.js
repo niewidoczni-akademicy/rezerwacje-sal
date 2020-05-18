@@ -1,7 +1,6 @@
 import React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/styles";
-
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
@@ -12,6 +11,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { Typography } from "@material-ui/core";
 
 const uploadRoomFiles = (files) => {
   for (let i = 0; i < files.length; i++) {

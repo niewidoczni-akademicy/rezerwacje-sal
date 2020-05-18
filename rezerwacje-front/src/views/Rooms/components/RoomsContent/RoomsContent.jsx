@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import {
   Button,
   Card,
@@ -10,9 +10,11 @@ import {
   CardHeader,
 } from "@material-ui/core";
 import { ImportRoomsDialog, RoomsTable } from "../";
+import AddRoomForm from "../AddRoom";
 
 const RoomsContent = (props) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
+  const [showAddDialog, setShowAddDialog] = useState(false);
 
   return (
     <React.Fragment>
@@ -27,7 +29,7 @@ const RoomsContent = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => alert("not implemented")}
+            onClick={() => setShowAddDialog(true)}
           >
             Dodaj salę
           </Button>
@@ -40,6 +42,12 @@ const RoomsContent = (props) => {
           </Button>
         </CardActions>
       </Card>
+      <AddRoomForm
+        open={showAddDialog}
+        handleClose={() => {
+          setShowAddDialog(false);
+        }}
+      />
       <ImportRoomsDialog
         open={showImportDialog}
         handleClose={() => {
