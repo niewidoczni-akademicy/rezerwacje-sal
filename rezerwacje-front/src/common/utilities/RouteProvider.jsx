@@ -10,6 +10,7 @@ import {
   Courses as CoursesView,
   Users as UsersView,
   Exams as ExamsView,
+  Faculties as FacultiesView,
 } from 'views';
 
 const Routes = [
@@ -30,6 +31,12 @@ const Routes = [
     href: '/courses',
     icon: <FormatListBulletedIcon />,
     view: <CoursesView />,
+  },
+  {
+    title: 'Faculties',
+    href: '/faculties',
+    icon: <FormatListBulletedIcon />,
+    view: <FacultiesView />,
   },
   {
     title: 'Exams',
