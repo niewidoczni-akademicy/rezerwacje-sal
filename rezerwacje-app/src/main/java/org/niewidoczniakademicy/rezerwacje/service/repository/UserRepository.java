@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.service.repository;
 
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
+import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface UserRepository extends JpaRepository<SystemUser, Long> {
     List<SystemUser> findSystemUsersByLoginIn(Set<String> logins);
 
     Optional<List<SystemUser>> findSystemUsersByFirstNameAndLastName(String firstName, String lastName);
+
+    Optional<List<SystemUser>> findSystemUsersByUserType(UserType userType);
 }
