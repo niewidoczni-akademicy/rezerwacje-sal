@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -68,7 +68,7 @@ public class SystemUser {
 
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "systemUser")
     private Set<UserCourses> userCourses = new HashSet<>();
 }
