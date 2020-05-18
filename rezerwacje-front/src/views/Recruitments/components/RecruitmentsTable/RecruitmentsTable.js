@@ -16,9 +16,13 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button,
+  IconButton,
   TablePagination
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
+import RecruitmentFormDialog from "../RecruitmentFormDialog"
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -53,6 +57,9 @@ const RecruitmentsTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
   const [recruitments, setRecruitments] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+
+  const handleClose = () => setModalShow(false)
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -142,6 +149,9 @@ const RecruitmentsTable = () => {
                       </TableCell>
                     </TableRow>
                   ))} */}
+                  <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
               </TableBody>
             </Table>
           </div>
@@ -150,6 +160,7 @@ const RecruitmentsTable = () => {
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
+          count={100}
           // count={recruitments.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
@@ -157,6 +168,10 @@ const RecruitmentsTable = () => {
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[5, 10, 25]}
         />
+        <Button color="primary" variant="contained" type="submit" onClick={() => setModalShow(true)}>
+            DODAJ REKRUTACJĘ
+          </Button>
+        <RecruitmentFormDialog open={modalShow} handleClose={handleClose}/>
       </CardActions>
     </Card>
     <br/>
