@@ -12,7 +12,7 @@ import {
 
 import Timeline from 'react-timelines'
 import { START_DATE, END_DATE, ROOMS } from './constants'
-import { buildExamTimebar, buildRoomTrack } from './builders'
+import { buildExamTimebar, updateExamTimebar, buildRoomTrack } from './builders'
 
 import './style.scss'
 import './Calendar.scss'
@@ -21,9 +21,6 @@ const now = new Date('2021-01-01')
 
 const timebar = buildExamTimebar(new Date(START_DATE), new Date(END_DATE))
 
-// eslint-disable-next-line no-alert
-const clickElement = element => alert(`Clicked element\n${JSON.stringify(element, null, 2)}`)
-
 const MIN_ZOOM = 1300
 const MAX_ZOOM = 1300
 
@@ -31,28 +28,31 @@ class Calendar extends Component {
   constructor(props) {
     super(props)
 
-    const tracksById = ROOMS.reduce((accumulator, element, i) => {
-      const track = buildRoomTrack(i, element.name, element.exams)
-      accumulator[track.id] = track
-      return accumulator
-    }, {})
+    const tracksById = this.getRoomsTracks(props.defaults.rooms)
+
+    this.defaults = {
+      start: this.prepareStartDate(new Date(Date.now() - (7 * 24 * 60 * 60 * 1000))),
+      end: this.prepareEndDate(new Date(Date.now())),
+    }
 
     this.state = {
       open: false,
       zoom: 1300,
-      // eslint-disable-next-line react/no-unused-state
       tracksById,
       tracks: Object.values(tracksById),
-      start: this.prepareStartDate(START_DATE),
-      end: this.prepareEndDate(END_DATE),
-      // timebar: buildExamTimebar(start, end),
-      // startDateRaw: this.prepareRawDate(props),
+      start: this.prepareStartDate(props.defaults.from),
+      end: this.prepareEndDate(props.defaults.to),
+      timebar: buildExamTimebar(props.defaults.from, props.defaults.to),
     }
   }
 
-  prepareRawDate = raw => {
-    raw.map(x => alert(x))
-    return raw
+  getRoomsTracks = rooms => {
+    return ROOMS.filter(x => rooms.includes(x.name))
+                .reduce((accumulator, element, i) => {
+                  const track = buildRoomTrack(i, element.name, element.exams)
+                  accumulator[track.id] = track
+                  return accumulator
+                }, {})
   }
 
   handleZoomIn = () => {
@@ -77,13 +77,21 @@ class Calendar extends Component {
   }
 
   applyFilters = () => {
-    console.log(this.props)
-    console.log(this.props.getFilterValues)
-    this.props.getFilterValues()
+    const { from, to, rooms, courses } = this.props.getFilterValues()
+    this.state.start = this.prepareStartDate(from)
+    this.state.end = this.prepareEndDate(to)
+    this.state.timebar = buildExamTimebar(this.state.start, this.state.end)
+    console.log(this.state.tracksById)
+    console.log(Object.values(this.state.tracksById))
+    this.state.tracksById = this.getRoomsTracks(rooms)
+    console.log(this.state.tracksById)
+    console.log(Object.values(this.state.tracksById))
+    this.state.tracks = Object.values(this.state.tracksById)
+    this.forceUpdate()
   }
 
   render() {
-    const { open, zoom, tracks, start, end } = this.state
+    const { open, zoom, tracks, start, end, timebar } = this.state
 
     return (
       <Card>
@@ -109,10 +117,6 @@ class Calendar extends Component {
           isOpen={open}
           zoomIn={this.handleZoomIn}
           zoomOut={this.handleZoomOut}
-          clickElement={clickElement}
-          clickTrackButton={track => {
-            alert(JSON.stringify(track))
-          }}
           timebar={timebar}
           tracks={tracks}
           now={now}
