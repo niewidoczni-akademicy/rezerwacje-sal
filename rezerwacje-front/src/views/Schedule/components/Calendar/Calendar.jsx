@@ -27,7 +27,6 @@ class Calendar extends Component {
     }
 
     this.state = {
-      open: false,
       zoom: 1300,
       tracksById,
       tracks: Object.values(tracksById),
@@ -45,14 +44,6 @@ class Calendar extends Component {
                   accumulator[track.id] = track
                   return accumulator
                 }, {})
-  }
-
-  handleZoomIn = () => {
-    this.setState(({ zoom }) => ({ zoom: Math.min(zoom + 200, MAX_ZOOM) }))
-  }
-
-  handleZoomOut = () => {
-    this.setState(({ zoom }) => ({ zoom: Math.max(zoom - 200, MIN_ZOOM) }))
   }
 
   prepareStartDate = date => {
@@ -79,7 +70,7 @@ class Calendar extends Component {
   }
 
   render() {
-    const { open, zoom, tracks, start, end, timebar, now } = this.state
+    const { zoom, tracks, start, end, timebar, now } = this.state
 
     return (
       <Card>
@@ -102,9 +93,6 @@ class Calendar extends Component {
             zoomMin: MIN_ZOOM,
             zoomMax: MAX_ZOOM,
           }}
-          isOpen={open}
-          zoomIn={this.handleZoomIn}
-          zoomOut={this.handleZoomOut}
           timebar={timebar}
           tracks={tracks}
           now={now}
