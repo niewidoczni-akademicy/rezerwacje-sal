@@ -1,17 +1,11 @@
-import { UserActionTypes } from "../user/user.types"
-import { getAvaibleRoutes } from "./routes.utils"
+import ROUTES_DATA from "./routes.data"
 
 const INITIAL_STATE = {
-  avaible: getAvaibleRoutes("ANON")
+  all: ROUTES_DATA,
 }
 
 const routesReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
-    case UserActionTypes.SET_CURRENT_USER:
-      return {
-        ...state, 
-        avaible: getAvaibleRoutes(action.payload.role)
-      }
     default:
       return state
   }

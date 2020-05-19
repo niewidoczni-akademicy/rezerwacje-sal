@@ -6,6 +6,7 @@ import { Drawer } from "@material-ui/core";
 
 import { SidebarNav } from "./components";
 import { connect } from "react-redux";
+import { selectAvaibleRoutes } from "../../../../redux/routes/routes.selectors";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -73,7 +74,7 @@ Sidebar.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  routes: state.routes.avaible,
+  routes: selectAvaibleRoutes(state),
 });
 
 export default connect(mapStateToProps)(Sidebar);

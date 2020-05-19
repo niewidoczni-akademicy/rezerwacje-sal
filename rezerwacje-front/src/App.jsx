@@ -8,6 +8,7 @@ import "./App.scss";
 import { Standard as StandardLayout } from "./layouts";
 
 import { connect } from "react-redux";
+import { selectAvaibleRoutes } from "./redux/routes/routes.selectors"
 
 const App = ({ routes }) => (
   <ThemeProvider theme={theme}>
@@ -27,7 +28,7 @@ const App = ({ routes }) => (
 );
 
 const mapStateToProps = (state) => ({
-  routes: state.routes.avaible,
+  routes: selectAvaibleRoutes(state),
 });
 
 export default connect(mapStateToProps)(App);
