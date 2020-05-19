@@ -12,7 +12,7 @@ import {
   Users as UsersView,
   Exams as ExamsView,
   Schedule as ScheduleView
-} from '../views';
+} from 'views';
 
 const Routes = [
   {

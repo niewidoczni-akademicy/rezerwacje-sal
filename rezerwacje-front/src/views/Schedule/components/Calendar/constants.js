@@ -26,7 +26,7 @@ export const ROOMS = [
     {name: 'Random exam', start: '2020-05-17T15:00', end: '2020-05-17T21:00', relation: 'unrelated'},
     {name: 'Hehehe', start: '2020-05-07T20:00', end: '2020-05-08T04:30', relation: 'owner'},
   ]},
-  {name: 'Hehe online', exams: [
+  {name: 'Online', exams: [
     {name: 'MOWNiT 1', start: '2020-04-27T22:00', end: '2020-04-28T06:00', relation: 'unrelated'},
     {name: 'MOWNiT 2', start: '2020-04-29T12:45', end: '2020-04-29T15:00', relation: 'related'},
     {name: 'Random exam', start: '2020-04-29T15:00', end: '2020-04-29T21:00', relation: 'unrelated'},
