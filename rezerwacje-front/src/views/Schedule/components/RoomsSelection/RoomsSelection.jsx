@@ -34,12 +34,15 @@ const RoomsSelection = props => {
 
   const rooms = props.rooms;
 
-  const [selectedRooms, setSelectedRooms] = React.useState(rooms.slice(0));
+  const [selectedRooms, setSelectedRooms] = React.useState(props.rooms.slice(0));
 
   const handleSelectedRoomsChange = event => {
     const value = event.target.value
     setSelectedRooms(value)
     props.updateRooms(value)
+    console.log(rooms)
+    console.log(value)
+    console.log("-------------")
   };
 
   return (

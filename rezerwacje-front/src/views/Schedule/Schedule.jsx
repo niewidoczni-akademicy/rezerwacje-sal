@@ -1,26 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { 
-  Grid, 
-  Card, 
-  Typography, 
-  TextField,
-  CardContent,
-  Checkbox,
-  Select,
-  Input, 
-  Chip, 
-  MenuItem,
-  InputLabel,
-  FormControl,
-  CardActions,
-  Button,
-} from '@material-ui/core';
-import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-
+import { Grid } from '@material-ui/core';
 import {
-  ScheduleContent,
   Calendar,
   RecruitmentSelection,
   CoursesSelection,
@@ -53,7 +34,7 @@ const Schedule = () => {
 
   const courses = ['IET Informatyka', 'IMiC Ceramika'];
 
-  const rooms = ['D17 2.41', 'D17 1.38', 'Hehe online'];
+  const rooms = ['D17 2.41', 'D17 1.38', 'Online'];
 
   const [values, setValues] = useState({
     recruitment: recruitments.length > 0 ? recruitments[0] : '',
@@ -110,20 +91,20 @@ const Schedule = () => {
           <RecruitmentSelection 
             updateRecruitment={updateRecruitment} 
             updateCycle={updateCycle}
-            recruitments={values.recruitments}
-            cycles={values.cycles}
+            recruitments={recruitments}
+            cycles={cycles}
           />
         </Grid>
         <Grid item xs={3}>
           <CoursesSelection 
             updateCourses={updateCourses} 
-            courses={values.courses}
+            courses={courses}
           />
         </Grid>
         <Grid item xs={3}>
           <RoomsSelection 
             updateRooms={updateRooms} 
-            rooms={values.rooms}
+            rooms={rooms}
           />
         </Grid>
         <Grid item xs={3}>
