@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -24,10 +24,15 @@ import './RecruitmentFormDialog.scss';
 export default function RecruitmentFormDialog(props) {
 
   const initState = {
-        name: "",
-        status: ""
+    name: "",
+    status: ""
   };
 
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+
+  const handleStartTimeChange = date => setStartTime(date);
+  const handleEndTimeChange = date => setEndTime(date);
 
 
   const submit = () => {
@@ -36,24 +41,37 @@ export default function RecruitmentFormDialog(props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: values.name,
-        startTime: startDate,
-        endTime: endDate,
+        startTime: startTime.toISOString().slice(0, 19),
+        endTime: endTime.toISOString().slice(0, 19),
+        recruitmentStatus: translateStatusType(values.status)
       })
     }).then(
-      function(res) {
+      function (res) {
         if (res.ok) {
           setState(initState);
           console.log(values);
           alert("Rekrutacja została dodana do bazy.");
+          window.location.reload();
         } else if (res.status === 400) {
           alert("Wystąpił błąd.");
         }
       },
-      function(e) {
+      function (e) {
         alert("Wystąpił błąd.");
       }
     );
   };
+
+
+  const translateStatusType = status => {
+    if (status == "W przygotowaniu") {
+      return "IN_PREPARATION";
+    } else if (status == "Trwa") {
+      return "IN_PROGRESS";
+    } else return "FINISHED";
+  }
+
+  const recruitmentStatusTypes = ["W przygotowaniu", "Trwa", "Zakończona"]
 
   const { handleChange, handleSubmit, values, errors, setState } = useForm(
     initState,
@@ -88,21 +106,41 @@ export default function RecruitmentFormDialog(props) {
                 md={12}
               >
                 <TextField
-                fullWidth
-                margin="dense"
-                name="name"
-                label="Nazwa"
-                onChange={handleChange}
-                type="name"
-                value={values.name}
-                variant="outlined"
-              />
-              <p className="error">{errors.name}</p>
+                  fullWidth
+                  margin="dense"
+                  name="name"
+                  label="Nazwa"
+                  onChange={handleChange}
+                  type="name"
+                  value={values.name}
+                  variant="outlined"
+                />
+                <p className="error">{errors.name}</p>
               </Grid>
               <Grid
                 item
                 xs={12}
-                md={6}
+              >
+                <TextField
+                  fullWidth
+                  margin="dense"
+                  name="status"
+                  onChange={handleChange}
+                  required
+                  select
+                  SelectProps={{ native: true }}
+                  variant="outlined"
+                >
+                  {recruitmentStatusTypes.map(status => (
+                    <option value={status}>{status}</option>
+                  ))}
+                </TextField>
+                <p className="error">{errors.status}</p>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                md={12}
               >
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <KeyboardDatePicker
@@ -110,41 +148,38 @@ export default function RecruitmentFormDialog(props) {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
-                    name="startDate"
                     label="Data początkowa"
-                    value={values.startDate}
-                    onChange={handleChange}
+                    value={startTime}
+                    onChange={handleStartTimeChange}
                     color="primary"
                     KeyboardButtonProps={{
                       'aria-label': 'change date',
                     }}
                   />
                 </MuiPickersUtilsProvider>
-                <p className="error">{errors.startDate}</p>
               </Grid>
               <Grid
                 item
-                xs={12}
-                md={6}>
-                </Grid>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    name="endDate"
-                    label="Data końcowa"
-                    value={values.endDate}
-                    onChange={handleChange}
-                    color="primary"
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  />
-                </MuiPickersUtilsProvider>
-                <p className="error">{errors.endDate}</p>
-                </Grid>
+                xs={6}
+                md={12}>
+              </Grid>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  label="Data końcowa"
+                  value={endTime}
+                  onChange={handleEndTimeChange}
+                  color="primary"
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+
+              </MuiPickersUtilsProvider>
+            </Grid>
           </form>
         </DialogContent>
         <DialogActions>

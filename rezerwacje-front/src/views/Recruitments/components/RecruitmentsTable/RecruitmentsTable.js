@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { makeStyles } from "@material-ui/styles";
-import clsx from "clsx";
 import {
   Card,
   CardActions,
   CardContent,
-  Avatar,
   Divider,
   CardHeader,
   Checkbox,
@@ -17,12 +15,10 @@ import {
   TableRow,
   Typography,
   Button,
-  IconButton,
   TablePagination
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
-import RecruitmentFormDialog from "../RecruitmentFormDialog"
-import DeleteIcon from "@material-ui/icons/Delete";
+import RecruitmentFormDialog from "../RecruitmentFormDialog";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -59,7 +55,7 @@ const RecruitmentsTable = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  const handleClose = () => setModalShow(false)
+  const handleClose = () => setModalShow(false);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -86,34 +82,29 @@ const RecruitmentsTable = () => {
       .catch(e => console.log(e));
   }, []);
 
-  const getSelectedRecruitment = () => {
-    if (selectedRecruitment == -1) 
-      return null;
-    else {
-      return recruitments.find(recruitment => recruitment.id === selectedRecruitment);
-    }
-  }
+  const convertDate = date => {
+    return date.split("T")[0];
+  };
 
   return (
     <React.Fragment>
-    <Card>
-    <CardHeader title="Rekrutacje" />
-     <Divider />
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox" />
-                  <TableCell>Nazwa</TableCell>
-                  <TableCell>Data początkowa</TableCell>
-                  <TableCell>Data końcowa</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {recruitments
-                  .map(recruitment => (
+      <Card>
+        <CardHeader title="Rekrutacje" />
+        <Divider />
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox" />
+                    <TableCell>Nazwa</TableCell>
+                    <TableCell>Data początkowa</TableCell>
+                    <TableCell>Data końcowa</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {recruitments.map(recruitment => (
                     <TableRow
                       className={classes.tableRow}
                       hover
@@ -124,57 +115,67 @@ const RecruitmentsTable = () => {
                         <Checkbox
                           checked={recruitment.id == selectedRecruitment}
                           color="primary"
-                          onChange={event => handleSelectOne(event, recruitment.id)}
+                          onChange={event =>
+                            handleSelectOne(event, recruitment.id)
+                          }
                           value="true"
                         />
                       </TableCell>
                       <TableCell className={classes.cell}>
                         <div className={classes.nameContainer}>
-                          <Typography variant="body1">{recruitment.name}</Typography>
-                        </div>
-                      </TableCell>
-                      <TableCell className={classes.cell}>
-                        <div className={classes.nameContainer}>
                           <Typography variant="body1">
-                            {recruitment.startTime}
+                            {recruitment.name}
                           </Typography>
                         </div>
                       </TableCell>
                       <TableCell className={classes.cell}>
                         <div className={classes.nameContainer}>
                           <Typography variant="body1">
-                            {recruitment.endTime}
+                            {convertDate(recruitment.startTime)}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">
+                            {convertDate(recruitment.endTime)}
                           </Typography>
                         </div>
                       </TableCell>
                     </TableRow>
                   ))}
-                  <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={100}
-          // count={recruitments.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-        <Button color="primary" variant="contained" type="submit" onClick={() => setModalShow(true)}>
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={recruitments.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+          {selectedRecruitment != -1 && (
+            <Button color="primary" variant="contained">
+              ZOBACZ CYKLE
+            </Button>
+          )}
+          <Button
+            color="primary"
+            variant="contained"
+            type="submit"
+            onClick={() => setModalShow(true)}
+          >
             DODAJ REKRUTACJĘ
           </Button>
-        <RecruitmentFormDialog open={modalShow} handleClose={handleClose}/>
-      </CardActions>
-    </Card>
-    <br/>
+          <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
+        </CardActions>
+      </Card>
+      <br />
     </React.Fragment>
   );
 };

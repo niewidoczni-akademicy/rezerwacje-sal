@@ -1,1 +1,1 @@
-export { default } from './RecruitmentFormDialog';
+export { default } from "./RecruitmentFormDialog";

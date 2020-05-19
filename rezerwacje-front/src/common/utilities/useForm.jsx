@@ -21,13 +21,15 @@ const useForm = (initState, callback, validate) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    setErrors(await validate(values));
+    setErrors(validate(values));
     setIsSubmitting(true);
   };
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
+    } else {
+      console.log(errors);
     }
   }, [errors]);
 
