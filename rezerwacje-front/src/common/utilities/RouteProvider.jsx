@@ -4,6 +4,7 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import TodayIcon from '@material-ui/icons/Today';
+import SchoolIcon from '@material-ui/icons/School';
 import ScheduleIcon from '@material-ui/icons/CalendarToday';
 import {
   Home as HomeView,
@@ -11,6 +12,7 @@ import {
   Courses as CoursesView,
   Users as UsersView,
   Exams as ExamsView,
+  Recruitments as RecruitmentsView,
   UserCourses as UserCoursesView,
   Schedule as ScheduleView
 } from 'views';
@@ -39,6 +41,12 @@ const Routes = [
     href: '/exams',
     icon: <TodayIcon />,
     view: <ExamsView />,
+  },
+  {
+    title: 'Recruitments',
+    href: '/recruitments',
+    icon: <SchoolIcon />,
+    view: <RecruitmentsView />
   },
   {
     title: 'Users',
