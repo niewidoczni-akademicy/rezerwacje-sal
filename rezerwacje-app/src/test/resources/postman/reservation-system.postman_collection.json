@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "86b0a659-ae1b-4af1-8c40-af91567a18f7",
+		"_postman_id": "a36bb516-edbf-492e-b76d-36b16bacda54",
 		"name": "reservation-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -141,7 +141,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"firstR\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\"\n}"
+					"raw": "{\n\t\"name\": \"first_recruitment\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\",\n\t\"recruitmentStatus\": \"IN_PROGRESS\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{recruitment-path}}",
@@ -298,6 +298,154 @@
 							"key": "{{user-type-param}}",
 							"value": "{{user-type-value}}"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllRecruitments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-path}}/{{recruitment-all-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-path}}",
+						"{{recruitment-all-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCoursesOfStudiesIdsForUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{course-of-study-path}}/{{courses-path}}?{{user-id-param}}={{user-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{course-of-study-path}}",
+						"{{courses-path}}"
+					],
+					"query": [
+						{
+							"key": "{{user-id-param}}",
+							"value": "{{user-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddRecruitmentPeriodRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"startDate\": \"2020-06-01\",\n\t\"endDate\": \"2020-06-14\",\n\t\"studyType\": \"PART_TIME\",\n\t\"studyDegree\": \"FIRST_DEGREE\",\n\t\"recruitmentId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-period-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-period-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecruitmentPeriodsByDates",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-period-path}}/dates?start-date=2020-05-01&end-date=2020-08-01",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-period-path}}",
+						"dates"
+					],
+					"query": [
+						{
+							"key": "start-date",
+							"value": "2020-05-01"
+						},
+						{
+							"key": "end-date",
+							"value": "2020-08-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecruitmentPeriodsByRecruitmentId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-period-path}}/recruitment/1",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-period-path}}",
+						"recruitment",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecruitmentPeriodById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base-url}}/{{recruitment-period-path}}/1",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{recruitment-period-path}}",
+						"1"
 					]
 				}
 			},

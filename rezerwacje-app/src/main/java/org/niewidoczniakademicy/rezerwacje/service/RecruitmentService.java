@@ -6,12 +6,15 @@ import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.StartDateNotBeforeEndDateException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -37,6 +40,14 @@ public final class RecruitmentService {
 
         return GetRecruitmentResponse.builder()
                 .recruitment(recruitment)
+                .build();
+    }
+
+    public GetRecruitmentsResponse getAllRecruitments() {
+        final List<Recruitment> recruitments = recruitmentRepository.findAll();
+
+        return GetRecruitmentsResponse.builder()
+                .recruitments(recruitments)
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.niewidoczniakademicy.rezerwacje.model.shared.RecruitmentStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,15 +50,19 @@ public class Recruitment {
     @NonNull
     private LocalDateTime endTime;
 
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private RecruitmentStatus recruitmentStatus;
+
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
 
     @Builder.Default
     @ToString.Exclude
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
 

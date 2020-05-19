@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -24,6 +26,7 @@ import java.util.List;
 public final class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
+    private final RecruitmentService recruitmentService;
     private final ConversionService conversionService;
 
     public AddRecruitmentPeriodResponse saveRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
@@ -46,6 +49,16 @@ public final class RecruitmentPeriodService {
                 .build();
     }
 
+    public GetRecruitmentPeriodsResponse getRecruitmentPeriods(final Long recruitmentId) {
+        Set<RecruitmentPeriod> recruitmentPeriods = recruitmentService
+                .getRecruitmentFromDatabaseById(recruitmentId)
+                .getRecruitmentPeriods();
+
+        return GetRecruitmentPeriodsResponse.builder()
+                .recruitmentPeriods(new ArrayList<>(recruitmentPeriods))
+                .build();
+    }
+
     public GetRecruitmentPeriodResponse getRecruitmentPeriod(final Long id) {
         RecruitmentPeriod recruitmentPeriod = getRecruitmentPeriodFromDatabaseById(id);
 
@@ -63,6 +76,7 @@ public final class RecruitmentPeriodService {
     private void validateRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
         validateEndDateNotBeforeStartDate(request);
         validateStartDateNotBeforeCurrentDate(request);
+        validateRecruitmentIdExists(request);
     }
 
     private void validateEndDateNotBeforeStartDate(final AddRecruitmentPeriodRequest request) {
@@ -80,5 +94,10 @@ public final class RecruitmentPeriodService {
         if (startDate.isBefore(currentDate)) {
             throw new RecruitmentPeriodStartDateBeforeCurrentDateException();
         }
+    }
+
+    private void validateRecruitmentIdExists(final AddRecruitmentPeriodRequest request) {
+        Long recruitmentId = request.getRecruitmentId();
+        recruitmentService.getRecruitmentFromDatabaseById(recruitmentId);
     }
 }

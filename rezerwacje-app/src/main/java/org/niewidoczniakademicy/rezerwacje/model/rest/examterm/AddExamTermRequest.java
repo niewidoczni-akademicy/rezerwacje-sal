@@ -24,8 +24,11 @@ public class AddExamTermRequest {
     private LocalTime timeEnd;
 
     @NotNull
-    private Long cosId;
+    private Long recruitmentPeriodId;
 
     @NotNull
-    private Long roomId;
+    private Long courseOfStudyId;
+
+    @NotNull
+    private Long recruitmentRoomId;
 }
