@@ -13,6 +13,7 @@ import {
   Users as UsersView,
   Exams as ExamsView,
   Recruitments as RecruitmentsView,
+  UserCourses as UserCoursesView,
   Schedule as ScheduleView
 } from 'views';
 
@@ -59,6 +60,12 @@ const Routes = [
     icon: <ScheduleIcon />,
     view: <ScheduleView />,
   },
+  {
+    title: 'Standard Users',
+    href: '/users/standard',
+    icon: <PersonIcon />,
+    view: <UserCoursesView />
+  }
 ];
 
 export default Routes;
