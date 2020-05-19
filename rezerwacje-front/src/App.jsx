@@ -1,29 +1,33 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/styles';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/styles";
 
-import theme from './theme';
-import './App.scss';
+import theme from "./theme";
+import "./App.scss";
 
-import { Standard as StandardLayout } from './layouts';
-import Routes from './common'
+import { Standard as StandardLayout } from "./layouts";
 
-const App = () => (
+import { connect } from "react-redux";
+
+const App = ({ routes }) => (
   <ThemeProvider theme={theme}>
-    <StandardLayout>    
+    <StandardLayout>
       <Switch>
-        {
-          Routes.map(route => 
-            <Route 
-              key={route.title} 
-              exact 
-              path={route.href} 
-              render={() => route.view}
-            />)
-        }
-      </Switch> 
+        {routes.map((route) => (
+          <Route
+            key={route.title}
+            exact
+            path={route.href}
+            render={() => route.view}
+          />
+        ))}
+      </Switch>
     </StandardLayout>
   </ThemeProvider>
-)
+);
 
-export default App;
+const mapStateToProps = (state) => ({
+  routes: state.routes.avaible,
+});
+
+export default connect(mapStateToProps)(App);

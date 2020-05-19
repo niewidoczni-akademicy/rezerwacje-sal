@@ -10,31 +10,42 @@ import {
   Exams as ExamsView
 } from '../../views';
 
-const Routes = [
+const ROUTES_DATA = [
   {
     title: 'Home',
     href: '/',
     icon: <HomeIcon />,
     view: <HomeView />,
+    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
   },
   {
     title: 'Rooms',
     href: '/rooms',
     icon: <MeetingRoomIcon />,
     view: <RoomsView />,
+    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
   },
   {
     title: 'Exams',
     href: '/exams',
     icon: <TodayIcon/>,
-    view: <ExamsView/>
+    view: <ExamsView/>,
+    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
   },
   {
     title: 'Users',
     href: '/users/add',
     icon: <PersonIcon />,
-    view: <UsersView />
+    view: <UsersView />,
+    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
+  },
+  {
+    title: 'Login',
+    href: '/login',
+    icon: <PersonIcon />, //TODO
+    view: <UsersView />,
+    roles: ["ANON"],
   }
 ];
 
-export default Routes;
+export default ROUTES_DATA;
