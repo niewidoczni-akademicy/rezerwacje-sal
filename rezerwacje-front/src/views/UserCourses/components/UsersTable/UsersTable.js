@@ -75,7 +75,8 @@ const UsersTable = () => {
       .then(res => res.json())
       .then(json => {
         console.log(json);
-        setUsers(json["systemUsers"]);
+        if (json["message"] == undefined)
+         setUsers(json["systemUsers"]);
       })
       .catch(e => console.log(e));
   }, []);
