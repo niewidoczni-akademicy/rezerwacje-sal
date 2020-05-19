@@ -8,7 +8,7 @@ import {
   Rooms as RoomsView,
   Users as UsersView,
   Exams as ExamsView
-} from '../views';
+} from '../../views';
 
 const Routes = [
   {
