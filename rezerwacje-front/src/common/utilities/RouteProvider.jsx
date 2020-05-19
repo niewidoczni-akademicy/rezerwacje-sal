@@ -12,11 +12,7 @@ import {
   Users as UsersView,
   Exams as ExamsView,
   Schedule as ScheduleView
-<<<<<<< HEAD:rezerwacje-front/src/common/utilities/RouteProvider.jsx
 } from 'views';
-=======
-} from '../views';
->>>>>>> 7d558c7a64f987a95da6fed3ea4ec2e50aa8a96b:rezerwacje-front/src/common/RouteProvider.jsx
 
 const Routes = [
   {
