@@ -4,8 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+import org.niewidoczniakademicy.rezerwacje.model.shared.StudyDegree;
+import org.niewidoczniakademicy.rezerwacje.model.shared.StudyType;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -14,9 +18,20 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AddRecruitmentPeriodRequest {
 
-    @NonNull
+    @NotNull
     private LocalDate startDate;
 
-    @NonNull
+    @NotNull
     private LocalDate endDate;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private StudyType studyType;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private StudyDegree studyDegree;
+
+    @NotNull
+    private Long recruitmentId;
 }
