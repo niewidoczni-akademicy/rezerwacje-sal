@@ -10,7 +10,7 @@ import {
   Courses as CoursesView,
   Users as UsersView,
   Exams as ExamsView,
-  UsersPrivileges as PrivilegesView
+  UserCourses as UserCoursesView
 } from 'views';
 
 const Routes = [
@@ -48,7 +48,7 @@ const Routes = [
     title: 'Standard Users',
     href: '/users/standard',
     icon: <PersonIcon />,
-    view: <PrivilegesView />
+    view: <UserCoursesView />
   }
 ];
 

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
 import {
-  UsersList
+  UsersTable
 } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -15,17 +15,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersPrivileges = () => {
+const UserCourses = () => {
   const classes = useStyles();
 
 
   return (
     <div className={classes.root}>
       <div className={classes.content}>
-        <UsersList />
+        <UsersTable />
       </div>
     </div>
   );
 };
 
-export default UsersPrivileges;
+export default UserCourses;

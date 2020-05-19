@@ -18,8 +18,8 @@ import {
   Typography,
   TablePagination
 } from "@material-ui/core";
-import "./UsersList.scss";
-import ChangeAccessForm from "../ChangeAccessForm/ChangeAccessForm";
+import "./UsersTable.scss";
+import ChangeCourseAccess from "../ChangeCourseAccess/ChangeCourseAccess";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersList = () => {
+const UsersTable = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
@@ -81,35 +81,33 @@ const UsersList = () => {
   }, []);
 
   const getSelectedUser = () => {
-    if (selectedUser == -1) 
-      return null;
+    if (selectedUser == -1) return null;
     else {
       return users.find(user => user.id === selectedUser);
     }
-  }
+  };
 
   return (
     <React.Fragment>
-    <Card>
-    <CardHeader title="Użytkownicy standardowi" />
-     <Divider />
-      <CardContent className={classes.content}>
-        <PerfectScrollbar>
-          <div className={classes.inner}>
-            <Table className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox" />
-                  <TableCell>Login</TableCell>
-                  <TableCell>Imię</TableCell>
-                  <TableCell>Nazwisko</TableCell>
-                  <TableCell>Adres email</TableCell>
-                  <TableCell>Numer telefonu</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users
-                  .map(user => (
+      <Card>
+        <CardHeader title="Użytkownicy standardowi" />
+        <Divider />
+        <CardContent className={classes.content}>
+          <PerfectScrollbar>
+            <div className={classes.inner}>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox" />
+                    <TableCell>Login</TableCell>
+                    <TableCell>Imię</TableCell>
+                    <TableCell>Nazwisko</TableCell>
+                    <TableCell>Adres email</TableCell>
+                    <TableCell>Numer telefonu</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {users.map(user => (
                     <TableRow
                       className={classes.tableRow}
                       hover
@@ -151,27 +149,27 @@ const UsersList = () => {
                       </TableCell>
                     </TableRow>
                   ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PerfectScrollbar>
-      </CardContent>
-      <CardActions className={classes.actions}>
-        <TablePagination
-          component="div"
-          count={users.length}
-          onChangePage={handlePageChange}
-          onChangeRowsPerPage={handleRowsPerPageChange}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
-        />
-      </CardActions>
-    </Card>
-    <br/>
-    <ChangeAccessForm user={getSelectedUser()}/>
+                </TableBody>
+              </Table>
+            </div>
+          </PerfectScrollbar>
+        </CardContent>
+        <CardActions className={classes.actions}>
+          <TablePagination
+            component="div"
+            count={users.length}
+            onChangePage={handlePageChange}
+            onChangeRowsPerPage={handleRowsPerPageChange}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </CardActions>
+      </Card>
+      <br />
+      <ChangeCourseAccess user={getSelectedUser()} />
     </React.Fragment>
   );
 };
 
-export default UsersList;
+export default UsersTable;
