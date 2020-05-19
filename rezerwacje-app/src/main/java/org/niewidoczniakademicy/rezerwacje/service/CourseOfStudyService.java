@@ -8,6 +8,7 @@ import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudyResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCoursesOfStudiesForUserResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CourseOfStudyMapper;
@@ -72,6 +73,14 @@ public final class CourseOfStudyService {
 
         return GetCourseOfStudyResponse.builder()
                 .courseOfStudy(course)
+                .build();
+    }
+
+    public GetCoursesOfStudiesForUserResponse getCoursesOfStudiesForUser(final Long userId) {
+        List<Long> coursesOfStudiesIdsForUser = courseOfStudyRepository.getCourseOfStudiesForUser(userId);
+
+        return GetCoursesOfStudiesForUserResponse.builder()
+                .coursesOfStudiesIdsForUser(coursesOfStudiesIdsForUser)
                 .build();
     }
 }
