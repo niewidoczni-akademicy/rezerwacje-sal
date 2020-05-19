@@ -10,7 +10,6 @@ import { ROOMS } from './constants'
 import { buildExamTimebar, buildRoomTrack } from './builders'
 
 import './style.scss'
-import './Calendar.scss'
 
 const MIN_ZOOM = 1300
 const MAX_ZOOM = 1300
