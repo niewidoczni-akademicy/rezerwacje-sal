@@ -2,19 +2,16 @@ package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecruitmentPeriodResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.GetRecruitmentPeriodsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
-import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentPeriodRepository;
-import org.niewidoczniakademicy.rezerwacje.service.repository.RecruitmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +26,7 @@ import java.util.Set;
 public final class RecruitmentPeriodService {
 
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
-    private final RecruitmentRepository recruitmentRepository;
+    private final RecruitmentService recruitmentService;
     private final ConversionService conversionService;
 
     public AddRecruitmentPeriodResponse saveRecruitmentPeriod(final AddRecruitmentPeriodRequest request) {
@@ -53,10 +50,9 @@ public final class RecruitmentPeriodService {
     }
 
     public GetRecruitmentPeriodsResponse getRecruitmentPeriods(final Long recruitmentId) {
-        Set<RecruitmentPeriod> recruitmentPeriods = recruitmentRepository
-                .findById(recruitmentId)
-                .map(Recruitment::getRecruitmentPeriods)
-                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + recruitmentId));
+        Set<RecruitmentPeriod> recruitmentPeriods = recruitmentService
+                .getRecruitmentFromDatabaseById(recruitmentId)
+                .getRecruitmentPeriods();
 
         return GetRecruitmentPeriodsResponse.builder()
                 .recruitmentPeriods(new ArrayList<>(recruitmentPeriods))
@@ -102,8 +98,6 @@ public final class RecruitmentPeriodService {
 
     private void validateRecruitmentIdExists(final AddRecruitmentPeriodRequest request) {
         Long recruitmentId = request.getRecruitmentId();
-        recruitmentRepository
-                .findById(recruitmentId)
-                .orElseThrow(() -> new RecruitmentNotFoundException("No recruitment with id " + recruitmentId));
+        recruitmentService.getRecruitmentFromDatabaseById(recruitmentId);
     }
 }
