@@ -25,9 +25,10 @@ export default function RecruitmentFormDialog(props) {
 
   const initState = {
         name: "",
-        startDate: Date.now(),
-        endDate: Date.now()
+        status: ""
   };
+
+
 
   const submit = () => {
     fetch("/api/recruitment", {
@@ -35,8 +36,8 @@ export default function RecruitmentFormDialog(props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: values.name,
-        startTime: values.startDate,
-        endTime: values.endDate,
+        startTime: startDate,
+        endTime: endDate,
       })
     }).then(
       function(res) {

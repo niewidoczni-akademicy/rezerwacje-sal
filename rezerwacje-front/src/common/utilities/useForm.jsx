@@ -7,6 +7,7 @@ const useForm = (initState, callback, validate) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = event => {
+    console.log(event)
     const { name, value } = event.target;
     setValues({
       ...values,

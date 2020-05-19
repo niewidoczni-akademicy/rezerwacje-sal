@@ -162,6 +162,5 @@ export default function ExamFormDialog(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }
