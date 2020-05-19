@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.controller.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.error.ErrorResponse;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
@@ -8,6 +9,7 @@ import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBefo
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermsIntersectionException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodStartDateBeforeCurrentDateException;
@@ -198,4 +200,31 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
         return errorResponse;
     }
 
+    @ExceptionHandler({InvalidFormatException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleInvalidFormatException(final InvalidFormatException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getLocalizedMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler({RecruitmentNotFoundException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse recruitmentNotFoundException(final RecruitmentNotFoundException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
 }

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.niewidoczniakademicy.rezerwacje.model.shared.StudyDegree;
+import org.niewidoczniakademicy.rezerwacje.model.shared.StudyType;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.CascadeType;
@@ -41,6 +43,13 @@ public class RecruitmentPeriod {
     @NonNull
     private LocalDate endDate;
 
+    @NonNull
+    private StudyType studyType;
+
+    @NonNull
+    private StudyDegree studyDegree;
+
+    @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recruitment_id")
     @JsonManagedReference
