@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b9d07717-909a-44cc-ba82-e0e40cc0349d",
+		"_postman_id": "a36bb516-edbf-492e-b76d-36b16bacda54",
 		"name": "reservation-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -141,7 +141,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"firstrrrrR\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\"\n}"
+					"raw": "{\n\t\"name\": \"first_recruitment\",\n\t\"startTime\": \"2021-01-16T14:00:00.000\",\n\t\"endTime\": \"2021-06-16T14:00:00.000\",\n\t\"recruitmentStatus\": \"IN_PROGRESS\"\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{recruitment-path}}",
