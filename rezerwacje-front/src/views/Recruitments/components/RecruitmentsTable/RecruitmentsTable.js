@@ -76,23 +76,23 @@ const RecruitmentsTable = () => {
     else setSelectedRecruitment(id);
   };
 
-  // useEffect(() => {
-  //   fetch("/api/system-user?type=STANDARD")
-  //     .then(res => res.json())
-  //     .then(json => {
-  //       console.log(json);
-  //       setUsers(json["systemUsers"]);
-  //     })
-  //     .catch(e => console.log(e));
-  // }, []);
+  useEffect(() => {
+    fetch("/api/recruitment/all")
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        setRecruitments(json["recruitments"]);
+      })
+      .catch(e => console.log(e));
+  }, []);
 
-  // const getSelectedUser = () => {
-  //   if (selectedUser == -1) 
-  //     return null;
-  //   else {
-  //     return users.find(user => user.id === selectedUser);
-  //   }
-  // }
+  const getSelectedRecruitment = () => {
+    if (selectedRecruitment == -1) 
+      return null;
+    else {
+      return recruitments.find(recruitment => recruitment.id === selectedRecruitment);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -112,7 +112,7 @@ const RecruitmentsTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {/* {recruitments
+                {recruitments
                   .map(recruitment => (
                     <TableRow
                       className={classes.tableRow}
@@ -148,7 +148,7 @@ const RecruitmentsTable = () => {
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))} */}
+                  ))}
                   <IconButton edge="end" aria-label="delete">
                         <DeleteIcon />
                       </IconButton>

@@ -109,6 +109,7 @@ export default function RecruitmentFormDialog(props) {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
+                    name="startDate"
                     label="Data początkowa"
                     value={values.startDate}
                     onChange={handleChange}
@@ -131,6 +132,7 @@ export default function RecruitmentFormDialog(props) {
                     variant="inline"
                     format="MM/dd/yyyy"
                     margin="normal"
+                    name="endDate"
                     label="Data końcowa"
                     value={values.endDate}
                     onChange={handleChange}

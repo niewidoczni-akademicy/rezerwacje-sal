@@ -13,7 +13,7 @@ export default async function validateRecruitmentForm(values) {
   }
 
   if (values.startDate >= values.endDate) {
-    errors.endDate = "Data końcowa powinna być późniejsza niż data "
+    errors.endDate = "Data końcowa powinna być późniejsza niż data początkowa."
   }
 
   return errors;
