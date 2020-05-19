@@ -4,3 +4,4 @@ export { default as Courses } from "./CoursesOfStudy";
 export { default as Exams } from "./Exams";
 export { default as Users } from "./Users";
 export { default as Recruitments } from "./Recruitments";
+export { default as Schedule } from "./Schedule";
