@@ -14,6 +14,7 @@ public final class RecruitmentConverter
                 .name(dto.getName())
                 .startTime(dto.getStartTime())
                 .endTime(dto.getEndTime())
+                .recruitmentStatus(dto.getRecruitmentStatus())
                 .build();
     }
 }
