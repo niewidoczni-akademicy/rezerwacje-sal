@@ -47,4 +47,8 @@ public final class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public SystemUser getUser() {
+        return user;
+    }
 }

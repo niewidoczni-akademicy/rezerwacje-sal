@@ -6,3 +6,4 @@ export { default as Users } from "./Users";
 export { default as Recruitments } from "./Recruitments";
 export { default as UserCourses } from "./UserCourses";
 export { default as Schedule } from "./Schedule";
+export { default as Login } from "./Login/login.component"

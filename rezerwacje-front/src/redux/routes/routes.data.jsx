@@ -14,13 +14,15 @@ import {
   Exams as ExamsView,	
   Recruitments as RecruitmentsView,	
   UserCourses as UserCoursesView,	
-  Schedule as ScheduleView	
+  Schedule as ScheduleView,
+  Login as LoginView,
 } from 'views';
 
 const ROUTES_DATA = [
   {
     title: "Home",
     href: "/",
+    exact: true,
     icon: <HomeIcon />,
     view: <HomeView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -28,6 +30,7 @@ const ROUTES_DATA = [
   {
     title: "Rooms",
     href: "/rooms",
+    exact: true,
     icon: <MeetingRoomIcon />,
     view: <RoomsView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -35,6 +38,7 @@ const ROUTES_DATA = [
   {
     title: "Courses",
     href: "/courses",
+    exact: true,
     icon: <FormatListBulletedIcon />,
     view: <CoursesView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -42,6 +46,7 @@ const ROUTES_DATA = [
   {
     title: "Exams",
     href: "/exams",
+    exact: true,
     icon: <TodayIcon />,
     view: <ExamsView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -49,6 +54,7 @@ const ROUTES_DATA = [
   {
     title: "Recruitments",
     href: "/recruitments",
+    exact: true,
     icon: <SchoolIcon />,
     view: <RecruitmentsView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -56,6 +62,7 @@ const ROUTES_DATA = [
   {
     title: "Users",
     href: "/users/add",
+    exact: true,
     icon: <PersonIcon />,
     view: <UsersView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -63,6 +70,7 @@ const ROUTES_DATA = [
   {
     title: "Schedule",
     href: "/schedule",
+    exact: true,
     icon: <ScheduleIcon />,
     view: <ScheduleView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
@@ -70,15 +78,17 @@ const ROUTES_DATA = [
   {
     title: "Standard Users",
     href: "/users/standard",
+    exact: true,
     icon: <PersonIcon />,
     view: <UserCoursesView />,
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
   },
   {
     title: "Login",
-    href: "/login",
-    icon: <PersonIcon />, //TODO
-    view: <UsersView />,
+    href: "/",
+    exact: false,
+    icon: <PersonIcon />,
+    view: <LoginView />,
     roles: ["ANON"],
   },
 ];

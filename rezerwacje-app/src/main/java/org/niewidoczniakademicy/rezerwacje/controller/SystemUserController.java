@@ -57,6 +57,7 @@ public class SystemUserController {
         return userService.getSystemUsersByFirstNameAndLastName(firstName, lastName);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR"})
     @GetMapping(params = {"type"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)

@@ -1,15 +1,27 @@
 package org.niewidoczniakademicy.rezerwacje.config.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Slf4j
 //@EnableGlobalMethodSecurity(securedEnabled = true)
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,7 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //@formatter:off
         http
             .anonymous().authorities("ROLE_ANON").and()
+            .authorizeRequests().and()
             .formLogin()
+                .permitAll()
+                .successHandler(this.successHandler())
+                .failureHandler(this.failureHandler())
+                .and()
+            .logout()
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                 .and()
             .exceptionHandling()
                 .defaultAuthenticationEntryPointFor(
@@ -29,6 +48,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
                 .disable();
         //@formatter:on
+    }
+
+    private AuthenticationSuccessHandler successHandler() {
+        return (request, response, authentication) -> {
+            log.debug("Login success");
+            log.debug(authentication.toString());
+            response.getWriter().append("OK");
+            response.setStatus(HttpServletResponse.SC_OK);
+        };
+    }
+
+    private AuthenticationFailureHandler failureHandler() {
+        return (request, response, exception) -> {
+            log.debug(exception.toString());
+            response.getWriter().append("Authentication failure");
+            response.setStatus(401);
+        };
     }
 
     @Bean

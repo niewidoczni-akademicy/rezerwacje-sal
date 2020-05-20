@@ -2,8 +2,11 @@ import { UserActionTypes } from "./user.types";
 
 const INITIAL_STATE = {
   currentUser: {
+    isLoggedIn: false,
+    id: -1,
+    name: "",
     role: "ANON"
-  }
+}
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

@@ -11,3 +11,8 @@ export const selectCurrentUserRole = createSelector(
     [selectCurrentUser],
     currentUser => currentUser.role
 )
+
+export const selectLoggedIn = createSelector(
+    [selectCurrentUser],
+    currentUser => currentUser.isLoggedIn
+)
