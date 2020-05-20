@@ -1,6 +1,7 @@
 import React from 'react';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import TodayIcon from '@material-ui/icons/Today';
@@ -12,9 +13,10 @@ import {
   Courses as CoursesView,
   Users as UsersView,
   Exams as ExamsView,
+  Faculties as FacultiesView,
   Recruitments as RecruitmentsView,
   UserCourses as UserCoursesView,
-  Schedule as ScheduleView
+  Schedule as ScheduleView,
 } from 'views';
 
 const Routes = [
@@ -37,6 +39,12 @@ const Routes = [
     view: <CoursesView />,
   },
   {
+    title: 'Faculties',
+    href: '/faculties',
+    icon: <AccountBalanceIcon />,
+    view: <FacultiesView />,
+  },
+  {
     title: 'Exams',
     href: '/exams',
     icon: <TodayIcon />,
@@ -46,13 +54,13 @@ const Routes = [
     title: 'Recruitments',
     href: '/recruitments',
     icon: <SchoolIcon />,
-    view: <RecruitmentsView />
+    view: <RecruitmentsView />,
   },
   {
     title: 'Users',
     href: '/users/add',
     icon: <PersonIcon />,
-    view: <UsersView />
+    view: <UsersView />,
   },
   {
     title: 'Schedule',
@@ -64,8 +72,8 @@ const Routes = [
     title: 'Standard Users',
     href: '/users/standard',
     icon: <PersonIcon />,
-    view: <UserCoursesView />
-  }
+    view: <UserCoursesView />,
+  },
 ];
 
 export default Routes;
