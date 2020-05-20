@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.model.rest.systemuser;
+package org.niewidoczniakademicy.rezerwacje.model.rest.other;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,11 @@ import org.springframework.lang.NonNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddSystemUserResponse {
+public class RecruitmentAndRoomConnectionResponse {
 
     @NonNull
-    private Long userId;
+    private Long recruitmentId;
+
+    @NonNull
+    private Long roomId;
 }
