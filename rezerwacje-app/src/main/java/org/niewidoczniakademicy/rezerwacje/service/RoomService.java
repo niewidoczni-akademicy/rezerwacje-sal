@@ -4,10 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvRoom;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
+import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomsResponse;
+import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.CSVService;
 import org.niewidoczniakademicy.rezerwacje.service.csv.RoomMapper;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.RoomNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ import java.util.Set;
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public final class RoomService {
+
+    private final ConversionService conversionService;
     private final CSVService csvService;
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
@@ -47,5 +53,19 @@ public final class RoomService {
             // TODO: extract more details from CSV parser
             throw new InvalidInputException("Error occurred while parsing CSV file!");
         }
+    }
+
+    public GetRoomResponse saveRoom(final AddRoomRequest request) {
+        Room room = conversionService.convert(request);
+        roomRepository.save(room);
+
+        return GetRoomResponse.builder()
+                .room(room)
+                .build();
+    }
+
+    public Room getRoomFromDatabaseById(final Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new RoomNotFoundException("No room with id: " + roomId));
     }
 }
