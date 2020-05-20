@@ -31,7 +31,6 @@ export default function ExamFormDialog(props) {
   const rooms = ["1.38, D17", "3.27a, D17", "1.23, D10"]
 
   return (
-    <div>
       <Dialog
         open={props.open}
         onClose={props.handleClose}
@@ -163,6 +162,5 @@ export default function ExamFormDialog(props) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }

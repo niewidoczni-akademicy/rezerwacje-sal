@@ -5,6 +5,7 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import TodayIcon from '@material-ui/icons/Today';
+import SchoolIcon from '@material-ui/icons/School';
 import ScheduleIcon from '@material-ui/icons/CalendarToday';
 import {
   Home as HomeView,
@@ -13,6 +14,8 @@ import {
   Users as UsersView,
   Exams as ExamsView,
   Faculties as FacultiesView,
+  Recruitments as RecruitmentsView,
+  UserCourses as UserCoursesView,
   Schedule as ScheduleView,
 } from 'views';
 
@@ -48,6 +51,12 @@ const Routes = [
     view: <ExamsView />,
   },
   {
+    title: 'Recruitments',
+    href: '/recruitments',
+    icon: <SchoolIcon />,
+    view: <RecruitmentsView />,
+  },
+  {
     title: 'Users',
     href: '/users/add',
     icon: <PersonIcon />,
@@ -58,6 +67,12 @@ const Routes = [
     href: '/schedule',
     icon: <ScheduleIcon />,
     view: <ScheduleView />,
+  },
+  {
+    title: 'Standard Users',
+    href: '/users/standard',
+    icon: <PersonIcon />,
+    view: <UserCoursesView />,
   },
 ];
 
