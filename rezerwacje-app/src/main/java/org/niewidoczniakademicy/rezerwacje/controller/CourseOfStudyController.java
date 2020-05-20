@@ -43,6 +43,7 @@ public class CourseOfStudyController {
         return courseOfStudyService.uploadCourseOfStudiesResponse(file);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -50,6 +51,7 @@ public class CourseOfStudyController {
         return courseOfStudyService.saveCourse(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "courses", params = {"userId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)

@@ -41,13 +41,7 @@ public final class UserService implements UserDetailsService {
                 .build();
     }
 
-    public SystemUser getSystemUserByLogin(String login) {
-        return userRepository
-                .findByLogin(login)
-                .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
-    }
-
-    public GetSystemUserResponse getSystemUserResponseByLogin(String login) {
+    public GetSystemUserResponse getSystemUserResponseByLogin(final String login) {
         return GetSystemUserResponse.builder()
                 .systemUser(getSystemUserByLogin(login))
                 .build();
@@ -73,8 +67,8 @@ public final class UserService implements UserDetailsService {
                 .build();
     }
 
-    public GetSystemUsersResponse getSystemUsersByType(final UserType type) {
-        final List<SystemUser> systemUsers = getSystemUsersFromDatabaseByType(type);
+    public GetSystemUsersResponse getSystemUsersResponseByType(final UserType type) {
+        final List<SystemUser> systemUsers = getSystemUsersByType(type);
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -82,7 +76,7 @@ public final class UserService implements UserDetailsService {
     }
 
     public OperationOnSystemUserResponse deleteSystemUserById(final Long userId) {
-        final SystemUser systemUser = getSystemUserFromDatabaseById(userId);
+        final SystemUser systemUser = getSystemUserById(userId);
         userRepository.delete(systemUser);
 
         return OperationOnSystemUserResponse.builder()
@@ -91,7 +85,7 @@ public final class UserService implements UserDetailsService {
     }
 
     public OperationOnSystemUserResponse deleteSystemUserByLogin(final String login) {
-        final SystemUser systemUser = getSystemUserFromDatabaseByLogin(login);
+        final SystemUser systemUser = getSystemUserByLogin(login);
         userRepository.delete(systemUser);
 
         return OperationOnSystemUserResponse.builder()
@@ -108,19 +102,19 @@ public final class UserService implements UserDetailsService {
         }
     }
 
-    public SystemUser getSystemUserFromDatabaseById(final Long userId) {
+    public SystemUser getSystemUserById(final Long userId) {
         return userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " does not exist"));
     }
 
-    private SystemUser getSystemUserFromDatabaseByLogin(final String login) {
+    private SystemUser getSystemUserByLogin(final String login) {
         return userRepository
                 .findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
     }
 
-    private List<SystemUser> getSystemUsersFromDatabaseByType(final UserType type) {
+    private List<SystemUser> getSystemUsersByType(final UserType type) {
         return userRepository
                 .findSystemUsersByUserType(type)
                 .orElseThrow(() -> new UserNotFoundException("Unable to find users with type: " + type));

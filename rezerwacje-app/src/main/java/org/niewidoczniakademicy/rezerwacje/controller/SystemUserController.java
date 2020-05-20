@@ -61,7 +61,7 @@ public class SystemUserController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public GetSystemUsersResponse getSystemUsersByType(@RequestParam final UserType type) {
-        return userService.getSystemUsersByType(type);
+        return userService.getSystemUsersResponseByType(type);
     }
 
     @Secured({"ROLE_ADMINISTRATOR"})
