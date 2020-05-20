@@ -7,6 +7,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomCo
 import org.niewidoczniakademicy.rezerwacje.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,10 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "connection")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class ConnectionController {
+public class ConnectionController {
 
     private final ConnectionService connectionService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "connect", params = {"userId", "courseOfStudyId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -30,6 +32,7 @@ public final class ConnectionController {
         return connectionService.connectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "connect", params = {"recruitmentId", "roomId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -39,6 +42,7 @@ public final class ConnectionController {
         return connectionService.connectRecruitmentWithRoom(recruitmentId, roomId);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
