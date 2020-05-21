@@ -6,10 +6,12 @@ import PersonIcon from '@material-ui/icons/Person';
 import TodayIcon from '@material-ui/icons/Today';	
 import SchoolIcon from '@material-ui/icons/School';	
 import ScheduleIcon from '@material-ui/icons/CalendarToday';	
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance"
 import {	
   Home as HomeView,	
   Rooms as RoomsView,	
   Courses as CoursesView,	
+  Faculties as FacultiesView,
   Users as UsersView,	
   Exams as ExamsView,	
   Recruitments as RecruitmentsView,	
@@ -44,6 +46,14 @@ const ROUTES_DATA = [
     roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
   },
   {
+    title: 'Faculties',
+    href: '/faculties',
+    exact: true,
+    icon: <AccountBalanceIcon />,
+    view: <FacultiesView />,
+    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
+  },
+  {
     title: "Exams",
     href: "/exams",
     exact: true,
@@ -65,7 +75,7 @@ const ROUTES_DATA = [
     exact: true,
     icon: <PersonIcon />,
     view: <UsersView />,
-    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
+    roles: ["ADMINISTRATOR"],
   },
   {
     title: "Schedule",
@@ -81,7 +91,7 @@ const ROUTES_DATA = [
     exact: true,
     icon: <PersonIcon />,
     view: <UserCoursesView />,
-    roles: ["STANDARD", "SUPERVISOR", "ADMINISTRATOR"],
+    roles: ["SUPERVISOR", "ADMINISTRATOR"],
   },
   {
     title: "Login",
