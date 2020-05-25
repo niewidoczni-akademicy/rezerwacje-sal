@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -44,6 +45,10 @@ public class ExamTerm {
     @Basic
     @NonNull
     private LocalTime timeEnd;
+
+    @NonNull
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 
     @NonNull
     @ManyToOne
@@ -88,5 +93,9 @@ public class ExamTerm {
     private void addRoom(final RecruitmentRoom recruitmentRoom) {
         this.recruitmentRoom = recruitmentRoom;
         recruitmentRoom.getExamTerms().add(this);
+    }
+
+    public final boolean isNotDeleted() {
+        return !isDeleted;
     }
 }
