@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a36bb516-edbf-492e-b76d-36b16bacda54",
+		"_postman_id": "783e0788-6ea5-4c18-be5f-bec23e5ebefb",
 		"name": "reservation-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -446,6 +446,69 @@
 					"path": [
 						"{{recruitment-period-path}}",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllExamTerms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{exam-terms}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{exam-terms}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddExamTermRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"day\": \"2020-02-03\",\n\t\"timeStart\": \"12:00\",\n\t\"timeEnd\": \"13:00\",\n\t\"recruitmentPeriodId\": \"1\",\n\t\"courseOfStudyId\": \"1\",\n\t\"recruitmentRoomId\": \"1\"\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{exam-terms}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{exam-terms}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SetExamTermAsDeleted",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{exam-terms}}/{{set-deleted}}/{{exam-term-id}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{exam-terms}}",
+						"{{set-deleted}}",
+						"{{exam-term-id}}"
 					]
 				}
 			},
