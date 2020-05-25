@@ -8,6 +8,7 @@ import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentRoom;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.DeleteExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
@@ -28,7 +29,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -45,7 +45,7 @@ public final class ExamTermService {
     public GetExamTermsResponse getAllResponse() {
         final Set<ExamTerm> examTerms = new HashSet<>(this.examTermRepository.findAll())
                 .stream()
-                .filter(ExamTerm::isNotDeleted)
+                .filter(e -> !e.getIsDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -75,7 +75,7 @@ public final class ExamTermService {
                 .map(RecruitmentRoom::getExamTerms)
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + id))
                 .stream()
-                .filter(ExamTerm::isNotDeleted)
+                .filter(e -> !e.getIsDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -92,7 +92,7 @@ public final class ExamTermService {
                 .map(CourseOfStudy::getExamTerms)
                 .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + id))
                 .stream()
-                .filter(ExamTerm::isNotDeleted)
+                .filter(e -> !e.getIsDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -164,6 +164,19 @@ public final class ExamTermService {
                 .examTermId(examTermId)
                 .build();
 
+    }
+
+    public DeleteExamTermResponse setExamTermAsDeleted(final Long examTermId) {
+        final ExamTerm examTerm = examTermRepository.findById(examTermId)
+                .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + examTermId));
+
+        examTerm.setIsDeleted(true);
+
+        examTermRepository.save(examTerm);
+
+        return DeleteExamTermResponse.builder()
+                .examTermId(examTermId)
+                .build();
     }
 
     private void validateExamTermTime(final LocalTime timeStart, final LocalTime timeEnd) {

@@ -3,6 +3,7 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.DeleteExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.ExamTermService;
@@ -65,5 +66,12 @@ public final class ExamTermController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public AddExamTermResponse addExamTerm(@RequestBody final AddExamTermRequest addExamTermRequest) {
         return examTermService.getAddExamTermResponse(addExamTermRequest);
+    }
+
+    @PostMapping(path = "/set-deleted/{examTermId}")
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public DeleteExamTermResponse setExamTermAsDeleted(@PathVariable final Long examTermId) {
+        return examTermService.setExamTermAsDeleted(examTermId);
     }
 }

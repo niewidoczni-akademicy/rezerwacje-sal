@@ -76,6 +76,7 @@ public class ExamTerm {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
+        this.isDeleted = false;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);
@@ -93,9 +94,5 @@ public class ExamTerm {
     private void addRoom(final RecruitmentRoom recruitmentRoom) {
         this.recruitmentRoom = recruitmentRoom;
         recruitmentRoom.getExamTerms().add(this);
-    }
-
-    public final boolean isNotDeleted() {
-        return !isDeleted;
     }
 }
