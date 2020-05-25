@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteExamTermResponse {
+public class DeleteOrUpdateExamTermResponse {
 
     @NotNull
     private Long examTermId;

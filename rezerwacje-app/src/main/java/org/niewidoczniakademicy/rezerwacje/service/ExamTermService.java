@@ -8,9 +8,10 @@ import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentRoom;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermResponse;
-import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.DeleteExamTermResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.DeleteOrUpdateExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.UpdateExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
@@ -166,7 +167,7 @@ public final class ExamTermService {
 
     }
 
-    public DeleteExamTermResponse setExamTermAsDeleted(final Long examTermId) {
+    public DeleteOrUpdateExamTermResponse setExamTermAsDeleted(final Long examTermId) {
         final ExamTerm examTerm = examTermRepository.findById(examTermId)
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + examTermId));
 
@@ -174,8 +175,50 @@ public final class ExamTermService {
 
         examTermRepository.save(examTerm);
 
-        return DeleteExamTermResponse.builder()
+        return DeleteOrUpdateExamTermResponse.builder()
                 .examTermId(examTermId)
+                .build();
+    }
+
+    public DeleteOrUpdateExamTermResponse updateExamTerm(final UpdateExamTermRequest request) {
+        examTermRepository.findById(request.getId())
+                .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + request.getId()));
+
+        final Long cosId = request.getCourseOfStudyId();
+        final Long rRoomId = request.getRecruitmentRoomId();
+        final Long recruitmentPeriodId = request.getRecruitmentPeriodId();
+        final LocalDate day = request.getDay();
+        final LocalTime timeStart = request.getTimeStart();
+        final LocalTime timeEnd = request.getTimeEnd();
+        validateExamTermTime(timeStart, timeEnd);
+
+        final CourseOfStudy courseOfStudy = courseOfStudyRepository
+                .findById(cosId)
+                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + cosId));
+
+        final RecruitmentRoom rRoom = recruitmentRoomRepository
+                .findById(rRoomId)
+                .orElseThrow(() -> new RoomNotFoundException("No room with id " + rRoomId));
+
+        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
+                .findById(recruitmentPeriodId)
+                .orElseThrow(() -> new RecruitmentPeriodNotFoundException(
+                        "No course of study with id " + recruitmentPeriodId));
+
+        final ExamTerm examTerm = new ExamTerm(
+                day,
+                timeStart,
+                timeEnd,
+                request.getIsDeleted(),
+                recruitmentPeriod,
+                courseOfStudy,
+                rRoom
+        );
+
+        examTermRepository.save(examTerm);
+
+        return DeleteOrUpdateExamTermResponse.builder()
+                .examTermId(examTerm.getId())
                 .build();
     }
 
