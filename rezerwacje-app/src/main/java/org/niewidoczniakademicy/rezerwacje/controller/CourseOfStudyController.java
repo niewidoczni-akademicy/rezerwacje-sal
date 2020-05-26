@@ -60,7 +60,7 @@ public final class CourseOfStudyController {
     @GetMapping(path = "history/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public GetCourseOfStudiesResponse getAll(@PathVariable Long id) {
+    public GetCourseOfStudiesResponse getHistory(@PathVariable Long id) {
         return courseOfStudyService.getHistory(id);
     }
 
