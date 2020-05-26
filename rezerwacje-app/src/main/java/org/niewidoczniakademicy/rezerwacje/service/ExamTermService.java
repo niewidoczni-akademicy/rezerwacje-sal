@@ -8,8 +8,10 @@ import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentRoom;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.AddExamTermResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.DeleteOrUpdateExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.GetExamTermsResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.examterm.UpdateExamTermRequest;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
@@ -29,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toSet;
+
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -40,7 +44,14 @@ public final class ExamTermService {
     private final RecruitmentPeriodRepository recruitmentPeriodRepository;
 
     public GetExamTermsResponse getAllResponse() {
-        Set<ExamTerm> examTerms = new HashSet<>(this.examTermRepository.findAll());
+        final Set<ExamTerm> examTerms = new HashSet<>(this.examTermRepository.findAll())
+                .stream()
+                .filter(e -> !e.getDeleted())
+                .collect(toSet());
+
+        if (examTerms.isEmpty()) {
+            throw new ExamTermNotFoundException("No exam terms found");
+        }
 
         return GetExamTermsResponse.builder()
                 .examTerms(examTerms)
@@ -48,8 +59,12 @@ public final class ExamTermService {
     }
 
     public GetExamTermResponse getOneResponse(final Long id) {
-        ExamTerm examTerm = this.examTermRepository.findById(id)
+        final ExamTerm examTerm = this.examTermRepository.findById(id)
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with id " + id));
+
+        if (examTerm.getDeleted()) {
+            throw new ExamTermNotFoundException("No exam term with id " + id);
+        }
 
         return GetExamTermResponse.builder()
                 .examTerm(examTerm)
@@ -57,9 +72,16 @@ public final class ExamTermService {
     }
 
     public GetExamTermsResponse getByRoomIdResponse(final Long id) {
-        Set<ExamTerm> examTerms = this.recruitmentRoomRepository.findById(id)
+        final Set<ExamTerm> examTerms = this.recruitmentRoomRepository.findById(id)
                 .map(RecruitmentRoom::getExamTerms)
-                .orElseThrow(() -> new RoomNotFoundException("No room with id " + id));
+                .orElseThrow(() -> new RoomNotFoundException("No room with id " + id))
+                .stream()
+                .filter(e -> !e.getDeleted())
+                .collect(toSet());
+
+        if (examTerms.isEmpty()) {
+            throw new ExamTermNotFoundException("No exam terms found");
+        }
 
         return GetExamTermsResponse.builder()
                 .examTerms(examTerms)
@@ -67,9 +89,16 @@ public final class ExamTermService {
     }
 
     public GetExamTermsResponse getByCourseOfStudyRepositoryIdResponse(final Long id) {
-        Set<ExamTerm> examTerms = this.courseOfStudyRepository.findById(id)
+        final Set<ExamTerm> examTerms = this.courseOfStudyRepository.findById(id)
                 .map(CourseOfStudy::getExamTerms)
-                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + id));
+                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + id))
+                .stream()
+                .filter(e -> !e.getDeleted())
+                .collect(toSet());
+
+        if (examTerms.isEmpty()) {
+            throw new ExamTermNotFoundException("No exam terms found");
+        }
 
         return GetExamTermsResponse.builder()
                 .examTerms(examTerms)
@@ -77,9 +106,13 @@ public final class ExamTermService {
     }
 
     public GetExamTermResponse getByRoomIdAndCourseOfStudyRepositoryIdResponse(final Long roomId, final Long cosId) {
-        ExamTerm examTerm = this.examTermRepository.findByRecruitmentRoomIdAndCourseOfStudyId(roomId, cosId)
+        final ExamTerm examTerm = this.examTermRepository.findByRecruitmentRoomIdAndCourseOfStudyId(roomId, cosId)
                 .orElseThrow(() -> new ExamTermNotFoundException(String.format(
                         "No exam term with room id %d and course of study id %d", roomId, cosId)));
+
+        if (examTerm.getDeleted()) {
+            throw new ExamTermNotFoundException("No exam term found");
+        }
 
         return GetExamTermResponse.builder()
                 .examTerm(examTerm)
@@ -132,6 +165,61 @@ public final class ExamTermService {
                 .examTermId(examTermId)
                 .build();
 
+    }
+
+    public DeleteOrUpdateExamTermResponse setExamTermAsDeleted(final Long examTermId) {
+        final ExamTerm examTerm = examTermRepository.findById(examTermId)
+                .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + examTermId));
+
+        examTerm.setDeleted(true);
+
+        examTermRepository.save(examTerm);
+
+        return DeleteOrUpdateExamTermResponse.builder()
+                .examTermId(examTermId)
+                .build();
+    }
+
+    public DeleteOrUpdateExamTermResponse updateExamTerm(final UpdateExamTermRequest request) {
+        examTermRepository.findById(request.getId())
+                .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + request.getId()));
+
+        final Long cosId = request.getCourseOfStudyId();
+        final Long rRoomId = request.getRecruitmentRoomId();
+        final Long recruitmentPeriodId = request.getRecruitmentPeriodId();
+        final LocalDate day = request.getDay();
+        final LocalTime timeStart = request.getTimeStart();
+        final LocalTime timeEnd = request.getTimeEnd();
+        validateExamTermTime(timeStart, timeEnd);
+
+        final CourseOfStudy courseOfStudy = courseOfStudyRepository
+                .findById(cosId)
+                .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + cosId));
+
+        final RecruitmentRoom rRoom = recruitmentRoomRepository
+                .findById(rRoomId)
+                .orElseThrow(() -> new RoomNotFoundException("No room with id " + rRoomId));
+
+        final RecruitmentPeriod recruitmentPeriod = recruitmentPeriodRepository
+                .findById(recruitmentPeriodId)
+                .orElseThrow(() -> new RecruitmentPeriodNotFoundException(
+                        "No course of study with id " + recruitmentPeriodId));
+
+        final ExamTerm examTerm = new ExamTerm(
+                day,
+                timeStart,
+                timeEnd,
+                request.getDeleted(),
+                recruitmentPeriod,
+                courseOfStudy,
+                rRoom
+        );
+
+        examTermRepository.save(examTerm);
+
+        return DeleteOrUpdateExamTermResponse.builder()
+                .examTermId(examTerm.getId())
+                .build();
     }
 
     private void validateExamTermTime(final LocalTime timeStart, final LocalTime timeEnd) {
