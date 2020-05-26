@@ -46,7 +46,7 @@ public final class ExamTermService {
     public GetExamTermsResponse getAllResponse() {
         final Set<ExamTerm> examTerms = new HashSet<>(this.examTermRepository.findAll())
                 .stream()
-                .filter(e -> !e.getIsDeleted())
+                .filter(e -> !e.getDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -62,7 +62,7 @@ public final class ExamTermService {
         final ExamTerm examTerm = this.examTermRepository.findById(id)
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with id " + id));
 
-        if (examTerm.getIsDeleted()) {
+        if (examTerm.getDeleted()) {
             throw new ExamTermNotFoundException("No exam term with id " + id);
         }
 
@@ -76,7 +76,7 @@ public final class ExamTermService {
                 .map(RecruitmentRoom::getExamTerms)
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + id))
                 .stream()
-                .filter(e -> !e.getIsDeleted())
+                .filter(e -> !e.getDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -93,7 +93,7 @@ public final class ExamTermService {
                 .map(CourseOfStudy::getExamTerms)
                 .orElseThrow(() -> new CourseOfStudyNotFoundException("No course of study with id " + id))
                 .stream()
-                .filter(e -> !e.getIsDeleted())
+                .filter(e -> !e.getDeleted())
                 .collect(toSet());
 
         if (examTerms.isEmpty()) {
@@ -110,7 +110,7 @@ public final class ExamTermService {
                 .orElseThrow(() -> new ExamTermNotFoundException(String.format(
                         "No exam term with room id %d and course of study id %d", roomId, cosId)));
 
-        if (examTerm.getIsDeleted()) {
+        if (examTerm.getDeleted()) {
             throw new ExamTermNotFoundException("No exam term found");
         }
 
@@ -171,7 +171,7 @@ public final class ExamTermService {
         final ExamTerm examTerm = examTermRepository.findById(examTermId)
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + examTermId));
 
-        examTerm.setIsDeleted(true);
+        examTerm.setDeleted(true);
 
         examTermRepository.save(examTerm);
 
