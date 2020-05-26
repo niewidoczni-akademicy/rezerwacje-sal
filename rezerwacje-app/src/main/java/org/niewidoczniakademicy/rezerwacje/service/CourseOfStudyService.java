@@ -43,6 +43,21 @@ public final class CourseOfStudyService {
                 .build();
     }
 
+    public GetCourseOfStudiesResponse getHistory(Long id) {
+        CourseOfStudy root = courseOfStudyRepository
+                .findById(id)
+                .orElse(null);
+        Set<CourseOfStudy> courseOfStudies = new HashSet<>();
+        while (root != null) {
+            courseOfStudies.add(root);
+            root = root.getPredecessor();
+        }
+
+        return GetCourseOfStudiesResponse.builder()
+                .courseOfStudies(courseOfStudies)
+                .build();
+    }
+
     public GetCourseOfStudiesResponse uploadCourseOfStudiesResponse(final MultipartFile file) {
         // TODO: provide better error messages
         try {

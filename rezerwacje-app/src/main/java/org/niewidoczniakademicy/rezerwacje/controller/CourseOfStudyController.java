@@ -10,6 +10,7 @@ import org.niewidoczniakademicy.rezerwacje.service.CourseOfStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,13 @@ public final class CourseOfStudyController {
     @ResponseStatus(value = HttpStatus.OK)
     public GetCourseOfStudyResponse editCourseOfStudy(@RequestBody final EditCourseOfStudyRequest request) {
         return courseOfStudyService.editCourse(request);
+    }
+
+    @GetMapping(path = "history/{id}")
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetCourseOfStudiesResponse getAll(@PathVariable Long id) {
+        return courseOfStudyService.getHistory(id);
     }
 
 
