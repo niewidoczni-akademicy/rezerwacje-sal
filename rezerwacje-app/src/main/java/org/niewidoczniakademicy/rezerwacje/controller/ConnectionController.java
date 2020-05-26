@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRecruitmentPeriodConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom.ConnectRecruitmentAndRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,13 +32,16 @@ public final class ConnectionController {
         return connectionService.connectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
     }
 
-    @PostMapping(path = "connect", params = {"recruitmentId", "roomId"})
+    @PostMapping(path = "connect-recruitment-and-room")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(@RequestParam final Long recruitmentId,
-                                                                     @RequestParam final Long roomId) {
+    public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(
+            @RequestBody final ConnectRecruitmentAndRoomRequest request) {
 
-        return connectionService.connectRecruitmentWithRoom(recruitmentId, roomId);
+        return connectionService.connectRecruitmentWithRoom(request.getRecruitmentId(),
+                request.getRoomId(),
+                request.getAvailableFrom(),
+                request.getAvailableTo());
     }
 
     @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})
