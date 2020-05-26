@@ -10,9 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.niewidoczniakademicy.rezerwacje.model.shared.CourseType;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -23,7 +25,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,6 +66,14 @@ public class CourseOfStudy {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_person2_id")
     private SystemUser contactPerson2;
+
+    @CreationTimestamp
+    @Column(name = "create_date")
+    private Date createDate;
+
+    @OneToOne
+    @ToString.Exclude
+    private CourseOfStudy predecessor;
 
     @NonNull
     private Boolean isJoined;
