@@ -20,7 +20,7 @@ public class UpdateExamTermRequest {
     private Long id;
 
     @NonNull
-    private Boolean isDeleted;
+    private Boolean deleted;
 
     @NotNull
     private LocalDate day;

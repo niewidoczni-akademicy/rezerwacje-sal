@@ -51,7 +51,7 @@ public class ExamTerm {
 
     @NonNull
     @ColumnDefault("false")
-    private Boolean isDeleted;
+    private Boolean deleted;
 
     @NonNull
     @ManyToOne
@@ -79,7 +79,7 @@ public class ExamTerm {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
-        this.isDeleted = false;
+        this.deleted = false;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);
@@ -88,14 +88,14 @@ public class ExamTerm {
     public ExamTerm(final LocalDate day,
                     final LocalTime timeStart,
                     final LocalTime timeEnd,
-                    final Boolean isDeleted,
+                    final Boolean deleted,
                     final RecruitmentPeriod recruitmentPeriod,
                     final CourseOfStudy courseOfStudy,
                     final RecruitmentRoom recruitmentRoom) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
-        this.isDeleted = isDeleted;
+        this.deleted = deleted;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);

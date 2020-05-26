@@ -209,7 +209,7 @@ public final class ExamTermService {
                 day,
                 timeStart,
                 timeEnd,
-                request.getIsDeleted(),
+                request.getDeleted(),
                 recruitmentPeriod,
                 courseOfStudy,
                 rRoom
