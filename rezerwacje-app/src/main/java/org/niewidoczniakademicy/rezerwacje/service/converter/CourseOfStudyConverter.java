@@ -26,10 +26,19 @@ public final class CourseOfStudyConverter
         Faculty opFaculty = facultyRepository.findFacultyByName(dto.getFaculty())
                 .orElseThrow(() ->
                         new FacultyNotFoundException(String.format("Faculty %s not found!", dto.getFaculty())));
+
         SystemUser opUser1 = userRepository.findByLogin(dto.getContactPerson1())
                 .orElseThrow(() ->
                         new UserNotFoundException(String.format("User %s not found!", dto.getContactPerson1())));
-        SystemUser opUser2 = userRepository.findByLogin(dto.getContactPerson2()).orElse(null);
+        SystemUser opUser2;
+        String opUser2Login = dto.getContactPerson2();
+        if (opUser2Login != null) {
+            opUser2 = null;
+        } else {
+            opUser2 = userRepository.findByLogin(opUser2Login)
+                    .orElseThrow(() ->
+                            new UserNotFoundException(String.format("User %s not found!", opUser2Login)));
+        }
         CourseType type = dto.getCourseType().equals("FULL_TIME") ? CourseType.FULL_TIME : CourseType.EXTERNAL;
 
 
