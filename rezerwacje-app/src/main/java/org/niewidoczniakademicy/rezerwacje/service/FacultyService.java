@@ -24,6 +24,17 @@ public final class FacultyService {
 
     public GetFacultiesResponse getAllResponse() {
         Set<Faculty> faculties = new HashSet<>(this.facultyRepository.findAll());
+        Set<Faculty> predecessors = new HashSet<>();
+
+        for (Faculty faculty : faculties) {
+            Faculty predecessor = faculty.getPredecessor();
+            if (predecessor != null) {
+                predecessors.add(predecessor);
+            }
+        }
+
+        faculties.removeAll(predecessors);
+
 
         return GetFacultiesResponse.builder()
                 .faculties(faculties)

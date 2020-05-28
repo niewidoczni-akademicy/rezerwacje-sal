@@ -37,6 +37,16 @@ public final class CourseOfStudyService {
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());
+        Set<CourseOfStudy> predecessors = new HashSet<>();
+
+        for (CourseOfStudy courseOfStudy : courseOfStudies) {
+            CourseOfStudy predecessor = courseOfStudy.getPredecessor();
+            if (predecessor != null) {
+                predecessors.add(predecessor);
+            }
+        }
+
+        courseOfStudies.removeAll(predecessors);
 
         return GetCourseOfStudiesResponse.builder()
                 .courseOfStudies(courseOfStudies)
