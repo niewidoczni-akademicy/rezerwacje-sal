@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.model.rest.faculty.room;
+package org.niewidoczniakademicy.rezerwacje.model.rest.faculty;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.database.Faculty;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetFacultiesResponse {
+public class GetFacultyResponse {
 
     @NotNull
-    private Set<Faculty> faculties;
+    private Faculty faculty;
 }

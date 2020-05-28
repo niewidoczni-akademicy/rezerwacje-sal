@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.EditCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
@@ -22,4 +23,6 @@ public interface ConversionService {
     Recruitment convert(AddRecruitmentRequest request);
 
     CourseOfStudy convert(AddCourseOfStudyRequest request);
+
+    CourseOfStudy convert(EditCourseOfStudyRequest request);
 }
