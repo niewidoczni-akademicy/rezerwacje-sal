@@ -32,7 +32,7 @@ public final class CourseOfStudyConverter
                         new UserNotFoundException(String.format("User %s not found!", dto.getContactPerson1())));
         SystemUser opUser2;
         String opUser2Login = dto.getContactPerson2();
-        if (opUser2Login != null) {
+        if (opUser2Login == null) {
             opUser2 = null;
         } else {
             opUser2 = userRepository.findByLogin(opUser2Login)
