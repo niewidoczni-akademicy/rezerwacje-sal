@@ -25,7 +25,6 @@ function DataTable(props) {
     fetch(props.url)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json);
         setEntries(json[props.responseKey]);
       })
       .catch((e) => console.log(e));

@@ -10,8 +10,11 @@ import {
   CardHeader,
 } from '@material-ui/core';
 import { FacultiesTable } from '..';
+import { AddFacultyForm } from '..';
 
 const FacultiesContent = (props) => {
+  const [showAddDialog, setShowAddDialog] = useState(false);
+
   return (
     <React.Fragment>
       <Card style={{ width: 900 }}>
@@ -25,12 +28,18 @@ const FacultiesContent = (props) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={() => alert('not implemented')}
+            onClick={() => setShowAddDialog(true)}
           >
             Dodaj wydział
           </Button>
         </CardActions>
       </Card>
+      <AddFacultyForm
+        open={showAddDialog}
+        handleClose={() => {
+          setShowAddDialog(false);
+        }}
+      />
     </React.Fragment>
   );
 };

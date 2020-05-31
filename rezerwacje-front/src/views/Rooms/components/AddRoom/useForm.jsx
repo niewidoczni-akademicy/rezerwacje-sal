@@ -1,5 +1,5 @@
 //custom react hook for forms
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useForm = (initState, callback, validate) => {
   const [values, setValues] = useState(initState);
@@ -20,8 +20,8 @@ const useForm = (initState, callback, validate) => {
 
   // TODO: common useForm.jsx could be more generic
   const handleSubmit = async () => {
-    setErrors(await validate(values));
     setIsSubmitting(true);
+    setErrors(await validate(values));
   };
 
   useEffect(() => {
