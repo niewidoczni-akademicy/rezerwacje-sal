@@ -9,13 +9,13 @@ import {
 export const buildExamTimebar = (startDate, endDate) => [
   {
     id: 'days',
-    title: 'Days',
+    title: 'Dzień',
     cells: buildDayCells(startDate, endDate),
     style: {'text-align': 'left'},
   },
   {
     id: 'hours',
-    title: 'Hours',
+    title: 'Godzina',
     cells: buildHourCells(startDate, endDate),
     useAsGrid: true,
     style: {},

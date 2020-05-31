@@ -80,7 +80,7 @@ class Calendar extends Component {
               variant="contained"
               onClick={this.applyFilters}
             >
-              APPLY FILTERS
+              ZASTOSUJ FILTRY
             </Button>
           </CardActions>
         </CardContent>
