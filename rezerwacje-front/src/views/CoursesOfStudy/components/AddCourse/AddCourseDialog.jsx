@@ -22,9 +22,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import validateCourseForm from './validateCourseForm.js';
 import useForm from './useForm.jsx';
+import useAutocomplete from './useAutocomplete.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +53,35 @@ const AddCourseDialog = (props) => {
     remarks: '',
   };
 
+  const initAutocompleteState = {
+    faculties: [],
+    users: [],
+  };
+  const fetchAutocomplete = async () => {
+    const facultiesPromise = fetch('/api/faculties')
+      .then((response) => response.json())
+      .then((json) => json['faculties'].map((faculty) => faculty['name']));
+
+    // TODO: fetch just logins/personal data (without passwords!)
+    const usersPromise = fetch('/api/system-user/all')
+      .then((response) => response.json())
+      .then((json) => json['systemUsers'].map((user) => user['login']));
+
+    let [faculties, users] = await Promise.all([
+      facultiesPromise,
+      usersPromise,
+    ]);
+
+    return {
+      faculties: faculties,
+      users: users,
+    };
+  };
+  const autoCompleteState = useAutocomplete(
+    initAutocompleteState,
+    fetchAutocomplete
+  );
+
   const submit = () => {
     const {
       name,
@@ -61,7 +92,7 @@ const AddCourseDialog = (props) => {
       isJoined,
       remarks,
     } = values;
-
+    console.log(faculty);
     fetch('/api/course-of-study', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -132,15 +163,29 @@ const AddCourseDialog = (props) => {
                 <p className="error">{errors.name}</p>
               </Grid>
               <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Wydział"
-                  margin="dense"
+                <Autocomplete
                   name="faculty"
-                  onChange={handleChange}
-                  required
-                  variant="outlined"
+                  options={autoCompleteState['faculties']}
+                  getOptionLabel={(option) => option}
                   value={values.faculty}
+                  onChange={(event, newValue) =>
+                    handleChange({
+                      target: {
+                        name: 'faculty',
+                        value: newValue,
+                      },
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Wydział"
+                      margin="dense"
+                      required
+                      variant="outlined"
+                    />
+                  )}
                 />
                 <p className="error">{errors.faculty}</p>
               </Grid>
@@ -166,26 +211,54 @@ const AddCourseDialog = (props) => {
                 <p className="error">{errors.courseType}</p>
               </Grid>
               <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Kontakt 1"
-                  margin="dense"
+                <Autocomplete
                   name="contactPerson1"
-                  onChange={handleChange}
+                  options={autoCompleteState['users']}
+                  getOptionLabel={(option) => option}
                   value={values.contactPerson1}
-                  variant="outlined"
+                  onChange={(event, newValue) =>
+                    handleChange({
+                      target: {
+                        name: 'contactPerson1',
+                        value: newValue,
+                      },
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Kontakt 1"
+                      margin="dense"
+                      variant="outlined"
+                    />
+                  )}
                 />
                 <p className="error">{errors.contactPerson1}</p>
               </Grid>
               <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Kontakt 2"
-                  margin="dense"
+                <Autocomplete
                   name="contactPerson2"
-                  onChange={handleChange}
+                  options={autoCompleteState['users']}
+                  getOptionLabel={(option) => option}
                   value={values.contactPerson2}
-                  variant="outlined"
+                  onChange={(event, newValue) =>
+                    handleChange({
+                      target: {
+                        name: 'contactPerson2',
+                        value: newValue,
+                      },
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      label="Kontakt 2"
+                      margin="dense"
+                      variant="outlined"
+                    />
+                  )}
                 />
                 <p className="error">{errors.contactPerson2}</p>
               </Grid>
