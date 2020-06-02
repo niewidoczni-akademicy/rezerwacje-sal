@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -8,95 +8,49 @@ import {
   Divider,
   CardContent,
   CardHeader,
-  useForkRef,
 } from '@material-ui/core';
 import { ImportCoursesDialog, CourseDialog, CoursesTable } from '../';
+import { useAutocomplete, useEntryList } from 'common/utilities';
 
-// Hook to maintain and search list of displayed courses
-function useEntryList() {
-  const [entries, setEntries] = useState([]);
-
-  const findEntry = (id) => {
-    for (var i = 0; i < entries.length; ++i)
-      if (entries[i].id === id) return entries[i];
-    return null;
-  };
-
-  useEffect(() => {
-    fetch('/api/course-of-study')
-      .then((res) => res.json())
-      .then((json) => {
-        const entryList = json['courseOfStudies'];
-        setEntries(entryList);
+const fetchPromises = [
+  // TODO: don't fetch passwords o.O
+  fetch('/api/faculties')
+    .then((response) => response.json())
+    .then((json) =>
+      json['faculties'].map((faculty) => {
+        return {
+          id: faculty.id,
+          name: faculty.name,
+        };
       })
-      .catch((e) => console.log(e));
-  }, []);
+    ),
 
-  return {
-    entries,
-    findEntry,
-  };
-}
-
-// Hook to maintain all autocomplete values for forms
-// TODO: use lazy loading?
-function useAutocomplete() {
-  const [values, setValues] = useState({
-    faculties: [],
-    users: [],
-  });
-
-  const fetchAndSetValues = async () => {
-    // Fetch faculties and users in parallel
-    // TODO: don't fetch passwords o.O
-    const facultiesPromise = fetch('/api/faculties')
-      .then((response) => response.json())
-      .then((json) =>
-        json['faculties'].map((faculty) => {
-          return {
-            id: faculty.id,
-            name: faculty.name,
-          };
-        })
-      );
-
-    const usersPromise = fetch('/api/system-user/all')
-      .then((response) => response.json())
-      .then((json) =>
-        json['systemUsers'].map((user) => {
-          return {
-            id: user.id,
-            login: user.login,
-            firstName: user.firstName,
-            lastName: user.lastName,
-          };
-        })
-      );
-
-    let [faculties, users] = await Promise.all([
-      facultiesPromise,
-      usersPromise,
-    ]);
-
-    setValues({ ...values, faculties: faculties, users: users });
-  };
-
-  useEffect(() => {
-    fetchAndSetValues();
-  }, []);
-
-  return values;
-}
+  fetch('/api/system-user/all')
+    .then((response) => response.json())
+    .then((json) =>
+      json['systemUsers'].map((user) => {
+        return {
+          id: user.id,
+          login: user.login,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+      })
+    ),
+];
 
 const CoursesContent = (props) => {
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList();
-  const acValues = useAutocomplete();
+  const { entries, findEntry } = useEntryList(
+    '/api/course-of-study',
+    'courseOfStudies'
+  );
+  const acValues = useAutocomplete(['faculties', 'users'], fetchPromises);
 
-  const [editEntry, setEditEntry] = useState({
+  const [initEditState, setEditState] = useState({
     id: null,
     name: '',
     faculty: null,
@@ -126,8 +80,8 @@ const CoursesContent = (props) => {
           <CoursesTable
             entries={entries}
             onRowClick={(entryId) => {
-              let editEntryCopy = { ...editEntry, ...findEntry(entryId) };
-              setEditEntry(editEntryCopy);
+              let editEntryCopy = { ...initEditState, ...findEntry(entryId) };
+              setEditState(editEntryCopy);
               setShowEditDialog(true);
             }}
           />
@@ -170,7 +124,7 @@ const CoursesContent = (props) => {
         url="/api/course-of-study"
         httpMethod="PUT"
         open={showEditDialog}
-        initState={editEntry}
+        initState={initEditState}
         autoCompleteValues={acValues}
         handleClose={() => {
           setShowEditDialog(false);

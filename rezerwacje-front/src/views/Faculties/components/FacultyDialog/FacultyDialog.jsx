@@ -14,7 +14,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import validateFacultyForm from './validateFacultyForm.js';
-import useForm from './useForm.jsx';
+import { useDialogForm } from 'common/utilities';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,27 +29,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddFacultyForm = (props) => {
+const FacultyDialog = (props) => {
   const classes = useStyles();
-  const initState = {
-    name: '',
-  };
 
   const submit = () => {
-    const { name } = values;
+    const { id, name } = values;
 
-    fetch('/api/faculties', {
-      method: 'POST',
+    fetch(props.url, {
+      method: props.httpMethod,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        id: id,
         name: name,
       }),
     }).then(
       function (res) {
         if (res.ok) {
-          setState(initState);
-          console.log(values);
-          alert('Wydział został dodany do bazy.');
+          alert(props.message);
         } else {
           alert('Wystąpił błąd.');
         }
@@ -60,11 +56,13 @@ const AddFacultyForm = (props) => {
     );
   };
 
-  const { handleChange, handleSubmit, values, errors, setState } = useForm(
-    initState,
-    submit,
-    validateFacultyForm
-  );
+  const {
+    handleChange,
+    handleChangeEvent,
+    handleSubmit,
+    values,
+    errors,
+  } = useDialogForm(props.initState, submit, validateFacultyForm);
 
   return (
     <Dialog
@@ -73,7 +71,7 @@ const AddFacultyForm = (props) => {
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle className={classes.root}>
-        <Typography variant="h3">Nowy wydział</Typography>
+        <Typography variant="h3">{props.title}</Typography>
         <IconButton
           aria-label="close"
           className={classes.closeButton}
@@ -91,7 +89,7 @@ const AddFacultyForm = (props) => {
               label="Nazwa"
               margin="dense"
               name="name"
-              onChange={handleChange}
+              onChange={handleChangeEvent}
               required
               value={values.name}
               variant="outlined"
@@ -106,11 +104,11 @@ const AddFacultyForm = (props) => {
           variant="contained"
           onClick={() => handleSubmit()}
         >
-          DODAJ
+          {props.action}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddFacultyForm;
+export default FacultyDialog;

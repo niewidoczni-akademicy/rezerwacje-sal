@@ -24,7 +24,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import validateCourseForm from './validateCourseForm.js';
-import useForm from './useForm.jsx';
+import useDialogForm from 'common/utilities/useDialogForm.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,7 +86,7 @@ const CourseDialog = (props) => {
     handleSubmit,
     values,
     errors,
-  } = useForm(props.initState, submit, validateCourseForm);
+  } = useDialogForm(props.initState, submit, validateCourseForm);
 
   return (
     <Dialog

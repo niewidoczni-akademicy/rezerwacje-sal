@@ -9,11 +9,23 @@ import {
   CardContent,
   CardHeader,
 } from '@material-ui/core';
-import { FacultiesTable } from '..';
-import { AddFacultyForm } from '..';
+import { FacultyDialog, FacultiesTable } from '..';
+import { useEntryList } from 'common/utilities';
 
 const FacultiesContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+
+  const { entries, findEntry } = useEntryList('/api/faculties', 'faculties');
+
+  const [initEditState, setEditState] = useState({
+    id: null,
+    name: '',
+  });
+  const initAddState = {
+    id: null,
+    name: '',
+  };
 
   return (
     <React.Fragment>
@@ -21,7 +33,14 @@ const FacultiesContent = (props) => {
         <CardHeader title="Wydziały" />
         <Divider />
         <CardContent>
-          <FacultiesTable />
+          <FacultiesTable
+            entries={entries}
+            onRowClick={(entryId) => {
+              let editEntryCopy = { ...initEditState, ...findEntry(entryId) };
+              setEditState(editEntryCopy);
+              setShowEditDialog(true);
+            }}
+          />
         </CardContent>
         <Divider />
         <CardActions>
@@ -34,10 +53,28 @@ const FacultiesContent = (props) => {
           </Button>
         </CardActions>
       </Card>
-      <AddFacultyForm
+      <FacultyDialog
+        title="Dodaj wydział"
+        action="DODAJ"
+        message="Wydział został dodany do bazy."
+        url="/api/faculties"
+        httpMethod="PUT"
         open={showAddDialog}
+        initState={initAddState}
         handleClose={() => {
           setShowAddDialog(false);
+        }}
+      />
+      <FacultyDialog
+        title="Edytuj wydział"
+        action="ZAPISZ"
+        message="Zapisano"
+        url="/api/faculties"
+        httpMethod="PUT"
+        open={showEditDialog}
+        initState={initEditState}
+        handleClose={() => {
+          setShowEditDialog(false);
         }}
       />
     </React.Fragment>

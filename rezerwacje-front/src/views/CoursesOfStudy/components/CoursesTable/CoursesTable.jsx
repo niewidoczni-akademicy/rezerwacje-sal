@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataTable } from '..';
+import { DataTable } from 'common/components';
 
 const CoursesTable = (props) => {
   const rows = props.entries.map((course) => {
