@@ -17,18 +17,39 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { useEffect, useState } from "react"
 
 
 export default function ExamFormDialog(props) {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [courses, setCourses] = useState([]);
+  const [rooms, setRooms] = useState([]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const courses = ["Informatyka, WIEiT, stacjonarne", "Elektronika, WIEiT, stacjonarne", "Automatyka i Robotyka, EAIiB"]
-  const rooms = ["1.38, D17", "3.27a, D17", "1.23, D10"]
+
+  useEffect(() => {
+    fetch("/api/course-of-study")
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        setCourses(json["courseOfStudies"]);
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/rooms")
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        setRooms(json["rooms"]);
+      })
+      .catch(e => console.log(e));
+  }, []);
 
   return (
       <Dialog
@@ -41,7 +62,7 @@ export default function ExamFormDialog(props) {
             Nowy egzamin
           </Typography>
           <Typography variant="h5">
-            Rekrutacja: {props.space}
+            Rekrutacja: {props.recruitment}
           </Typography>
           <Typography variant="h5">
             Cykl: {props.period}
@@ -70,7 +91,7 @@ export default function ExamFormDialog(props) {
                   variant="outlined"
                 >
                   {courses.map(course => (
-                    <option key={course} value={course}>{course}</option>
+                    <option value={course.id}>{course.name}</option>
                   ))}
                 </TextField>
               </Grid>
@@ -88,7 +109,7 @@ export default function ExamFormDialog(props) {
                   variant="outlined"
                 >
                   {rooms.map(room => (
-                    <option key={room} value={room}>{room}</option>
+                    <option value={room}>{`${room.name}, ${room.building}`}</option>
                   ))}
                 </TextField>
               </Grid>
@@ -140,7 +161,7 @@ export default function ExamFormDialog(props) {
 
                   <KeyboardTimePicker
                     margin="normal"
-                    label="Od godziny"
+                    label="Do godziny"
                     value={selectedDate}
                     onChange={handleDateChange}
                     KeyboardButtonProps={{
