@@ -6,20 +6,19 @@ const useForm = (initState, callback, validate) => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (event) => {
+  const handleChange = (name, value) => {
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleChangeEvent = (event) => {
     const { name, value } = event.target;
-
-    setValues({
-      ...values,
-      [name]: value,
-    });
+    handleChange(name, value);
   };
 
-  const setState = (state) => {
-    setValues(state);
-  };
+  useEffect(() => {
+    setValues({ ...initState });
+  }, [initState]);
 
-  // TODO: common useForm.jsx could be more generic
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setErrors(await validate(values));
@@ -33,10 +32,10 @@ const useForm = (initState, callback, validate) => {
 
   return {
     handleChange,
+    handleChangeEvent,
     handleSubmit,
     values,
     errors,
-    setState,
   };
 };
 

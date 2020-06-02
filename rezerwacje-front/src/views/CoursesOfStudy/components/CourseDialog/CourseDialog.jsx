@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Card,
-  CardHeader,
   CardContent,
   Divider,
   Grid,
@@ -17,7 +16,7 @@ import {
   DialogActions,
 } from '@material-ui/core';
 
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -26,7 +25,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import validateCourseForm from './validateCourseForm.js';
 import useForm from './useForm.jsx';
-import useAutocomplete from './useAutocomplete.jsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,49 +39,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddCourseDialog = (props) => {
+const CourseDialog = (props) => {
   const classes = useStyles();
-  const initState = {
-    name: '',
-    faculty: '',
-    courseType: 'FULL_TIME',
-    contactPerson1: '',
-    contactPerson2: '',
-    isJoined: 'false',
-    remarks: '',
-  };
-
-  const initAutocompleteState = {
-    faculties: [],
-    users: [],
-  };
-  const fetchAutocomplete = async () => {
-    const facultiesPromise = fetch('/api/faculties')
-      .then((response) => response.json())
-      .then((json) => json['faculties'].map((faculty) => faculty['name']));
-
-    // TODO: fetch just logins/personal data (without passwords!)
-    const usersPromise = fetch('/api/system-user/all')
-      .then((response) => response.json())
-      .then((json) => json['systemUsers'].map((user) => user['login']));
-
-    let [faculties, users] = await Promise.all([
-      facultiesPromise,
-      usersPromise,
-    ]);
-
-    return {
-      faculties: faculties,
-      users: users,
-    };
-  };
-  const autoCompleteState = useAutocomplete(
-    initAutocompleteState,
-    fetchAutocomplete
-  );
 
   const submit = () => {
     const {
+      id,
       name,
       faculty,
       courseType,
@@ -92,25 +53,23 @@ const AddCourseDialog = (props) => {
       isJoined,
       remarks,
     } = values;
-    console.log(faculty);
-    fetch('/api/course-of-study', {
-      method: 'POST',
+    fetch(props.url, {
+      method: props.httpMethod,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        id: id,
         name: name,
-        faculty: faculty,
+        faculty: faculty.name,
         courseType: courseType,
-        contactPerson1: contactPerson1,
-        contactPerson2: contactPerson2,
+        contactPerson1: contactPerson1.login,
+        contactPerson2: contactPerson2 != null ? contactPerson2.login : null,
         isJoined: isJoined,
         remarks: remarks,
       }),
     }).then(
       function (res) {
         if (res.ok) {
-          setState(initState);
-          console.log(values);
-          alert('Kierunek został dodany do bazy.');
+          alert(props.message);
         } else {
           alert('Wystąpił błąd.');
         }
@@ -121,11 +80,13 @@ const AddCourseDialog = (props) => {
     );
   };
 
-  const { handleChange, handleSubmit, values, errors, setState } = useForm(
-    initState,
-    submit,
-    validateCourseForm
-  );
+  const {
+    handleChange,
+    handleChangeEvent,
+    handleSubmit,
+    values,
+    errors,
+  } = useForm(props.initState, submit, validateCourseForm);
 
   return (
     <Dialog
@@ -134,7 +95,7 @@ const AddCourseDialog = (props) => {
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle className={classes.root}>
-        <Typography variant="h3">Nowy kierunek</Typography>
+        <Typography variant="h3">{props.title}</Typography>
         <IconButton
           aria-label="close"
           className={classes.closeButton}
@@ -145,7 +106,6 @@ const AddCourseDialog = (props) => {
       </DialogTitle>
       <DialogContent dividers>
         <Card>
-          <CardHeader title="Nowy kierunek" />
           <Divider />
           <CardContent>
             <Grid container spacing={3}>
@@ -155,7 +115,7 @@ const AddCourseDialog = (props) => {
                   label="Nazwa"
                   margin="dense"
                   name="name"
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   required
                   value={values.name}
                   variant="outlined"
@@ -165,17 +125,15 @@ const AddCourseDialog = (props) => {
               <Grid item md={6} xs={12}>
                 <Autocomplete
                   name="faculty"
-                  options={autoCompleteState['faculties']}
-                  getOptionLabel={(option) => option}
-                  value={values.faculty}
-                  onChange={(event, newValue) =>
-                    handleChange({
-                      target: {
-                        name: 'faculty',
-                        value: newValue,
-                      },
-                    })
+                  options={props.autoCompleteValues.faculties}
+                  getOptionLabel={(option) => option.name}
+                  getOptionSelected={(option, value) =>
+                    option.name === value.name
                   }
+                  value={values.faculty}
+                  onChange={(event, newValue) => {
+                    handleChange('faculty', newValue);
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -197,7 +155,7 @@ const AddCourseDialog = (props) => {
                   name="courseType"
                   select
                   SelectProps={{ native: true }}
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   value={values.courseType}
                   variant="outlined"
                 >
@@ -213,16 +171,16 @@ const AddCourseDialog = (props) => {
               <Grid item md={6} xs={12}>
                 <Autocomplete
                   name="contactPerson1"
-                  options={autoCompleteState['users']}
-                  getOptionLabel={(option) => option}
+                  options={props.autoCompleteValues.users}
+                  getOptionLabel={(option) =>
+                    option.firstName + ' ' + option.lastName
+                  }
+                  getOptionSelected={(option, value) =>
+                    option.login === value.login
+                  }
                   value={values.contactPerson1}
                   onChange={(event, newValue) =>
-                    handleChange({
-                      target: {
-                        name: 'contactPerson1',
-                        value: newValue,
-                      },
-                    })
+                    handleChange('contactPerson1', newValue)
                   }
                   renderInput={(params) => (
                     <TextField
@@ -230,6 +188,7 @@ const AddCourseDialog = (props) => {
                       fullWidth
                       label="Kontakt 1"
                       margin="dense"
+                      required
                       variant="outlined"
                     />
                   )}
@@ -239,16 +198,16 @@ const AddCourseDialog = (props) => {
               <Grid item md={6} xs={12}>
                 <Autocomplete
                   name="contactPerson2"
-                  options={autoCompleteState['users']}
-                  getOptionLabel={(option) => option}
+                  options={props.autoCompleteValues.users}
+                  getOptionLabel={(option) =>
+                    option.firstName + ' ' + option.lastName
+                  }
+                  getOptionSelected={(option, value) =>
+                    option.login === value.login
+                  }
                   value={values.contactPerson2}
                   onChange={(event, newValue) =>
-                    handleChange({
-                      target: {
-                        name: 'contactPerson2',
-                        value: newValue,
-                      },
-                    })
+                    handleChange('contactPerson2', newValue)
                   }
                   renderInput={(params) => (
                     <TextField
@@ -273,13 +232,15 @@ const AddCourseDialog = (props) => {
                     <FormControlLabel
                       value={'true'}
                       control={<Radio />}
-                      onChange={handleChange}
+                      checked={values.isJoined === true}
+                      onChange={handleChangeEvent}
                       label="Tak"
                     />
                     <FormControlLabel
                       value={'false'}
                       control={<Radio />}
-                      onChange={handleChange}
+                      checked={values.isJoined !== true}
+                      onChange={handleChangeEvent}
                       label="Nie"
                     />
                   </RadioGroup>
@@ -292,7 +253,7 @@ const AddCourseDialog = (props) => {
                   label="Uwagi"
                   margin="dense"
                   name="remarks"
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   value={values.remarks}
                   variant="outlined"
                 />
@@ -309,11 +270,11 @@ const AddCourseDialog = (props) => {
           variant="contained"
           onClick={() => handleSubmit()}
         >
-          DODAJ
+          {props.action}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddCourseDialog;
+export default CourseDialog;
