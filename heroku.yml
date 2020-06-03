@@ -1,0 +1,9 @@
+build:
+  docker:
+    web:
+      dockerfile: rezerwacje-front/Dockerfile
+      target: build
+    backend: rezerwacje-app/Dockerfile
+run:
+  web: npm start
+  backend: ./gradlew --project-cache-dir /tmp/gradle-cache bootRun

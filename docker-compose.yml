@@ -9,7 +9,7 @@ services:
       - ./rezerwacje-app:/app
     user: appuser
     env_file: .env
-    command: ./gradlew --project-cache-dir /tmp/gradle-chache bootRun
+    command: ./gradlew --project-cache-dir /tmp/gradle-cache bootRun
     depends_on:
       - rezerwacje-db
     networks:

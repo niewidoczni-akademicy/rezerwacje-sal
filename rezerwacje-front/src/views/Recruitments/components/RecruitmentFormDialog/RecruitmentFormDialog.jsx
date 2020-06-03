@@ -17,7 +17,7 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-import useForm from '/webapp/src/common/utilities/useForm';
+import useForm from 'common/utilities/useForm';
 import validateRecruitmentForm from './validateRecruitmentForm';
 import './RecruitmentFormDialog.scss';
 
