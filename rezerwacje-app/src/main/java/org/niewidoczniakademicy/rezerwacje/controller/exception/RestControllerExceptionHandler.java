@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.controller.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.error.ErrorResponse;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
@@ -9,6 +10,7 @@ import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBefo
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermsIntersectionException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.PdfGenerationFailureException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
@@ -206,6 +208,20 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     public ErrorResponse handleInvalidFormatException(final InvalidFormatException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getLocalizedMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler({PdfGenerationFailureException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse pdfGenerationFailed(final DocumentException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
                 .build();
 
         log.warn(e.getMessage());
