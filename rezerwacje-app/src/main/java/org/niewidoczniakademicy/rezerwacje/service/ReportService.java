@@ -24,7 +24,7 @@ public class ReportService {
 
     private RecruitmentRepository recruitmentRepository;
     private final List<String> currentReports = Arrays.asList(
-            "None", "None2"
+            "recruitment", "recruitmentPeriod", "courseOfStudy", "faculty" // TODO in builder
     );
 
     public GetReportsInfoResponse getReportsInfoResponse() {
