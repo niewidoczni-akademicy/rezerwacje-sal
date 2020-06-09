@@ -136,9 +136,9 @@ export default function WeekTimeRangePicker() {
   const classes = useStyles();
 
   const [weekTimeRanges, setWeekTimeRanges] = useState(
-    DOW.reduce(function (map, value, index) {
-      map[index] = [];
-      return map;
+    DOW.reduce(function (acc, value, index) {
+      acc[index] = [];
+      return acc;
     }, {})
   );
 
