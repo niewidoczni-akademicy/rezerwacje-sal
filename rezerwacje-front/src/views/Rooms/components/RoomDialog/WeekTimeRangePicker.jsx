@@ -7,11 +7,13 @@ import {
   Divider,
   FormControl,
   Grid,
+  IconButton,
   List,
   ListItem,
   MenuItem,
   Select,
 } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -31,12 +33,12 @@ const DOW = Object.freeze([
 function TimeRangePicker(props) {
   const { startDate, endDate, onChange } = props;
 
-  const onStartDateChange = (event) => {
-    onChange([event.target.value, endDate]);
+  const onStartDateChange = (date) => {
+    onChange([date, endDate]);
   };
 
-  const onEndDateChange = (event) => {
-    onChange([startDate, event.target.value]);
+  const onEndDateChange = (date) => {
+    onChange([startDate, date]);
   };
 
   return (
@@ -64,32 +66,51 @@ function TimeRangePicker(props) {
 }
 
 function TimeRangeList(props) {
-  const { index, value, timeRanges, handleRangeChange } = props;
+  const {
+    index,
+    value,
+    timeRanges,
+    handleRangeChange,
+    handleRangeDelete,
+  } = props;
 
   const setTimeRange = (index) => (range) => {
-    let newTimeRanges = [...timeRanges];
-    newTimeRanges[index] = range;
-    handleRangeChange(newTimeRanges);
+    handleRangeChange(index, range);
   };
 
   return (
     <Fragment>
       {index == value && (
         <List>
-          {timeRanges.map(
-            (range, index) => (
-              <Fragment>
-                <ListItem>
-                  <TimeRangePicker
-                    startDate={range[0]}
-                    onChange={setTimeRange(index)}
-                    endDate={range[1]}
-                  />
-                </ListItem>
-                <Divider />
-              </Fragment>
-            ),
-            this
+          {timeRanges.length !== 0 ? (
+            timeRanges.map(
+              (range, index) => (
+                <Fragment>
+                  <ListItem>
+                    <TimeRangePicker
+                      startDate={range[0]}
+                      onChange={setTimeRange(index)}
+                      endDate={range[1]}
+                    />
+                    <IconButton
+                      aria-label="close"
+                      onClick={() => handleRangeDelete(index)}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </ListItem>
+                  <Divider />
+                </Fragment>
+              ),
+              this
+            )
+          ) : (
+            <Fragment>
+              <ListItem>
+                <Typography variant="body1">Niedostępna</Typography>
+              </ListItem>
+              <Divider />
+            </Fragment>
           )}
         </List>
       )}
@@ -121,15 +142,32 @@ export default function WeekTimeRangePicker() {
     }, {})
   );
 
-  const setDayTimeRanges = (index) => (ranges) =>
-    setWeekTimeRanges({
-      ...weekTimeRanges,
-      [index]: ranges,
-    });
-
   const addRange = () => {
     let currentRanges = [...weekTimeRanges[selectedDay]];
     currentRanges.push([new Date(), new Date()]);
+    setWeekTimeRanges({
+      ...weekTimeRanges,
+      [selectedDay]: currentRanges,
+    });
+  };
+
+  const deleteRange = (index) => {
+    let currentRanges = [...weekTimeRanges[selectedDay]];
+    let newRanges = currentRanges.reduce(function (acc, value, ind) {
+      if (ind !== index) {
+        acc.push(value);
+      }
+      return acc;
+    }, []);
+    setWeekTimeRanges({
+      ...weekTimeRanges,
+      [selectedDay]: newRanges,
+    });
+  };
+
+  const changeRange = (index, range) => {
+    let currentRanges = [...weekTimeRanges[selectedDay]];
+    currentRanges[index] = range;
     setWeekTimeRanges({
       ...weekTimeRanges,
       [selectedDay]: currentRanges,
@@ -177,7 +215,8 @@ export default function WeekTimeRangePicker() {
                 value={selectedDay}
                 index={index}
                 timeRanges={weekTimeRanges[index]}
-                handleRangeChange={setDayTimeRanges(index)}
+                handleRangeChange={changeRange}
+                handleRangeDelete={deleteRange}
               />
             ),
             this
