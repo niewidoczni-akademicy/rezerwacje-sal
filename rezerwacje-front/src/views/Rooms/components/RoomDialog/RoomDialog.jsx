@@ -18,6 +18,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import validateRoomForm from './validateRoomForm.js';
+import WeekTimeRangePicker from './WeekTimeRangePicker';
 import { useDialogForm } from 'common/utilities';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,53 +87,51 @@ const RoomDialog = (props) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-
       <DialogContent dividers>
-        <Card>
-          <CardContent>
-            <Grid container spacing={3}>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Nazwa"
-                  margin="dense"
-                  name="name"
-                  onChange={handleChangeEvent}
-                  required
-                  value={values.name}
-                  variant="outlined"
-                />
-                <p className="error">{errors.name}</p>
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Budynek"
-                  margin="dense"
-                  name="building"
-                  onChange={handleChangeEvent}
-                  required
-                  variant="outlined"
-                  value={values.building}
-                />
-                <p className="error">{errors.building}</p>
-              </Grid>
-              <Grid item md={6} xs={12}>
-                <TextField
-                  fullWidth
-                  label="Pojemność"
-                  margin="dense"
-                  name="capacity"
-                  onChange={handleChangeEvent}
-                  value={values.capacity}
-                  variant="outlined"
-                />
-                <p className="error">{errors.capacity}</p>
-              </Grid>
-            </Grid>
-          </CardContent>
-          <Divider />
-        </Card>
+        <Grid container spacing={3}>
+          <Grid item xs={6}>
+            <TextField
+              label="Nazwa"
+              margin="dense"
+              name="name"
+              onChange={handleChangeEvent}
+              required
+              value={values.name}
+              variant="outlined"
+            />
+            <p className="error">{errors.name}</p>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Budynek"
+              margin="dense"
+              name="building"
+              onChange={handleChangeEvent}
+              required
+              variant="outlined"
+              value={values.building}
+            />
+            <p className="error">{errors.building}</p>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Pojemność"
+              margin="dense"
+              name="capacity"
+              onChange={handleChangeEvent}
+              required
+              value={values.capacity}
+              variant="outlined"
+            />
+            <p className="error">{errors.capacity}</p>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h4">Dostępna w godzinach:</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <WeekTimeRangePicker />
+          </Grid>
+        </Grid>
       </DialogContent>
       <DialogActions>
         <Button
