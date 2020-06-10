@@ -20,8 +20,9 @@ public enum DayOfWeek {
 
     @JsonCreator
     public static DayOfWeek fromCode(String code) {
-        if (code == null)
+        if (code == null) {
             return null;
+        }
 
         code = code.toLowerCase();
         for (DayOfWeek dayOfWeek : values()) {
