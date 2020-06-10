@@ -39,9 +39,7 @@ public final class ConnectionController {
             @RequestBody final ConnectRecruitmentAndRoomRequest request) {
 
         return connectionService.connectRecruitmentWithRoom(request.getRecruitmentId(),
-                request.getRoomId(),
-                request.getAvailableFrom(),
-                request.getAvailableTo());
+                request.getRoomId());
     }
 
     @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})
