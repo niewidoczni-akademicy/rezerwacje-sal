@@ -28,7 +28,15 @@ public final class HoursService {
     private final HoursRepository hoursRepository;
     private final ConversionService conversionService;
 
-    public void saveHours(final AddHoursRequest request) {
+    public List<Hours> saveHours(final Map<DayOfWeek, List<TimeInterval>> availabilityDetails, final Long roomId) {
+        AddHoursRequest request = AddHoursRequest.builder()
+                .availabilityDetails(availabilityDetails)
+                .roomId(roomId)
+                .build();
+        return saveHours(request);
+    }
+
+    public List<Hours> saveHours(final AddHoursRequest request) {
         final Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + request.getRoomId()));
 
@@ -38,6 +46,7 @@ public final class HoursService {
         for (Hours hours : availabilityHours) {
             hoursRepository.save(hours);
         }
+        return availabilityHours;
     }
 
     private void validateIfOverlapping(AddHoursRequest request, Set<Hours> currentHours) {
@@ -53,8 +62,9 @@ public final class HoursService {
                 TimeInterval t1 = timeIntervals.get(i);
                 TimeInterval t2 = timeIntervals.get(j);
                 if (t1.getTimeStart().isBefore(t2.getTimeEnd())
-                        && t1.getTimeEnd().isAfter(t2.getTimeStart()))
+                        && t1.getTimeEnd().isAfter(t2.getTimeStart())) {
                     throw new HoursOverlappingException();
+                }
             }
         }
     }
@@ -64,12 +74,14 @@ public final class HoursService {
                                       DayOfWeek dayOfWeek) {
         for (TimeInterval timeInterval : newTimeIntervals) {
             for (Hours hours : currentHours) {
-                if (!dayOfWeek.equals(hours.getDayOfWeek()))
+                if (!dayOfWeek.equals(hours.getDayOfWeek())) {
                     continue;
+                }
 
                 if (timeInterval.getTimeStart().isBefore(hours.getTimeEnd())
-                        && timeInterval.getTimeEnd().isAfter(hours.getTimeStart()))
+                        && timeInterval.getTimeEnd().isAfter(hours.getTimeStart())) {
                     throw new HoursOverlappingException();
+                }
             }
         }
     }

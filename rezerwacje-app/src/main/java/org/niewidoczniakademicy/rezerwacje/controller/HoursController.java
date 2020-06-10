@@ -2,6 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.hours.AddHoursRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.hours.AddHoursResponse;
 import org.niewidoczniakademicy.rezerwacje.service.HoursService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,9 @@ public final class HoursController {
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void addHours(@RequestBody final AddHoursRequest request) {
-        hoursService.saveHours(request);
+    public AddHoursResponse addHours(@RequestBody final AddHoursRequest request) {
+        return AddHoursResponse.builder()
+                .availabilityHours(hoursService.saveHours(request))
+                .build();
     }
 }
