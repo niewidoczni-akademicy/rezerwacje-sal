@@ -463,7 +463,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"availabilityDetails\": {\n        \"monday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"9:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"tuesday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"10:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"wednesday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"thursday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"friday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"saturday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ],\n        \"sunday\": [\n            {\n                \"startTime\": \"7:00\",\n                \"endTime\": \"9:00\"\n            },\n            {\n                \"startTime\": \"11:00\",\n                \"endTime\": \"13:00\"\n            }\n        ]\n    },\n    \"roomId\": 1\n}"
+					"raw": "{\n    \"availabilityDetails\": {\n        \"monday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"9:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"tuesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"10:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"wednesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"thursday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"friday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"saturday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"sunday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ]\n    },\n    \"roomId\": 1\n}"
 				},
 				"url": {
 					"raw": "{{base-url}}/{{hours-path}}",
@@ -472,6 +472,33 @@
 					],
 					"path": [
 						"{{hours-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddRoomRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"building\": \"D17\",\n    \"name\": \"3.21\",\n    \"capacity\": 20,\n    \"availabilityDetails\": {\n        \"monday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"9:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"tuesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"10:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"wednesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"thursday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"friday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"saturday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"sunday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{room-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{room-path}}"
 					]
 				}
 			},
