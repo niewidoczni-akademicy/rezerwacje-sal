@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
@@ -32,6 +33,26 @@ public final class RecruitmentService {
 
         return AddRecruitmentResponse.builder()
                 .recruitmentId(recruitment.getId())
+                .build();
+    }
+
+    public GetRecruitmentResponse getRecruitment(final long id) {
+        Recruitment recruitment = recruitmentRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecruitmentNotFoundException("Recruitment with id: " + id + " does not exist"));
+
+        return GetRecruitmentResponse.builder()
+                .recruitment(recruitment)
+                .build();
+    }
+
+    public GetRecruitmentRoomsResponse getRecruitmentRooms(final long id) {
+        Recruitment recruitment = recruitmentRepository.findById(id)
+                .orElseThrow(() ->
+                        new RecruitmentNotFoundException("Recruitment with id: " + id + " does not exist"));
+
+        return GetRecruitmentRoomsResponse.builder()
+                .recruitmentRooms(recruitment.getRecruitmentRooms())
                 .build();
     }
 
