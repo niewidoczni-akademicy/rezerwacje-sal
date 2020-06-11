@@ -82,6 +82,14 @@ const RecruitmentsTable = () => {
       .catch(e => console.log(e));
   }, []);
 
+  const convertStatusType = status => {
+    if (status == "IN_PREPARATION") {
+      return "W przygotowaniu";
+    } else if (status == "IN_PROGRESS") {
+      return "Trwa";
+    } else return "Zakończona";
+  }
+
   const convertDate = date => {
     return date.split("T")[0];
   };
@@ -101,6 +109,7 @@ const RecruitmentsTable = () => {
                     <TableCell>Nazwa</TableCell>
                     <TableCell>Data początkowa</TableCell>
                     <TableCell>Data końcowa</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -139,6 +148,13 @@ const RecruitmentsTable = () => {
                         <div className={classes.nameContainer}>
                           <Typography variant="body1">
                             {convertDate(recruitment.endTime)}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">
+                            {convertStatusType(recruitment.recruitmentStatus)}
                           </Typography>
                         </div>
                       </TableCell>
