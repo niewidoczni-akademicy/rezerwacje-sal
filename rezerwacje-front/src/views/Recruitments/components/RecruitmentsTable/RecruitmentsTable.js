@@ -57,14 +57,6 @@ const RecruitmentsTable = () => {
 
   const handleClose = () => setModalShow(false);
 
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
-
   const classes = useStyles();
 
   const handleSelectOne = (event, id) => {
@@ -166,15 +158,6 @@ const RecruitmentsTable = () => {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={recruitments.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleRowsPerPageChange}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
           {selectedRecruitment != -1 && (
             <Button color="primary" variant="contained">
               ZOBACZ CYKLE

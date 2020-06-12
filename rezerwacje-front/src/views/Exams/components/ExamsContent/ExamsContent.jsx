@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
 import { useState, useEffect } from "react"
 import {
     TextField,
@@ -14,6 +13,7 @@ import {
 }
     from "@material-ui/core"
 import ExamFormDialog from "./ExamFormDialog";
+import { convertDegree, convertType } from "./conversion";
 
 
 const ExamsContent = () => {
@@ -29,7 +29,6 @@ const ExamsContent = () => {
     const [modalShow, setModalShow] = useState(false);
 
     const handleChange = event => {
-        console.log(event.target.name, event.target.value)
         const { name, value } = event.target;
         setValues({
             ...values,
@@ -41,9 +40,7 @@ const ExamsContent = () => {
         fetch("/api/recruitment/all")
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 setRecruitments(json["recruitments"]);
-                console.log(recruitments)
             })
             .catch(e => console.log(e));
     }, []);
@@ -53,27 +50,12 @@ const ExamsContent = () => {
             fetch(`/api/recruitment-period/recruitment/${values.recruitment}`)
                 .then(res => res.json())
                 .then(json => {
-                    console.log(json);
                     setPeriods(json["recruitmentPeriods"]);
                 })
                 .catch(e => console.log(e));
     }, [values.recruitment]);
 
-    const handleClose = () => setModalShow(false)
-
-    const convertType = type => {
-        if (type == "FULL_TYPE")
-            return "STACJONARNE"
-        else
-            return "ZAOCZNE"
-    }
-
-    const convertDegree = degree => {
-        if (degree == "FIRST_DEGREE")
-            return "I STOPIEŃ"
-        else
-            return "II STOPIEŃ"
-    }
+    const handleClose = () => setModalShow(false);
 
     return (
         <React.Fragment>
@@ -120,7 +102,7 @@ const ExamsContent = () => {
                                 variant="outlined"
                             >
                                 {periods.map(period => (
-                                    <option value={period.id}>{`${period.startDate} - ${period.endDate}  ${convertType(period.studyType)}  ${convertDegree(period.studyDegree)}`}</option>
+                                    <option value={period.id}>{`${period.startDate} - ${period.endDate}, ${convertType(period.studyType)}, ${convertDegree(period.studyDegree)}`}</option>
                                 ))}
                             </TextField>
                         </Grid>
