@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
+import saveAs from 'file-saver';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -86,6 +87,28 @@ const RecruitmentsTable = () => {
     return date.split("T")[0];
   };
 
+  const handleGeneratingPdfReport = (id, name) => {
+      fetch("/api/report/recruitment/" + id)
+          .then(res => {
+              return res.blob()
+          })
+          .then(blob => {
+              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                  window.navigator.msSaveOrOpenBlob(blob);
+              } else {
+                  const objUrl = window.URL.createObjectURL(blob);
+                  let link = document.createElement('a');
+                  link.href = objUrl;
+                  link.download = "raport_z_rekrutacji_" + name + ".pdf";
+                  link.click();
+                  setTimeout(() => {
+                      window.URL.revokeObjectURL(objUrl);
+                  }, 250);
+              }
+          })
+          .catch(err => console.error(err))
+  };
+
   return (
     <React.Fragment>
       <Card>
@@ -101,6 +124,7 @@ const RecruitmentsTable = () => {
                     <TableCell>Nazwa</TableCell>
                     <TableCell>Data początkowa</TableCell>
                     <TableCell>Data końcowa</TableCell>
+                    <TableCell>Generowanie raportu</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -141,6 +165,16 @@ const RecruitmentsTable = () => {
                             {convertDate(recruitment.endTime)}
                           </Typography>
                         </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          type="submit"
+                          onClick={() => handleGeneratingPdfReport(recruitment.id, recruitment.name)}
+                        >
+                            Generuj raport
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
