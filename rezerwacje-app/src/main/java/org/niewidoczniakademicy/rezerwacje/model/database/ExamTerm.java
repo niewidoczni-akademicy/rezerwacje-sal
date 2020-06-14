@@ -53,6 +53,9 @@ public class ExamTerm {
     @ColumnDefault("false")
     private Boolean deleted;
 
+    @Basic
+    private Integer seats;
+
     @NonNull
     @ManyToOne
     @JsonManagedReference
@@ -75,11 +78,13 @@ public class ExamTerm {
                     final LocalTime timeEnd,
                     final RecruitmentPeriod recruitmentPeriod,
                     final CourseOfStudy courseOfStudy,
-                    final RecruitmentRoom recruitmentRoom) {
+                    final RecruitmentRoom recruitmentRoom,
+                    final Integer seats) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.deleted = false;
+        this.seats = seats;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);
@@ -91,11 +96,13 @@ public class ExamTerm {
                     final Boolean deleted,
                     final RecruitmentPeriod recruitmentPeriod,
                     final CourseOfStudy courseOfStudy,
-                    final RecruitmentRoom recruitmentRoom) {
+                    final RecruitmentRoom recruitmentRoom,
+                    final Integer seats) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.deleted = deleted;
+        this.seats = seats;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);
@@ -105,13 +112,17 @@ public class ExamTerm {
         this.recruitmentPeriod = recruitmentPeriod;
     }
 
-    private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
+    public void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
         this.courseOfStudy = courseOfStudy;
         courseOfStudy.getExamTerms().add(this);
     }
 
-    private void addRoom(final RecruitmentRoom recruitmentRoom) {
+    public void addRoom(final RecruitmentRoom recruitmentRoom) {
         this.recruitmentRoom = recruitmentRoom;
         recruitmentRoom.getExamTerms().add(this);
+    }
+
+    public void deleteRoom() {
+        this.recruitmentRoom = null;
     }
 }
