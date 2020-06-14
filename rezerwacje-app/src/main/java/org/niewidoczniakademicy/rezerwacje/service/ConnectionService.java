@@ -12,8 +12,6 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomCo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public final class ConnectionService {
@@ -37,13 +35,11 @@ public final class ConnectionService {
     }
 
     public RecruitmentAndRoomConnectionResponse connectRecruitmentWithRoom(final Long recruitmentId,
-                                                                           final Long roomId,
-                                                                           final LocalTime availableFrom,
-                                                                           final LocalTime availableTo) {
+                                                                           final Long roomId) {
         final Recruitment recruitment = recruitmentService.getRecruitmentFromDatabaseById(recruitmentId);
         final Room room = roomService.getRoomFromDatabaseById(roomId);
 
-        return recruitmentRoomService.connectRecruitmentAndRoom(recruitment, room, availableFrom, availableTo);
+        return recruitmentRoomService.connectRecruitmentAndRoom(recruitment, room);
     }
 
     public RecruitmentAndRecruitmentPeriodConnectionResponse connectRecruitmentWithRecruitmentPeriod(

@@ -2,18 +2,22 @@ package org.niewidoczniakademicy.rezerwacje.service.converter;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
+import org.niewidoczniakademicy.rezerwacje.model.database.Hours;
 import org.niewidoczniakademicy.rezerwacje.model.database.Recruitment;
 import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.EditCourseOfStudyRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.hours.AddHoursRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -24,6 +28,7 @@ public final class ConversionServiceImpl implements ConversionService {
     private final RoomConverter roomConverter;
     private final RecruitmentConverter recruitmentConverter;
     private final CourseOfStudyConverter courseOfStudyConverter;
+    private final HoursConverter hoursConverter;
 
     @Override
     public SystemUser convert(final AddSystemUserRequest request) {
@@ -62,6 +67,11 @@ public final class ConversionServiceImpl implements ConversionService {
                 .remarks(request.getRemarks())
                 .build();
         return courseOfStudyConverter.createFrom(addRequest);
+    }
+
+    @Override
+    public List<Hours> convert(AddHoursRequest request) {
+        return hoursConverter.createFrom(request);
     }
 
 }
