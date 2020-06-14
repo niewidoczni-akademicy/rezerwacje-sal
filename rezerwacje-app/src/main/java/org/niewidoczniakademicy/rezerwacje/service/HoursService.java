@@ -1,7 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.service;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.database.Hours;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.rest.hours.AddHoursRequest;
@@ -9,17 +8,18 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.hours.TimeInterval;
 import org.niewidoczniakademicy.rezerwacje.model.shared.DayOfWeek;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.HoursOverlappingException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.HoursTimeEndBeforeTimeStartException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RoomNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.HoursRepository;
 import org.niewidoczniakademicy.rezerwacje.service.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public final class HoursService {
@@ -40,13 +40,25 @@ public final class HoursService {
         final Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new RoomNotFoundException("No room with id " + request.getRoomId()));
 
+        validateTimeStartAndTimeEnd(request);
         validateIfOverlapping(request, room.getAvailabilityHours());
 
         List<Hours> availabilityHours = conversionService.convert(request);
-        for (Hours hours : availabilityHours) {
-            hoursRepository.save(hours);
-        }
+        hoursRepository.saveAll(availabilityHours);
         return availabilityHours;
+    }
+
+    private void validateTimeStartAndTimeEnd(AddHoursRequest request) {
+        for (Map.Entry<DayOfWeek, List<TimeInterval>> hoursForWeekDay : request.getAvailabilityDetails().entrySet()) {
+            for (TimeInterval timeInterval : hoursForWeekDay.getValue()) {
+                checkIfTimeStartBeforeTimeEnd(timeInterval.getTimeStart(), timeInterval.getTimeEnd());
+            }
+        }
+    }
+
+    private void checkIfTimeStartBeforeTimeEnd(LocalTime timeStart, LocalTime timeEnd) {
+        if (timeStart.equals(timeEnd) || timeStart.isAfter(timeEnd))
+            throw new HoursTimeEndBeforeTimeStartException();
     }
 
     private void validateIfOverlapping(AddHoursRequest request, Set<Hours> currentHours) {
