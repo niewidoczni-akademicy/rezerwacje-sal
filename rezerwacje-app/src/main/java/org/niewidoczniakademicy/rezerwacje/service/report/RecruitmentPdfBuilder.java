@@ -630,14 +630,14 @@ public class RecruitmentPdfBuilder {
             table.addCell(new PdfPCell(new Phrase(String.format("%.2f", entry.getValue()) + "%", plainFont)));
         }
 
-        int botLimit = seatsByRoom.size() >= 2 * SEARCH_LIMIT ? SEARCH_LIMIT // make top and bot disjoint
-                : seatsByRoom.size() < SEARCH_LIMIT ? 0 : seatsByRoom.size() - SEARCH_LIMIT;
+        int availableCells = Math.min(2 * SEARCH_LIMIT, seatsByRoom.size());
+        int bottomCellsLimit = Math.max(availableCells - SEARCH_LIMIT, 0);
 
         Map<String, Double> seatsByRoomBot = seatsByRoom
                 .entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
-                .limit(botLimit)
+                .limit(bottomCellsLimit)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         for (Map.Entry<String, Double> entry : seatsByRoomBot.entrySet()) {

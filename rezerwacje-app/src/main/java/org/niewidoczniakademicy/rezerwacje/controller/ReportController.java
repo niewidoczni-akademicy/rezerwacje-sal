@@ -44,7 +44,7 @@ public class ReportController {
             produces = MediaType.APPLICATION_PDF_VALUE)
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    public InputStreamResource postRecruitmentStaticsPd(@PathVariable Long id,
+    public InputStreamResource postRecruitmentStaticsPdf(@PathVariable Long id,
                                                         @RequestBody GetReportRecruitmentRequest request) {
         return reportService.getDetailedRecruitmentPdf(id, request);
     }
