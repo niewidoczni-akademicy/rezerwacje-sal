@@ -46,7 +46,6 @@ public class ReportService {
     );
 
     public GetReportsInfoResponse getReportsInfoResponse() {
-
         return GetReportsInfoResponse.builder()
                 .currentReports(currentReports)
                 .build();

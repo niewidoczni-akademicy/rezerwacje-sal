@@ -28,7 +28,6 @@ public class ReportController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public GetReportsInfoResponse getAvailableReports() {
-
         return reportService.getReportsInfoResponse();
     }
 
