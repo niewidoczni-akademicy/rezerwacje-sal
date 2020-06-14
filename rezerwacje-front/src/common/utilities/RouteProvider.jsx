@@ -17,6 +17,7 @@ import {
   Recruitments as RecruitmentsView,
   UserCourses as UserCoursesView,
   Schedule as ScheduleView,
+  RecruitmentRooms as RecruitmentRoomsView
 } from 'views';
 
 const Routes = [
@@ -74,6 +75,12 @@ const Routes = [
     icon: <PersonIcon />,
     view: <UserCoursesView />,
   },
+  {
+    title: 'Sale w rekrutacji',
+    href: '/recruitment/rooms',
+    icon: <MeetingRoomIcon/>,
+    view: <RecruitmentRoomsView/>
+  }
 ];
 
 export default Routes;
