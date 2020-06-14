@@ -57,8 +57,9 @@ public final class HoursService {
     }
 
     private void checkIfTimeStartBeforeTimeEnd(LocalTime timeStart, LocalTime timeEnd) {
-        if (timeStart.equals(timeEnd) || timeStart.isAfter(timeEnd))
+        if (timeStart.equals(timeEnd) || timeStart.isAfter(timeEnd)) {
             throw new HoursTimeEndBeforeTimeStartException();
+        }
     }
 
     private void validateIfOverlapping(AddHoursRequest request, Set<Hours> currentHours) {
