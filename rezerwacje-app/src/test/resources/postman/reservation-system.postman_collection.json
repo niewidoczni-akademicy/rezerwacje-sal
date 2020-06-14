@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "52eaaf4a-6195-4f79-a99e-71124459e181",
+		"_postman_id": "542f4200-b999-4fc7-a637-ff83ec10827e",
 		"name": "reservation-system",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -185,7 +185,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"recruitmentId\": 1,\n\t\"roomId\": 1,\n\t\"availableFrom\": \"12:00\",\n\t\"availableTo\": \"14:00\"\n}",
+					"raw": "{\n\t\"recruitmentId\": 1,\n\t\"roomId\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -445,6 +445,60 @@
 					"path": [
 						"{{recruitment-period-path}}",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddHoursRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"availabilityDetails\": {\n        \"monday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"9:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"tuesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"10:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"wednesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"thursday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"friday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"saturday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"sunday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ]\n    },\n    \"roomId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{hours-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{hours-path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddRoomRequest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"building\": \"D17\",\n    \"name\": \"3.21\",\n    \"capacity\": 20,\n    \"availabilityDetails\": {\n        \"monday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"9:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"tuesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"10:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"wednesday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"thursday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"friday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"saturday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ],\n        \"sunday\": [\n            {\n                \"timeStart\": \"7:00\",\n                \"timeEnd\": \"9:00\"\n            },\n            {\n                \"timeStart\": \"11:00\",\n                \"timeEnd\": \"13:00\"\n            }\n        ]\n    }\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/{{room-path}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{room-path}}"
 					]
 				}
 			},
