@@ -1,30 +1,26 @@
-package org.niewidoczniakademicy.rezerwacje.model.rest.room;
+package org.niewidoczniakademicy.rezerwacje.model.rest.hours;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.niewidoczniakademicy.rezerwacje.model.rest.hours.TimeInterval;
 import org.niewidoczniakademicy.rezerwacje.model.shared.DayOfWeek;
+import org.springframework.lang.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddRoomRequest {
+public class AddHoursRequest {
 
     @NonNull
-    private String building;
-
-    @NonNull
-    private String name;
-
-    @NonNull
-    private Integer capacity;
-
     private Map<DayOfWeek, List<TimeInterval>> availabilityDetails;
+
+    @NotNull
+    private Long roomId;
 }
