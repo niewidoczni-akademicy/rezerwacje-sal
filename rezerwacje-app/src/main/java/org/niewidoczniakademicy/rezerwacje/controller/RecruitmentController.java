@@ -50,7 +50,7 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitment(id);
     }
 
-    @DeleteMapping(path = {"{id}"})
+    @DeleteMapping(path = {"{id}/rooms"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public DeleteRecruitmentRoomsResponse deleteRecruitmentRooms(
