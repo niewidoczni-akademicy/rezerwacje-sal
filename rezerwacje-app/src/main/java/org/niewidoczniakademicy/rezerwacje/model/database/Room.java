@@ -59,4 +59,8 @@ public class Room {
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
     private Set<Hours> availabilityHours = new HashSet<>();
+
+    public void removeRoom(final RecruitmentRoom recruitmentRoom) {
+        this.recruitmentRooms.remove(recruitmentRoom);
+    }
 }

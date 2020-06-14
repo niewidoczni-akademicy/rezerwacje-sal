@@ -399,6 +399,7 @@ public class RecruitmentPdfBuilder {
         List<Double> doubleStream = recruitmentRoom
                 .getExamTerms()
                 .stream()
+                .filter(et -> et.getRecruitmentRoom() != null)
                 .map(et -> PERCENT_MULTIPLIER * (double) et.getSeats()
                         / et.getRecruitmentRoom().getRoom().getCapacity())
                 .collect(Collectors.toList());
@@ -454,6 +455,7 @@ public class RecruitmentPdfBuilder {
                 .stream()
                 .flatMap(rp -> rp.getExamTerms()
                         .stream()
+                        .filter(et -> et.getRecruitmentRoom() != null)
                         .map(ExamTerm::getRecruitmentRoom)
                 )
                 .collect(Collectors.toSet());
@@ -469,6 +471,7 @@ public class RecruitmentPdfBuilder {
                 .stream()
                 .flatMap(rp -> rp.getExamTerms()
                         .stream()
+                        .filter(et -> et.getRecruitmentRoom() != null)
                         .map(ExamTerm::getRecruitmentRoom))
                 .collect(Collectors.toSet());
         cosSet.retainAll(recruitmentRooms);
@@ -503,6 +506,7 @@ public class RecruitmentPdfBuilder {
                 .stream()
                 .flatMap(rp -> rp.getExamTerms()
                         .stream()
+                        .filter(et -> et.getRecruitmentRoom() != null)
                         .map(ExamTerm::getRecruitmentRoom)
                 )
                 .collect(Collectors.toList())
@@ -532,6 +536,7 @@ public class RecruitmentPdfBuilder {
                 .stream()
                 .flatMap(rp -> rp.getExamTerms()
                         .stream()
+                        .filter(et -> et.getRecruitmentRoom() != null)
                         .filter(recruitmentTerms::contains)
                         .map(ExamTerm::getRecruitmentRoom)
                 )
@@ -555,6 +560,7 @@ public class RecruitmentPdfBuilder {
                 )
                 .collect(Collectors.toList())
                 .stream()
+                .filter(et -> et.getRecruitmentRoom() != null)
                 .map(et -> PERCENT_MULTIPLIER * (double) et.getSeats()
                         / et.getRecruitmentRoom().getRoom().getCapacity())
                 .mapToDouble(x -> x)
@@ -575,6 +581,7 @@ public class RecruitmentPdfBuilder {
                 )
                 .collect(Collectors.toList())
                 .stream()
+                .filter(et -> et.getRecruitmentRoom() != null)
                 .map(et -> PERCENT_MULTIPLIER * (double) et.getSeats()
                         / et.getRecruitmentRoom().getRoom().getCapacity())
                 .mapToDouble(x -> x)
@@ -591,6 +598,7 @@ public class RecruitmentPdfBuilder {
                 )
                 .collect(Collectors.toList())
                 .stream()
+                .filter(et -> et.getRecruitmentRoom() != null)
                 .collect(Collectors
                         .groupingBy(et -> et.getRecruitmentRoom().getRoom().getName(),
                                 Collectors.averagingDouble(et -> PERCENT_MULTIPLIER * (double) et.getSeats()
@@ -610,6 +618,7 @@ public class RecruitmentPdfBuilder {
                 )
                 .collect(Collectors.toList())
                 .stream()
+                .filter(et -> et.getRecruitmentRoom() != null)
                 .collect(Collectors
                         .groupingBy(et -> et.getRecruitmentRoom().getRoom().getName(),
                                 Collectors.averagingDouble(et -> PERCENT_MULTIPLIER * (double) et.getSeats()

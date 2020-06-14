@@ -3,12 +3,15 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.DeleteRecruitmentRoomsRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.DeleteRecruitmentRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitmentsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.RecruitmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +49,16 @@ public final class RecruitmentController {
     public GetRecruitmentResponse getRecruitment(@PathVariable final Long id) {
         return recruitmentService.getRecruitment(id);
     }
+
+    @DeleteMapping(path = {"{id}"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public DeleteRecruitmentRoomsResponse deleteRecruitmentRooms(
+            @PathVariable final Long id,
+            @RequestBody final DeleteRecruitmentRoomsRequest request) {
+        return recruitmentService.deleteRecruitmentRooms(id, request);
+    }
+
 
     @GetMapping(path = {"{id}/rooms"})
     @ResponseBody

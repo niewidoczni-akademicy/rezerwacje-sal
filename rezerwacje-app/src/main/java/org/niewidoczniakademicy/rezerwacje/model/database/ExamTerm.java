@@ -112,13 +112,17 @@ public class ExamTerm {
         this.recruitmentPeriod = recruitmentPeriod;
     }
 
-    private void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
+    public void addCourseOfStudy(final CourseOfStudy courseOfStudy) {
         this.courseOfStudy = courseOfStudy;
         courseOfStudy.getExamTerms().add(this);
     }
 
-    private void addRoom(final RecruitmentRoom recruitmentRoom) {
+    public void addRoom(final RecruitmentRoom recruitmentRoom) {
         this.recruitmentRoom = recruitmentRoom;
         recruitmentRoom.getExamTerms().add(this);
+    }
+
+    public void deleteRoom() {
+        this.recruitmentRoom = null;
     }
 }
