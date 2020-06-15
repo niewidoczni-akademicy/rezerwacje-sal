@@ -17,7 +17,10 @@ const RoomsContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList('/api/rooms', 'rooms');
+  const { entries, findEntry, refreshEntries } = useEntryList(
+    '/api/rooms',
+    'rooms'
+  );
 
   const [initEditState, setEditState] = useState({
     id: null,
@@ -73,6 +76,7 @@ const RoomsContent = (props) => {
         httpMethod="POST"
         open={showAddDialog}
         initState={initAddState}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -85,12 +89,14 @@ const RoomsContent = (props) => {
         httpMethod="PUT"
         open={showEditDialog}
         initState={initEditState}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowEditDialog(false);
         }}
       />
       <ImportRoomsDialog
         open={showImportDialog}
+        onUploaded={refreshEntries}
         handleClose={() => {
           setShowImportDialog(false);
         }}

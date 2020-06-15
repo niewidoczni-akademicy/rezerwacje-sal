@@ -11,6 +11,11 @@ function useEntryList(url, responseKey) {
     return null;
   };
 
+  const [refreshToggle, setRefreshToggle] = useState(false);
+  const refreshEntries = () => {
+    setRefreshToggle(!refreshToggle);
+  };
+
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
@@ -19,11 +24,12 @@ function useEntryList(url, responseKey) {
         setEntries(entryList);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [refreshToggle]);
 
   return {
     entries,
     findEntry,
+    refreshEntries,
   };
 }
 

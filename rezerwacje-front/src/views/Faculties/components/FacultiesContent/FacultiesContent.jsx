@@ -16,7 +16,10 @@ const FacultiesContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList('/api/faculties', 'faculties');
+  const { entries, findEntry, refreshEntries } = useEntryList(
+    '/api/faculties',
+    'faculties'
+  );
 
   const [initEditState, setEditState] = useState({
     id: null,
@@ -61,6 +64,7 @@ const FacultiesContent = (props) => {
         httpMethod="POST"
         open={showAddDialog}
         initState={initAddState}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -73,6 +77,7 @@ const FacultiesContent = (props) => {
         httpMethod="PUT"
         open={showEditDialog}
         initState={initEditState}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowEditDialog(false);
         }}

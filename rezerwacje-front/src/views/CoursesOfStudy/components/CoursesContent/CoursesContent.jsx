@@ -44,7 +44,7 @@ const CoursesContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList(
+  const { entries, findEntry, refreshEntries } = useEntryList(
     '/api/course-of-study',
     'courseOfStudies'
   );
@@ -113,6 +113,7 @@ const CoursesContent = (props) => {
         open={showAddDialog}
         initState={initAddState}
         autoCompleteValues={acValues}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -126,12 +127,14 @@ const CoursesContent = (props) => {
         open={showEditDialog}
         initState={initEditState}
         autoCompleteValues={acValues}
+        onSubmitted={refreshEntries}
         handleClose={() => {
           setShowEditDialog(false);
         }}
       />
       <ImportCoursesDialog
         open={showImportDialog}
+        onUploaded={refreshEntries}
         handleClose={() => {
           setShowImportDialog(false);
         }}
