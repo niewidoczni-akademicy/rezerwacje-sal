@@ -11,20 +11,20 @@ import {
     ListItemSecondaryAction,
     IconButton,
     Typography,
-    TextField
+    TextField,
+    Button
 } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import AddIcon from "@material-ui/icons/AddCircle";
-import TimeSelectionDialog from '../TimeSelectionDialog';
+import SelectRecruitmentDialog from '../SelectRecruitmentDialog';
 
 const AssignRoomsTable = props => {
     const [rooms, setRooms] = useState([]);
-    const [currentRoom, setCurrentRoom] = useState(-1);
     const [assignedRooms, setAssignedRooms] = useState([]);
+    const [currentRoom, setCurrentRoom] = useState(-1);
     const [currentRecruitment, setCurrentRecruitment] = useState(-1);
     const [recruitmentList, setRecruitmentList] = useState([]);
     const [modalShow, setModalShow] = useState(false);
-
 
     const checkRoomAssignment = id => {
         if (assignedRooms.find(room => room.room.id === id) != undefined) return false;
@@ -34,7 +34,7 @@ const AssignRoomsTable = props => {
     const createRoomData = room => {
         return {
             "room": room.room,
-            "id": room.id
+            "id": room.id,
         }
     }
     const getRooms = rooms => rooms.map(room => createRoomData(room));
@@ -78,18 +78,62 @@ const AssignRoomsTable = props => {
             })
             .catch(e =>
                 console.log(e));
-    }, [currentRecruitment, modalShow]);
+    }, [currentRecruitment, currentRoom]);
 
     const handleRecruitmentChange = event => {
         setCurrentRecruitment(event.target.value);
     }
 
     const handleAddRoom = room => {
-        setCurrentRoom(room.id);
-        setModalShow(true);
+        const body = JSON.stringify({
+            recruitmentId: currentRecruitment,
+            roomId: room.id,
+        });
+
+        fetch("/api/connection/connect-recruitment-and-room", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body
+        }).then(
+            function (res) {
+                if (res.ok) {
+                    setCurrentRoom(room.id);
+                } else {
+                    alert("Wystąpił błąd.");
+                }
+            },
+            function (e) {
+                alert("Wystąpił błąd.");
+            }
+        );
     };
 
+    const handleRemoveRoom = room => {
+        const body = JSON.stringify({
+            recruitmentRoomsIds: [room.id]
+        });
+
+        fetch(`/api/recruitment/${currentRecruitment}/rooms`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: body
+        }).then(
+            function (res) {
+                if (res.ok) {
+                    setCurrentRoom(room.id);
+                } else {
+                    alert("Wystąpił błąd.");
+                }
+            },
+            function (e) {
+                alert("Wystąpił błąd.");
+            }
+        );
+
+    }
+
     const handleClose = () => setModalShow(false);
+    const handleAddRooms = () => setModalShow(true);
 
     return (
         <React.Fragment>
@@ -133,7 +177,12 @@ const AssignRoomsTable = props => {
                                             <ListItem value={room.id}>
                                                 <ListItemText>{room.room.name + ", " + room.room.building}</ListItemText>
                                                 <ListItemSecondaryAction>
-                                                    <IconButton edge="end" aria-label="delete">
+                                                    <IconButton
+                                                        edge="end"
+                                                        aria-label="delete"
+                                                        onClick={() => {
+                                                            handleRemoveRoom(room);
+                                                        }}>
                                                         <RemoveIcon />
                                                     </IconButton>
                                                 </ListItemSecondaryAction>
@@ -174,9 +223,18 @@ const AssignRoomsTable = props => {
                             </Card>
                         </Grid>
                     </Grid>
+                    <Grid item xs={12} style={{ marginTop: 5 }}>
+                        <Card>
+                            <CardContent>
+                                <Button color="primary" variant="contained" disabled={currentRecruitment == -1} onClick={handleAddRooms}>
+                                    DODAJ SALE Z INNEJ REKRUTACJI
+          </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 </Grid>
             </Grid>
-            <TimeSelectionDialog open={modalShow} handleClose={handleClose} recruitment={currentRecruitment} room={currentRoom} />
+            <SelectRecruitmentDialog open={modalShow} handleClose={handleClose} recruitment={currentRecruitment} />
         </React.Fragment>
     );
 };
