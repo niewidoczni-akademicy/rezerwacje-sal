@@ -55,7 +55,7 @@ const RecruitmentsTable = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  const handleClose = () => setreaModalShow(false);
+  const handleClose = () => setModalShow(false);
 
   const handlePageChange = (event, page) => {
     setPage(page);
