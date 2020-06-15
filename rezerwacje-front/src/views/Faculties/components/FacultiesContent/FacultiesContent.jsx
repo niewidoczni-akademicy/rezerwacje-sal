@@ -58,7 +58,7 @@ const FacultiesContent = (props) => {
         action="DODAJ"
         message="Wydział został dodany do bazy."
         url="/api/faculties"
-        httpMethod="PUT"
+        httpMethod="POST"
         open={showAddDialog}
         initState={initAddState}
         handleClose={() => {
