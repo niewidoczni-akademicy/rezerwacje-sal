@@ -19,7 +19,6 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
-import saveAs from 'file-saver';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -56,7 +55,7 @@ const RecruitmentsTable = () => {
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
-  const handleClose = () => setModalShow(false);
+  const handleClose = () => setreaModalShow(false);
 
   const handlePageChange = (event, page) => {
     setPage(page);
