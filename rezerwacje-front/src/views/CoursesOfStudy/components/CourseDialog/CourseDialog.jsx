@@ -230,17 +230,15 @@ const CourseDialog = (props) => {
                     name="isJoined"
                   >
                     <FormControlLabel
-                      value={'true'}
                       control={<Radio />}
-                      checked={values.isJoined === true}
-                      onChange={handleChangeEvent}
+                      checked={values.isJoined}
+                      onChange={() => handleChange('isJoined', true)}
                       label="Tak"
                     />
                     <FormControlLabel
-                      value={'false'}
                       control={<Radio />}
-                      checked={values.isJoined !== true}
-                      onChange={handleChangeEvent}
+                      checked={!values.isJoined}
+                      onChange={() => handleChange('isJoined', false)}
                       label="Nie"
                     />
                   </RadioGroup>

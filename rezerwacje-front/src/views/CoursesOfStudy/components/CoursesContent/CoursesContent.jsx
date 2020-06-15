@@ -57,7 +57,7 @@ const CoursesContent = (props) => {
     courseType: 'FULL_TIME',
     contactPerson1: null,
     contactPerson2: null,
-    isJoined: 'false',
+    isJoined: false,
     remarks: '',
   });
   const initAddState = {
@@ -67,7 +67,7 @@ const CoursesContent = (props) => {
     courseType: 'FULL_TIME',
     contactPerson1: null,
     contactPerson2: null,
-    isJoined: 'false',
+    isJoined: false,
     remarks: '',
   };
 
