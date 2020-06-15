@@ -7,45 +7,46 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {
   Grid,
   Typography,
+  Card,
+  CardContent,
+  TextField
 }
   from "@material-ui/core"
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-} from '@material-ui/pickers';
 import { useEffect, useState } from "react";
 import './SelectRecruitmentDialog.scss'
 
 export default function SelectRecruitmentDialog(props) {
+  const [recruitment, setRecruitment] = useState(-1);
+  const [recruitmentList, setRecruitmentList] = useState([]);
 
   const handleSubmit = () => {
-    // const body = JSON.stringify({
-    //   recruitmentId: props.recruitment,
-    //   roomId: props.room,
-    //   availableFrom: getTime(startTime),
-    //   availableTo: getTime(endTime)
-    // });
-    // console.log(body);
-
-    // fetch("/api/connection/connect-recruitment-and-room", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: body
-    // }).then(
-    //   function (res) {
-    //     if (res.ok) {
-    //       alert("Sala została dodana do rekrutacji.");
-    //       props.handleClose();
-    //     } else {
-    //       alert("Wystąpił błąd.");
-    //     }
-    //   },
-    //   function (e) {
-    //     alert("Wystąpił błąd.");
-    //   }
-    // );
+    console.log("submit");
   };
+
+  const handleRecruitmentChange = event => {
+    console.log(event.target.value);
+    setRecruitment(event.target.value);
+  };
+
+  const filterRecruitmentList = recruitmentList => {
+    if (props.recruitment != undefined) {
+      return recruitmentList.filter(recruitment => recruitment.id != props.recruitment);
+    }
+    return recruitmentList;
+  };
+
+  useEffect(() => {
+    const api = "/api/recruitment/all";
+    fetch(api)
+      .then(res => res.json())
+      .then(json => {
+        const recruitmentList = filterRecruitmentList(json["recruitments"]);
+        setRecruitmentList(recruitmentList);
+        if (recruitmentList.length > 0)
+          setRecruitment(recruitmentList[0].id);
+      })
+      .catch(e => console.log(api, e));
+  }, [props.recruitment]);
 
   return (
     <Dialog
@@ -63,30 +64,41 @@ export default function SelectRecruitmentDialog(props) {
           autoComplete="off"
           noValidate
         >
-          <Grid
-            container
-            spacing={1}
-          >
-            <Grid
-              item
-              md={6}
-              md={12}
-            >
-            </Grid>
-            <Grid
-              item
-              md={6}
-              md={12}
-            >
-            </Grid>
-          </Grid>
+
+          <Card>
+            <CardContent>
+              <Grid>
+                <Grid item sm={6} xs={12}>
+                  <Typography variant="h4" gutterBottom>
+                    Rekrutacja
+                                </Typography>
+                </Grid>
+                <Grid item sm={6} xs={12}>
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    name="recruitment"
+                    onChange={handleRecruitmentChange}
+                    required
+                    select
+                    SelectProps={{ native: true }}
+                    variant="outlined"
+                  >
+                    {recruitmentList.map(recruitment => (
+                      <option value={recruitment.id}>{recruitment.name}</option>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
         </form>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleClose} color="secondary" variant="contained">
           ZAMKNIJ
           </Button>
-        <Button onClick={handleSubmit} color="primary" variant="contained">
+        <Button onClick={handleSubmit} color="primary" variant="contained" disabled={recruitment === -1}>
           DODAJ
           </Button>
       </DialogActions>

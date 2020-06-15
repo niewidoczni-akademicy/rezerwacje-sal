@@ -133,7 +133,10 @@ const AssignRoomsTable = props => {
     }
 
     const handleClose = () => setModalShow(false);
-    const handleAddRooms = () => setModalShow(true);
+    const handleAddRooms = () => {
+        console.log("adding");
+        setModalShow(true);
+    }
 
     return (
         <React.Fragment>
