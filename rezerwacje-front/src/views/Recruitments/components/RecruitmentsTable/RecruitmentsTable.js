@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
+import ReportDialog from "../ReportDialog";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -54,8 +55,11 @@ const RecruitmentsTable = () => {
   const [page, setPage] = useState(0);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [reportModalShow, setReportModalShow] = useState(false);
 
   const handleClose = () => setModalShow(false);
+
+  const handleReportClose = () => setReportModalShow(false);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -124,6 +128,7 @@ const RecruitmentsTable = () => {
                     <TableCell>Data początkowa</TableCell>
                     <TableCell>Data końcowa</TableCell>
                     <TableCell>Generowanie raportu</TableCell>
+                    <TableCell>Generowanie szczegółowego raportu</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -174,6 +179,17 @@ const RecruitmentsTable = () => {
                         >
                             Generuj raport
                         </Button>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            type="submit"
+                            onClick={() => setReportModalShow(true)}
+                        >
+                          Generuj szczegółowy raport
+                        </Button>
+                        <ReportDialog id={recruitment.id} open={reportModalShow} handleClose={handleReportClose} />
                       </TableCell>
                     </TableRow>
                   ))}
