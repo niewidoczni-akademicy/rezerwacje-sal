@@ -10,7 +10,7 @@ function useAutocomplete(names, fetchPromises) {
   const [values, setValues] = useState(state);
 
   const fetchAndSetValues = async () => {
-    let autocompleteEntries = await Promise.all(fetchPromises);
+    let autocompleteEntries = await Promise.all(fetchPromises());
     let newValues = names.reduce(function (map, name, ind) {
       map[name] = autocompleteEntries[ind];
       return map;

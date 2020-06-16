@@ -12,7 +12,7 @@ import {
 import { ImportCoursesDialog, CourseDialog, CoursesTable } from '../';
 import { useAutocomplete, useEntryList } from 'common/utilities';
 
-const fetchPromises = [
+const fetchPromises = () => [
   // TODO: don't fetch passwords o.O
   fetch('/api/faculties')
     .then((response) => response.json())
