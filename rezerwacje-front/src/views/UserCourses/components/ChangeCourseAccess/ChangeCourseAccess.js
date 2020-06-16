@@ -43,7 +43,7 @@ const ChangeCourseAccess = props => {
           setUserCourses(getUserCourses(json["coursesOfStudiesIdsForUser"]));
         })
         .catch(e => console.log(e));
-  }, [props.user]);
+  }, [props.user, currentCourse]);
 
   const checkCourseAccess = id => {
     if (userCourses.find(course => course.id === id) != undefined) return false;
@@ -72,7 +72,6 @@ const ChangeCourseAccess = props => {
     ).then(
       function(res) {
         if (res.ok) {
-          alert("Dostęp został przyznany.");
           setCurrentCourse(course.id);
         } else if (res.status === 400) {
           alert("Wystąpił błąd.");
@@ -85,16 +84,9 @@ const ChangeCourseAccess = props => {
     );
   };
 
-  const handleRemoveCourse = course => {
-    fetch(
-      
-    )
-  };
-
-  // if (user != null) {
-    return (
-      <React.Fragment>
-      <Card style={{marginTop: 3, marginBottom: 3, padding: 10}}>
+  return (
+    <React.Fragment>
+      <Card style={{ marginTop: 3, marginBottom: 3, padding: 10 }}>
         <Typography variant="h6">
           Wybierz użytkownika, aby zmienić mu dostęp do kierunków
         </Typography>
@@ -105,18 +97,20 @@ const ChangeCourseAccess = props => {
             <CardHeader title="Dostęp do kierunków" />
             <Divider />
             <CardContent>
-              {props.user != null && <List>
-                {userCourses.map(course => (
-                  <ListItem>
-                    <ListItemText>{getCourseString(course)}</ListItemText>
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <RemoveIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>}
+              {props.user != null && (
+                <List>
+                  {userCourses.map(course => (
+                    <ListItem>
+                      <ListItemText>{getCourseString(course)}</ListItemText>
+                      <ListItemSecondaryAction>
+                        <IconButton edge="end" aria-label="delete">
+                          <RemoveIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Grid>
@@ -126,36 +120,37 @@ const ChangeCourseAccess = props => {
             <CardHeader title="Brak dostępu do kierunków" />
             <Divider />
             <CardContent>
-              {props.user != null && <List>
-                {courses
-                  .filter(course => checkCourseAccess(course.id))
-                  .map(course => (
-                    <ListItem value={course.id}>
-                      <ListItemText>{getCourseString(course)}</ListItemText>
-                      <ListItemSecondaryAction
-                        value={course.id}
-                        key={course.id}
-                      >
-                        <IconButton
-                          edge="end"
-                          aria-label="delete"
-                          onClick={() => {
-                            handleAddCourse(course);
-                          }}
+              {props.user != null && (
+                <List>
+                  {courses
+                    .filter(course => checkCourseAccess(course.id))
+                    .map(course => (
+                      <ListItem value={course.id}>
+                        <ListItemText>{getCourseString(course)}</ListItemText>
+                        <ListItemSecondaryAction
+                          value={course.id}
+                          key={course.id}
                         >
-                          <AddIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
-              </List>}
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => {
+                              handleAddCourse(course);
+                            }}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-      </React.Fragment>
-    );
-  // } else return null;
+    </React.Fragment>
+  );
 };
 
 export default ChangeCourseAccess;
