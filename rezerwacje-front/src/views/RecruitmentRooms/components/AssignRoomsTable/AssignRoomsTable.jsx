@@ -78,7 +78,7 @@ const AssignRoomsTable = props => {
             })
             .catch(e =>
                 console.log(e));
-    }, [currentRecruitment, currentRoom]);
+    }, [currentRecruitment, currentRoom, modalShow]);
 
     const handleRecruitmentChange = event => {
         setCurrentRecruitment(event.target.value);

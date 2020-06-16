@@ -1,1 +1,1 @@
-export { default } from './SelectRecruitmentDialog';
+export { default } from "./SelectRecruitmentDialog";

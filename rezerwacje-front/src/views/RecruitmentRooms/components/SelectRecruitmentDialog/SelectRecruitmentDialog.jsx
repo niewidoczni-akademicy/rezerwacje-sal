@@ -18,14 +18,47 @@ import './SelectRecruitmentDialog.scss'
 export default function SelectRecruitmentDialog(props) {
   const [recruitment, setRecruitment] = useState(-1);
   const [recruitmentList, setRecruitmentList] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [assignedRooms, setAssignedRooms] = useState([]);
 
   const handleSubmit = () => {
-    console.log("submit");
+    console.log(rooms);
+    console.log(assignedRooms);
+    const body = JSON.stringify({
+      recruitmentId: props.recruitment,
+      rooms: {
+        roomsIds: rooms
+      }
+  });
+
+  fetch("/api/connection/connect-recruitment-and-rooms", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body
+  }).then(
+      function (res) {
+          if (res.ok) {
+              props.handleClose();
+          } else {
+              alert("Wystąpił błąd.");
+              console.log(res.status);
+          }
+      },
+      function (e) {
+          alert("Wystąpił błąd.");
+          console.log(e);
+      }
+  );
   };
 
   const handleRecruitmentChange = event => {
     console.log(event.target.value);
     setRecruitment(event.target.value);
+  };
+
+  const checkRoomAssignment = id => {
+    if (assignedRooms.find(room => room === id) != undefined) return true;
+    else return false;
   };
 
   const filterRecruitmentList = recruitmentList => {
@@ -35,9 +68,13 @@ export default function SelectRecruitmentDialog(props) {
     return recruitmentList;
   };
 
+  const getRooms = roomsList => roomsList.map(room => room.room.id);
+  
+  const filterRooms = roomsList => roomsList.filter(room => checkRoomAssignment(room));
+
   useEffect(() => {
-    const api = "/api/recruitment/all";
-    fetch(api)
+    const url = "/api/recruitment/all";
+    fetch(url)
       .then(res => res.json())
       .then(json => {
         const recruitmentList = filterRecruitmentList(json["recruitments"]);
@@ -45,7 +82,34 @@ export default function SelectRecruitmentDialog(props) {
         if (recruitmentList.length > 0)
           setRecruitment(recruitmentList[0].id);
       })
-      .catch(e => console.log(api, e));
+      .catch(e => console.log(e));
+  }, [props.recruitment]);
+
+  useEffect(() => {
+    if (recruitment === -1) return;
+      const url = `/api/recruitment/${recruitment}/rooms`;
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json);
+          const roomsIds = filterRooms(getRooms(json["recruitmentRooms"]));
+          setRooms(roomsIds);
+        })
+        .catch(e => console.log(e));
+  }, [recruitment]);
+
+  useEffect(() => {
+    if (props.recruitment != undefined && props.recruitment != -1) {
+      const url = `/api/recruitment/${props.recruitment}/rooms`;
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json);
+          const roomsIds = getRooms(json["recruitmentRooms"]);
+          setAssignedRooms(roomsIds);
+        })
+        .catch(e => console.log(e));
+    }
   }, [props.recruitment]);
 
   return (
