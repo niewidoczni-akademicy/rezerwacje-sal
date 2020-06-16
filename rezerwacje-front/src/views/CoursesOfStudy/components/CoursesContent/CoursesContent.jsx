@@ -113,7 +113,10 @@ const CoursesContent = (props) => {
         open={showAddDialog}
         initState={initAddState}
         autoCompleteValues={acValues}
-        onSubmitted={refreshEntries}
+        onSubmitted={() => {
+          setShowAddDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -127,7 +130,10 @@ const CoursesContent = (props) => {
         open={showEditDialog}
         initState={initEditState}
         autoCompleteValues={acValues}
-        onSubmitted={refreshEntries}
+        onSubmitted={() => {
+          setShowEditDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowEditDialog(false);
         }}

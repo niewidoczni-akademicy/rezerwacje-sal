@@ -76,7 +76,10 @@ const RoomsContent = (props) => {
         httpMethod="POST"
         open={showAddDialog}
         initState={initAddState}
-        onSubmitted={refreshEntries}
+        onSubmitted={() => {
+          setShowAddDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -89,7 +92,10 @@ const RoomsContent = (props) => {
         httpMethod="PUT"
         open={showEditDialog}
         initState={initEditState}
-        onSubmitted={refreshEntries}
+        onSubmitted={() => {
+          setShowEditDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowEditDialog(false);
         }}
