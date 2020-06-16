@@ -9,7 +9,8 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Typography
 } from "@material-ui/core";
 import "./ChangeCourseAccess.scss";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
@@ -19,6 +20,7 @@ const ChangeCourseAccess = props => {
   const user = props.user;
   const [courses, setCourses] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState(-1);
 
   const getUserCourses = ids =>
     courses.filter(course => ids.find(id => id === course.id) != undefined);
@@ -38,7 +40,6 @@ const ChangeCourseAccess = props => {
       fetch(`/api/course-of-study/courses?userId=${props.user.id}`)
         .then(res => res.json())
         .then(json => {
-          console.log(json);
           setUserCourses(getUserCourses(json["coursesOfStudiesIdsForUser"]));
         })
         .catch(e => console.log(e));
@@ -62,8 +63,6 @@ const ChangeCourseAccess = props => {
     translateType(course.courseType);
 
   const handleAddCourse = course => {
-    console.log(course.id);
-    console.log(user.id);
     fetch(
       `/api/connection/connect?userId=${user.id}&courseOfStudyId=${course.id}`,
       {
@@ -74,7 +73,7 @@ const ChangeCourseAccess = props => {
       function(res) {
         if (res.ok) {
           alert("Dostęp został przyznany.");
-          window.location.reload();
+          setCurrentCourse(course.id);
         } else if (res.status === 400) {
           alert("Wystąpił błąd.");
         }
@@ -86,18 +85,27 @@ const ChangeCourseAccess = props => {
     );
   };
 
-  const handleRemoveCourse = course => {};
+  const handleRemoveCourse = course => {
+    fetch(
+      
+    )
+  };
 
-  if (user != null) {
-    const title = `Zmiana dostępu do kierunków dla użytkownika: ${user.firstName} ${user.lastName}`;
+  // if (user != null) {
     return (
+      <React.Fragment>
+      <Card style={{marginTop: 3, marginBottom: 3, padding: 10}}>
+        <Typography variant="h6">
+          Wybierz użytkownika, aby zmienić mu dostęp do kierunków
+        </Typography>
+      </Card>
       <Grid container direction={"row"}>
         <Grid item xs={6}>
           <Card>
             <CardHeader title="Dostęp do kierunków" />
             <Divider />
             <CardContent>
-              <List>
+              {props.user != null && <List>
                 {userCourses.map(course => (
                   <ListItem>
                     <ListItemText>{getCourseString(course)}</ListItemText>
@@ -108,7 +116,7 @@ const ChangeCourseAccess = props => {
                     </ListItemSecondaryAction>
                   </ListItem>
                 ))}
-              </List>
+              </List>}
             </CardContent>
           </Card>
         </Grid>
@@ -118,7 +126,7 @@ const ChangeCourseAccess = props => {
             <CardHeader title="Brak dostępu do kierunków" />
             <Divider />
             <CardContent>
-              <List>
+              {props.user != null && <List>
                 {courses
                   .filter(course => checkCourseAccess(course.id))
                   .map(course => (
@@ -140,13 +148,14 @@ const ChangeCourseAccess = props => {
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
-              </List>
+              </List>}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+      </React.Fragment>
     );
-  } else return null;
+  // } else return null;
 };
 
 export default ChangeCourseAccess;
