@@ -1,5 +1,6 @@
 package org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +12,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConnectRecruitmentAndRoomRequest {
+public class RecruitmentAndRoomsConnectionResponse {
 
     @NotNull
     private Long recruitmentId;
 
     @NotNull
-    private Long roomId;
+    private RoomsList rooms;
 }

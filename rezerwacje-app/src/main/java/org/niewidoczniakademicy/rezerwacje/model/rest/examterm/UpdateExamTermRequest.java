@@ -22,6 +22,8 @@ public class UpdateExamTermRequest {
     @NonNull
     private Boolean deleted;
 
+    private Integer seats;
+
     @NotNull
     private LocalDate day;
 

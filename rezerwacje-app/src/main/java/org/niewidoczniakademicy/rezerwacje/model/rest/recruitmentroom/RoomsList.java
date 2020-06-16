@@ -2,20 +2,16 @@ package org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Data
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConnectRecruitmentAndRoomRequest {
+public class RoomsList {
 
-    @NotNull
-    private Long recruitmentId;
-
-    @NotNull
-    private Long roomId;
+    private List<Long> roomsIds;
 }
