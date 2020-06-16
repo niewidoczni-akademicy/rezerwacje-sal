@@ -23,21 +23,25 @@ public final class CourseOfStudyConverter
 
     @Override
     public CourseOfStudy createFrom(final AddCourseOfStudyRequest dto) {
-        Faculty opFaculty = facultyRepository.findFacultyByName(dto.getFaculty())
+        String facultyErrorMsg = String.format("Faculty with id %d not found!", dto.getFacultyId());
+        Faculty opFaculty = facultyRepository.findFacultyById(dto.getFacultyId())
                 .orElseThrow(() ->
-                        new FacultyNotFoundException(String.format("Faculty %s not found!", dto.getFaculty())));
+                        new FacultyNotFoundException(facultyErrorMsg));
 
-        SystemUser opUser1 = userRepository.findByLogin(dto.getContactPerson1())
+        String userErrorMsg = String.format("User with id %d not found!", dto.getContactPerson1Id());
+        SystemUser opUser1 = userRepository.findById(dto.getContactPerson1Id())
                 .orElseThrow(() ->
-                        new UserNotFoundException(String.format("User %s not found!", dto.getContactPerson1())));
+                        new UserNotFoundException(userErrorMsg));
+
         SystemUser opUser2;
-        String opUser2Login = dto.getContactPerson2();
-        if (opUser2Login == null) {
+        Long opUser2Id = dto.getContactPerson2Id();
+        
+        if (opUser2Id == null) {
             opUser2 = null;
         } else {
-            opUser2 = userRepository.findByLogin(opUser2Login)
+            opUser2 = userRepository.findById(opUser2Id)
                     .orElseThrow(() ->
-                            new UserNotFoundException(String.format("User %s not found!", opUser2Login)));
+                            new UserNotFoundException(String.format("User with id %d not found!", opUser2Id)));
         }
         CourseType type = dto.getCourseType().equals("FULL_TIME") ? CourseType.FULL_TIME : CourseType.EXTERNAL;
 

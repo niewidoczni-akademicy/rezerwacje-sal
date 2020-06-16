@@ -59,10 +59,10 @@ const CourseDialog = (props) => {
       body: JSON.stringify({
         id: id,
         name: name,
-        faculty: faculty.name,
+        facultyId: faculty.id,
         courseType: courseType,
-        contactPerson1: contactPerson1.login,
-        contactPerson2: contactPerson2 != null ? contactPerson2.login : null,
+        contactPerson1Id: contactPerson1.id,
+        contactPerson2Id: contactPerson2 != null ? contactPerson2.id : null,
         isJoined: isJoined,
         remarks: remarks,
       }),

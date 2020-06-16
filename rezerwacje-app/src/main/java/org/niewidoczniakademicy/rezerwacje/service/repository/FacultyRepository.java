@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
-    Optional<Faculty> findFacultyByName(String name);
+    Optional<Faculty> findFacultyById(Long id);
     List<Faculty> findFacultiesByNameIn(Set<String> names);
 }
