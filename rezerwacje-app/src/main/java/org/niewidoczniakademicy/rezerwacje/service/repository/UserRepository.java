@@ -9,8 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface UserRepository extends JpaRepository<SystemUser, Long> {
-    Optional<SystemUser> findById(Long id);
-
     Optional<SystemUser> findByLogin(String login);
 
     List<SystemUser> findSystemUsersByLoginIn(Set<String> logins);

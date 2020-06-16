@@ -24,7 +24,7 @@ public final class CourseOfStudyConverter
     @Override
     public CourseOfStudy createFrom(final AddCourseOfStudyRequest dto) {
         String facultyErrorMsg = String.format("Faculty with id %d not found!", dto.getFacultyId());
-        Faculty opFaculty = facultyRepository.findFacultyById(dto.getFacultyId())
+        Faculty opFaculty = facultyRepository.findById(dto.getFacultyId())
                 .orElseThrow(() ->
                         new FacultyNotFoundException(facultyErrorMsg));
 

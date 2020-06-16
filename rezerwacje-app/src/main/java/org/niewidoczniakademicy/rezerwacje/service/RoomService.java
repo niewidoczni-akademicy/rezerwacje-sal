@@ -72,7 +72,7 @@ public final class RoomService {
         room.setBuilding(request.getBuilding());
         room.setName(request.getName());
         room.setCapacity(request.getCapacity());
-        roomRepository.save(room);
+        room = roomRepository.save(room);
 
         return GetRoomResponse
                 .builder()
