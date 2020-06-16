@@ -29,26 +29,26 @@ export default function SelectRecruitmentDialog(props) {
       rooms: {
         roomsIds: rooms
       }
-  });
+    });
 
-  fetch("/api/connection/connect-recruitment-and-rooms", {
+    fetch("/api/connection/connect-recruitment-and-rooms", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: body
-  }).then(
+    }).then(
       function (res) {
-          if (res.ok) {
-              props.handleClose();
-          } else {
-              alert("Wystąpił błąd.");
-              console.log(res.status);
-          }
+        if (res.ok) {
+          props.handleClose();
+        } else {
+          alert("Wystąpił błąd.");
+          console.log(res.status);
+        }
       },
       function (e) {
-          alert("Wystąpił błąd.");
-          console.log(e);
+        alert("Wystąpił błąd.");
+        console.log(e);
       }
-  );
+    );
   };
 
   const handleRecruitmentChange = event => {
@@ -69,7 +69,7 @@ export default function SelectRecruitmentDialog(props) {
   };
 
   const getRooms = roomsList => roomsList.map(room => room.room.id);
-  
+
   const filterRooms = roomsList => roomsList.filter(room => checkRoomAssignment(room));
 
   useEffect(() => {
@@ -87,15 +87,15 @@ export default function SelectRecruitmentDialog(props) {
 
   useEffect(() => {
     if (recruitment === -1) return;
-      const url = `/api/recruitment/${recruitment}/rooms`;
-      fetch(url)
-        .then(res => res.json())
-        .then(json => {
-          console.log(json);
-          const roomsIds = filterRooms(getRooms(json["recruitmentRooms"]));
-          setRooms(roomsIds);
-        })
-        .catch(e => console.log(e));
+    const url = `/api/recruitment/${recruitment}/rooms`;
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        const roomsIds = filterRooms(getRooms(json["recruitmentRooms"]));
+        setRooms(roomsIds);
+      })
+      .catch(e => console.log(e));
   }, [recruitment]);
 
   useEffect(() => {
