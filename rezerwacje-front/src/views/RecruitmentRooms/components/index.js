@@ -1,1 +1,1 @@
-export { default as AssignRoomsTable } from './AssignRoomsTable';
+export { default as AssignRoomsTable } from "./AssignRoomsTable";

@@ -9,11 +9,15 @@ import {
   Typography,
   Card,
   CardContent,
-  TextField
+  TextField,
+  CardHeader,
+  Divider,
+  List,
+  ListItem,
+  ListItemText
 }
   from "@material-ui/core"
 import { useEffect, useState } from "react";
-import './SelectRecruitmentDialog.scss'
 
 export default function SelectRecruitmentDialog(props) {
   const [recruitment, setRecruitment] = useState(-1);
@@ -22,12 +26,10 @@ export default function SelectRecruitmentDialog(props) {
   const [assignedRooms, setAssignedRooms] = useState([]);
 
   const handleSubmit = () => {
-    console.log(rooms);
-    console.log(assignedRooms);
     const body = JSON.stringify({
       recruitmentId: props.recruitment,
       rooms: {
-        roomsIds: rooms
+        roomsIds: rooms.map(room => room.id)
       }
     });
 
@@ -52,13 +54,12 @@ export default function SelectRecruitmentDialog(props) {
   };
 
   const handleRecruitmentChange = event => {
-    console.log(event.target.value);
     setRecruitment(event.target.value);
   };
 
   const checkRoomAssignment = id => {
-    if (assignedRooms.find(room => room === id) != undefined) return true;
-    else return false;
+    if (assignedRooms.find(room => room === id) != undefined) return false;
+    else return true;
   };
 
   const filterRecruitmentList = recruitmentList => {
@@ -68,9 +69,11 @@ export default function SelectRecruitmentDialog(props) {
     return recruitmentList;
   };
 
-  const getRooms = roomsList => roomsList.map(room => room.room.id);
+  const getRooms = roomsList => roomsList.map(room => room.room);
 
-  const filterRooms = roomsList => roomsList.filter(room => checkRoomAssignment(room));
+  const getRoomsIds = roomsList => roomsList.map(room => room.room.id);
+
+  const filterRooms = roomsList => roomsList.filter(room => checkRoomAssignment(room.id));
 
   useEffect(() => {
     const url = "/api/recruitment/all";
@@ -105,7 +108,7 @@ export default function SelectRecruitmentDialog(props) {
         .then(res => res.json())
         .then(json => {
           console.log(json);
-          const roomsIds = getRooms(json["recruitmentRooms"]);
+          const roomsIds = getRoomsIds(json["recruitmentRooms"]);
           setAssignedRooms(roomsIds);
         })
         .catch(e => console.log(e));
@@ -120,7 +123,7 @@ export default function SelectRecruitmentDialog(props) {
     >
       <DialogTitle>
         <Typography variant="h3">
-          Wybór sal z istniejącej rekrutacji
+          Wybór sal z innej rekrutacji
           </Typography>
       </DialogTitle>
       <DialogContent dividers>
@@ -132,12 +135,12 @@ export default function SelectRecruitmentDialog(props) {
           <Card>
             <CardContent>
               <Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item sm={12} xs={12}>
                   <Typography variant="h4" gutterBottom>
                     Rekrutacja
                                 </Typography>
                 </Grid>
-                <Grid item sm={6} xs={12}>
+                <Grid item sm={12} xs={12}>
                   <TextField
                     fullWidth
                     margin="dense"
@@ -152,6 +155,22 @@ export default function SelectRecruitmentDialog(props) {
                       <option value={recruitment.id}>{recruitment.name}</option>
                     ))}
                   </TextField>
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <Card style={{ minHeight: 300 }}>
+                    <CardHeader title="Lista sal do dodania" />
+                    <Divider />
+                    <CardContent>
+                      <List>
+                        {rooms
+                          .map(room => (
+                            <ListItem value={room.id}>
+                              <ListItemText>{room.name + ", " + room.building}</ListItemText>
+                            </ListItem>
+                          ))}
+                      </List>
+                    </CardContent>
+                  </Card>
                 </Grid>
               </Grid>
             </CardContent>

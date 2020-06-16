@@ -50,7 +50,7 @@ const AssignRoomsTable = props => {
                 if (recruitmentList.length > 0)
                     setCurrentRecruitment(recruitmentList[0].id);
             })
-            .catch(e => console.log(api, e));
+            .catch(e => console.log(e));
     }, []);
 
 
@@ -133,10 +133,7 @@ const AssignRoomsTable = props => {
     }
 
     const handleClose = () => setModalShow(false);
-    const handleAddRooms = () => {
-        console.log("adding");
-        setModalShow(true);
-    }
+    const handleAddRooms = () => setModalShow(true);
 
     return (
         <React.Fragment>
