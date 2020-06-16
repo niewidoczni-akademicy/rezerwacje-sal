@@ -34,6 +34,15 @@ public final class ConnectionController {
         return connectionService.connectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
     }
 
+    @PostMapping(path = "disconnect", params = {"userId", "courseOfStudyId"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public CourseAndUserConnectionResponse removeCourseOfStudyFromUser(@RequestParam final Long userId,
+                                                                       @RequestParam final Long courseOfStudyId) {
+
+        return connectionService.disconnectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
+    }
+
     @PostMapping(path = "connect-recruitment-and-room")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
