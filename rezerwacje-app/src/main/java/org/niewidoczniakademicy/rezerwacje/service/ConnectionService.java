@@ -38,6 +38,15 @@ public final class ConnectionService {
         return userCourseService.connectUserAndCourse(systemUser, courseOfStudy);
     }
 
+    public CourseAndUserConnectionResponse disconnectCourseOfStudyWithSystemUser(final Long userId,
+                                                                              final Long courseOfStudyId) {
+
+        final SystemUser systemUser = userService.getSystemUserFromDatabaseById(userId);
+        final CourseOfStudy courseOfStudy = courseOfStudyService.getCourseOfStudyFromDatabaseById(courseOfStudyId);
+
+        return userCourseService.disconnectUserAndCourse(systemUser, courseOfStudy);
+    }
+
     public RecruitmentAndRoomConnectionResponse connectRecruitmentWithRoom(final Long recruitmentId,
                                                                            final Long roomId) {
         final Recruitment recruitment = recruitmentService.getRecruitmentFromDatabaseById(recruitmentId);
