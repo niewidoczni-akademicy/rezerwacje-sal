@@ -35,7 +35,7 @@ public final class CourseOfStudyConverter
 
         SystemUser opUser2;
         Long opUser2Id = dto.getContactPerson2Id();
-        
+
         if (opUser2Id == null) {
             opUser2 = null;
         } else {
