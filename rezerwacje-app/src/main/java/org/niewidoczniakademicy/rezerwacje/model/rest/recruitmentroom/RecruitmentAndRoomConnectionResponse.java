@@ -1,4 +1,4 @@
-package org.niewidoczniakademicy.rezerwacje.model.rest.other;
+package org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
