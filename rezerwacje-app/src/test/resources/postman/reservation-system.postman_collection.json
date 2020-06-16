@@ -530,6 +530,34 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "DisconnectCourseOfStudyAndSystemUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/{{connection-path}}/{{disconnect-path}}?{{user-id-param}}={{user-id-value}}&{{course-of-study-id-param}}={{course-of-study-id-value}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"{{connection-path}}",
+						"{{disconnect-path}}"
+					],
+					"query": [
+						{
+							"key": "{{user-id-param}}",
+							"value": "{{user-id-value}}"
+						},
+						{
+							"key": "{{course-of-study-id-param}}",
+							"value": "{{course-of-study-id-value}}"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
