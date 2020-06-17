@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.hours.AddHoursResponse;
 import org.niewidoczniakademicy.rezerwacje.service.HoursService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("hours")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class HoursController {
+public class HoursController {
 
     private final HoursService hoursService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
