@@ -16,7 +16,7 @@ import {
 import { makeStyles, useTheme } from '@material-ui/styles';
 import CloseIcon from '@material-ui/icons/Close';
 
-const uploadFiles = (url) => (files) => {
+const uploadFiles = (url, callback) => (files) => {
   for (let i = 0; i < files.length; i++) {
     const data = new FormData();
     data.append('file', files[i]);
@@ -28,6 +28,7 @@ const uploadFiles = (url) => (files) => {
       function (res) {
         if (res.ok) {
           alert('Zapisano.');
+          callback();
         } else {
           alert('Wystąpił błąd.');
         }
@@ -66,7 +67,7 @@ function UploadFilesDialog(props) {
     props.handleClose();
   };
 
-  const upload = uploadFiles(props.url);
+  const upload = uploadFiles(props.url, props.onUploaded);
 
   return (
     <Dialog open={props.open} onClose={onClose}>
