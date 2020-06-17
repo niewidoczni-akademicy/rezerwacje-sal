@@ -41,7 +41,7 @@ public final class ConnectionService {
     public CourseAndUserConnectionResponse disconnectCourseOfStudyWithSystemUser(final Long userId,
                                                                               final Long courseOfStudyId) {
 
-        final SystemUser systemUser = userService.getSystemUserFromDatabaseById(userId);
+        final SystemUser systemUser = userService.getSystemUserById(userId);
         final CourseOfStudy courseOfStudy = courseOfStudyService.getCourseOfStudyFromDatabaseById(courseOfStudyId);
 
         return userCourseService.disconnectUserAndCourse(systemUser, courseOfStudy);

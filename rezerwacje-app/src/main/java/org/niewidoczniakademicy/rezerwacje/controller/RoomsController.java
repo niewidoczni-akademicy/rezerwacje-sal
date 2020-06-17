@@ -51,6 +51,7 @@ public class RoomsController {
         return roomService.saveRoom(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PutMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
