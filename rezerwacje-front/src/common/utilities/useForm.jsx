@@ -1,28 +1,28 @@
 //custom react hook for forms
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 const useForm = (initState, callback, validate) => {
   const [values, setValues] = useState(initState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = event => {
-    console.log(event)
+  const handleChange = (event) => {
+    console.log(event);
     const { name, value } = event.target;
     setValues({
       ...values,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const setState = state => {
-    setValues(state)
-  }
+  const setState = (state) => {
+    setValues(state);
+  };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrors(validate(values));
     setIsSubmitting(true);
+    setErrors(validate(values));
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const useForm = (initState, callback, validate) => {
     handleSubmit,
     values,
     errors,
-    setState
+    setState,
   };
 };
 

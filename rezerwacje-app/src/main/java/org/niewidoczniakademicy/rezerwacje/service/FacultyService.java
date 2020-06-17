@@ -7,12 +7,14 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.faculty.AddFacultyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.faculty.EditFacultyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.faculty.GetFacultiesResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.faculty.GetFacultyResponse;
+import org.niewidoczniakademicy.rezerwacje.service.exception.FacultyAlreadyExistsException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.FacultyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.FacultyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -35,13 +37,16 @@ public final class FacultyService {
 
         faculties.removeAll(predecessors);
 
-
         return GetFacultiesResponse.builder()
                 .faculties(faculties)
                 .build();
     }
 
     public GetFacultyResponse saveFaculty(AddFacultyRequest request) {
+        List<Faculty> prev = facultyRepository.findFacultiesByNameIn(new HashSet<>() {{ add(request.getName()); }});
+        if (!prev.isEmpty()) {
+            throw new FacultyAlreadyExistsException("Faculty " + request.getName() + " already exists");
+        }
 
         Faculty faculty = Faculty
                 .builder()

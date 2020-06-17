@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.csv.CsvRoom;
 import org.niewidoczniakademicy.rezerwacje.model.database.Hours;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.room.EditRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
@@ -67,6 +68,21 @@ public final class RoomService {
         }
 
         return GetRoomResponse.builder()
+                .room(room)
+                .build();
+    }
+
+    public GetRoomResponse editRoom(EditRoomRequest request) {
+        Room room = roomRepository.findById(request.getId())
+                .orElseThrow(() -> new RoomNotFoundException("Room with id " + request.getId() + " not found"));
+
+        room.setBuilding(request.getBuilding());
+        room.setName(request.getName());
+        room.setCapacity(request.getCapacity());
+        room = roomRepository.save(room);
+
+        return GetRoomResponse
+                .builder()
                 .room(room)
                 .build();
     }

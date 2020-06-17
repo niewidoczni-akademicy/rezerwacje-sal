@@ -17,15 +17,15 @@ public class EditCourseOfStudyRequest {
     private String name;
 
     @NonNull
-    private String faculty;
+    private Long facultyId;
 
     @NonNull
     private String courseType;
 
     @NonNull
-    private String contactPerson1;
+    private Long contactPerson1Id;
 
-    private String contactPerson2;
+    private Long contactPerson2Id;
 
     @NonNull
     private Boolean isJoined;
