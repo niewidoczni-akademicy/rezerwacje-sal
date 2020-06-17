@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -29,7 +29,15 @@ const DOW = Object.freeze([
   'Sobota',
   'Niedziela',
 ]);
-
+const EngDOW = Object.freeze([
+  'MONDAY',
+  'TUESDAY',
+  'WEDNESDAY',
+  'THURSDAY',
+  'FRIDAY',
+  'SATURDAY',
+  'SUNDAY',
+]);
 function TimeRangePicker(props) {
   const { startDate, endDate, onChange } = props;
 
@@ -47,6 +55,7 @@ function TimeRangePicker(props) {
         margin="normal"
         label="Od godziny"
         value={startDate}
+        format="HH:mm"
         onChange={onStartDateChange}
         KeyboardButtonProps={{
           'aria-label': 'change time',
@@ -56,6 +65,7 @@ function TimeRangePicker(props) {
         margin="normal"
         label="Do godziny"
         value={endDate}
+        format="HH:mm"
         onChange={onEndDateChange}
         KeyboardButtonProps={{
           'aria-label': 'change time',
@@ -132,53 +142,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WeekTimeRangePicker() {
+export default function WeekTimeRangePicker(props) {
   const classes = useStyles();
-
-  const [weekTimeRanges, setWeekTimeRanges] = useState(
-    DOW.reduce(function (acc, value, index) {
-      acc[index] = [];
-      return acc;
-    }, {})
-  );
-
-  const addRange = () => {
-    let currentRanges = [...weekTimeRanges[selectedDay]];
-    currentRanges.push([new Date(), new Date()]);
-    setWeekTimeRanges({
-      ...weekTimeRanges,
-      [selectedDay]: currentRanges,
-    });
-  };
-
-  const deleteRange = (index) => {
-    let currentRanges = [...weekTimeRanges[selectedDay]];
-    let newRanges = currentRanges.reduce(function (acc, value, ind) {
-      if (ind !== index) {
-        acc.push(value);
-      }
-      return acc;
-    }, []);
-    setWeekTimeRanges({
-      ...weekTimeRanges,
-      [selectedDay]: newRanges,
-    });
-  };
-
-  const changeRange = (index, range) => {
-    let currentRanges = [...weekTimeRanges[selectedDay]];
-    currentRanges[index] = range;
-    setWeekTimeRanges({
-      ...weekTimeRanges,
-      [selectedDay]: currentRanges,
-    });
-  };
 
   const [selectedDay, setSelectedDay] = React.useState(0);
 
   const handleDayChange = (event) => {
     setSelectedDay(event.target.value);
   };
+
+  const dayTimeRanges = (dayIndex, allTimeRanges) =>
+    allTimeRanges.filter((element) => element.dayOfWeek === EngDOW[dayIndex]);
 
   return (
     <div className={classes.root}>
@@ -203,7 +177,7 @@ export default function WeekTimeRangePicker() {
             variant="contained"
             size="small"
             color="secondary"
-            onClick={addRange}
+            onClick={() => props.addRange(selectedDay)}
           >
             Dodaj przedział
           </Button>
@@ -214,9 +188,9 @@ export default function WeekTimeRangePicker() {
               <TimeRangeList
                 value={selectedDay}
                 index={index}
-                timeRanges={weekTimeRanges[index]}
-                handleRangeChange={changeRange}
-                handleRangeDelete={deleteRange}
+                timeRanges={dayTimeRanges(index, props.weekTimeRanges)}
+                handleRangeChange={props.changeRange(selectedDay)}
+                handleRangeDelete={props.deleteRange(selectedDay)}
               />
             ),
             this

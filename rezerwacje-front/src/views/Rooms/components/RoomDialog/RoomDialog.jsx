@@ -1,9 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Card,
-  CardHeader,
-  CardContent,
-  Divider,
   Grid,
   Button,
   TextField,
@@ -21,6 +17,8 @@ import validateRoomForm from './validateRoomForm.js';
 import WeekTimeRangePicker from './WeekTimeRangePicker';
 import { useDialogForm } from 'common/utilities';
 
+var dateFormat = require('dateformat');
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: 0,
@@ -34,11 +32,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const DOW = Object.freeze([
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+]);
+
+const transformAvailability = (details) => {
+  const result = {};
+
+  for (var key in details) {
+    const dow = DOW[key];
+    result[dow] = [];
+
+    details[key].forEach((element) => {
+      result[dow].push({
+        timeStart: dateFormat(element[0], 'hh:MM'),
+        timeEnd: dateFormat(element[1], 'hh:MM'),
+      });
+    });
+  }
+
+  console.log(result);
+  return result;
+};
+
 const RoomDialog = (props) => {
   const classes = useStyles();
 
   const submit = () => {
-    const { id, name, building, capacity } = values;
+    const { id, name, building, capacity, availabilityHours } = values;
 
     fetch(props.url, {
       method: props.httpMethod,
@@ -48,6 +75,7 @@ const RoomDialog = (props) => {
         name: name,
         building: building,
         capacity: capacity,
+        availabilityHours: transformAvailability(availabilityHours),
       }),
     }).then(
       function (res) {
@@ -71,6 +99,42 @@ const RoomDialog = (props) => {
     values,
     errors,
   } = useDialogForm(props.initState, submit, validateRoomForm);
+
+  const setAvailabilityHours = (details) => {
+    handleChange('availabilityHours', details);
+  };
+
+  const addRange = (selectedDay) => {
+    let currentRanges = [...values.availabilityDetails[selectedDay]];
+    currentRanges.push([new Date(), new Date()]);
+    setAvailabilityHours({
+      ...values.availabilityHours,
+      [selectedDay]: currentRanges,
+    });
+  };
+
+  const deleteRange = (selectedDay) => (index) => {
+    let currentRanges = [...values.availabilityDetails[selectedDay]];
+    let newRanges = currentRanges.reduce(function (acc, value, ind) {
+      if (ind !== index) {
+        acc.push(value);
+      }
+      return acc;
+    }, []);
+    setAvailabilityHours({
+      ...values.availabilityHours,
+      [selectedDay]: newRanges,
+    });
+  };
+
+  const changeRange = (selectedDay) => (index, range) => {
+    let currentRanges = [...values.availabilityHours[selectedDay]];
+    currentRanges[index] = range;
+    setAvailabilityHours({
+      ...values.availabilityHours,
+      [selectedDay]: currentRanges,
+    });
+  };
 
   return (
     <Dialog
@@ -130,7 +194,12 @@ const RoomDialog = (props) => {
             <Typography variant="h4">Dostępna w godzinach:</Typography>
           </Grid>
           <Grid item xs={12}>
-            <WeekTimeRangePicker />
+            <WeekTimeRangePicker
+              addRange={addRange}
+              changeRange={changeRange}
+              deleteRange={deleteRange}
+              weekTimeRanges={values.availabilityHours}
+            />
           </Grid>
         </Grid>
       </DialogContent>
