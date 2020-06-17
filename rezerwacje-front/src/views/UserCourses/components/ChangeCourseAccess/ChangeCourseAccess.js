@@ -73,7 +73,29 @@ const ChangeCourseAccess = props => {
       function(res) {
         if (res.ok) {
           setCurrentCourse(course.id);
-        } else if (res.status === 400) {
+        } else {
+          alert("Wystąpił błąd.");
+        }
+      },
+      function(e) {
+        alert("Wystąpił błąd.");
+        console.log(e);
+      }
+    );
+  };
+
+  const handleRemoveCourse = course => {
+    fetch(
+      `/api/connection/disconnect?userId=${user.id}&courseOfStudyId=${course.id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      }
+    ).then(
+      function(res) {
+        if (res.ok) {
+          setCurrentCourse(course.id);
+        } else {
           alert("Wystąpił błąd.");
         }
       },
@@ -102,8 +124,17 @@ const ChangeCourseAccess = props => {
                   {userCourses.map(course => (
                     <ListItem>
                       <ListItemText>{getCourseString(course)}</ListItemText>
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="delete">
+                      <ListItemSecondaryAction
+                        value={course.id}
+                        key={course.id}
+                      >
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => {
+                            handleRemoveCourse(course);
+                          }}
+                        >
                           <RemoveIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
