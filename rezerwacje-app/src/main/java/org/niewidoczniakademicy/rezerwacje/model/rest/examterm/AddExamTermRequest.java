@@ -20,6 +20,8 @@ public class AddExamTermRequest {
     @NotNull
     private LocalTime timeStart;
 
+    private Integer seats;
+
     @NotNull
     private LocalTime timeEnd;
 

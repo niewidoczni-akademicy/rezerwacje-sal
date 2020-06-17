@@ -1,15 +1,16 @@
 import React from 'react';
 import { DataTable } from 'common/components';
 
-const RoomsTable = (props) =>
-  DataTable({
-    url: '/api/rooms',
-    responseKey: 'rooms',
-    header: ['Sala', 'Budynek', 'Pojemność'],
-    mapColumns: (room) => {
-      return [room.name, room.building, room.capacity];
-    },
-    ...props,
+const RoomsTable = (props) => {
+  const rows = props.entries.map((room) => {
+    return { id: room.id, columns: [room.name, room.building, room.capacity] };
   });
+
+  return DataTable({
+    header: ['Sala', 'Budynek', 'Pojemność'],
+    rows: rows,
+    onRowClick: props.onRowClick,
+  });
+};
 
 export default RoomsTable;

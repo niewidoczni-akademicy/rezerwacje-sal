@@ -2,6 +2,7 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.room.EditRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.RoomService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,5 +49,12 @@ public class RoomsController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public GetRoomResponse addRoom(@RequestBody final AddRoomRequest request) {
         return roomService.saveRoom(request);
+    }
+
+    @PutMapping
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public GetRoomResponse editRoom(@RequestBody final EditRoomRequest request) {
+        return roomService.editRoom(request);
     }
 }
