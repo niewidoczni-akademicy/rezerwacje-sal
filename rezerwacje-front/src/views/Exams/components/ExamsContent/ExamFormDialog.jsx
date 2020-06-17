@@ -77,7 +77,8 @@ export default function ExamFormDialog(props) {
     let room = -1;
     if (roomId != -1)
       room = getRoom();
-    setErrors(validateExamForm(courseId, roomId, getDate(selectedDate), getTime(startTime), getTime(endTime), periodDetails, room));
+    console.log(getDay(selectedDate));
+    setErrors(validateExamForm(courseId, roomId, getDate(selectedDate), getTime(startTime), getTime(endTime), periodDetails, room, getDay(selectedDate)));
     setIsSubmitting(true);
   };
 
@@ -93,8 +94,6 @@ export default function ExamFormDialog(props) {
     return {
       "id": room.id,
       "room": room.room,
-      "availableFrom": room.availableFrom,
-      "availableTo": room.availableTo
     }
   };
 
@@ -106,6 +105,8 @@ export default function ExamFormDialog(props) {
 
   const getRoom = () => rooms.filter(room => room.id == roomId)[0];
 
+  const getDay = date => date.getDay().toUpperCase();
+
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       submit();
@@ -115,7 +116,7 @@ export default function ExamFormDialog(props) {
   }, [errors]);
 
   useEffect(() => {
-    if (props.recruitment === "") return;
+    if (props.recruitment === -1) return;
     fetch(`/api/recruitment/${props.recruitment}`)
       .then(res => res.json())
       .then(json => {
@@ -125,7 +126,7 @@ export default function ExamFormDialog(props) {
   }, [props.recruitment]);
 
   useEffect(() => {
-    if (props.period === "") return;
+    if (props.period === -1) return;
     fetch(`/api/recruitment-period/${props.period}`)
       .then(res => res.json())
       .then(json => {
@@ -163,7 +164,7 @@ export default function ExamFormDialog(props) {
   }, []);
 
   useEffect(() => {
-    if (props.recruitment === "") return;
+    if (props.recruitment === -1) return;
     fetch(`/api/recruitment/${props.recruitment}/rooms`)
       .then(res => res.json()
       )

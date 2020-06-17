@@ -22,8 +22,8 @@ const ExamsContent = () => {
     const [periods, setPeriods] = useState([])
 
     const [values, setValues] = useState({
-        recruitment: '',
-        period: ''
+        recruitment: -1,
+        period: -1
     });
 
     const [modalShow, setModalShow] = useState(false);
@@ -40,17 +40,29 @@ const ExamsContent = () => {
         fetch("/api/recruitment/all")
             .then(res => res.json())
             .then(json => {
-                setRecruitments(json["recruitments"]);
+                const recruitmentList = json["recruitments"];
+                setRecruitments(recruitmentList);
+                if (recruitmentList.length > 0)
+                    setValues({
+                        ...values,
+                        ['recruitment']: recruitmentList[0].id
+                    });
             })
             .catch(e => console.log(e));
     }, []);
 
     useEffect(() => {
-        if (values.recruitment.length > 0)
+        if (values.recruitment != -1)
             fetch(`/api/recruitment-period/recruitment/${values.recruitment}`)
                 .then(res => res.json())
                 .then(json => {
-                    setPeriods(json["recruitmentPeriods"]);
+                    const periodsList = json["recruitmentPeriods"];
+                    setPeriods(periodsList);
+                    if (periodsList.length > 0)
+                        setValues({
+                            ...values,
+                            ['period']: periodsList[0].id
+                        })
                 })
                 .catch(e => console.log(e));
     }, [values.recruitment]);
@@ -78,10 +90,11 @@ const ExamsContent = () => {
                                 required
                                 select
                                 SelectProps={{ native: true }}
+                                value={values.recruitment}
                                 variant="outlined"
                             >
                                 {recruitments.map(recruitment => (
-                                    <option value={recruitment.id}>{recruitment.name}</option>
+                                    <option key={recruitment.id} value={recruitment.id}>{recruitment.name}</option>
                                 ))}
                             </TextField>
                         </Grid>
@@ -97,12 +110,13 @@ const ExamsContent = () => {
                                 name="period"
                                 onChange={handleChange}
                                 select
+                                required
                                 SelectProps={{ native: true }}
                                 value={values.period}
                                 variant="outlined"
                             >
                                 {periods.map(period => (
-                                    <option value={period.id}>{`${period.startDate} - ${period.endDate}, ${convertType(period.studyType)}, ${convertDegree(period.studyDegree)}`}</option>
+                                    <option key={period.id} value={period.id}>{`${period.startDate} - ${period.endDate}, ${convertType(period.studyType)}, ${convertDegree(period.studyDegree)}`}</option>
                                 ))}
                             </TextField>
                         </Grid>
@@ -113,7 +127,7 @@ const ExamsContent = () => {
                     <Button
                         color="primary"
                         variant="contained"
-                        disabled={values.recruitment == '' || values.period == ''}
+                        disabled={values.recruitment === -1 || values.period === -1}
                         onClick={() =>
                             setModalShow(true)}
                     >
