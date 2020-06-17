@@ -1,20 +1,21 @@
-package org.niewidoczniakademicy.rezerwacje.model.rest.other;
+package org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecruitmentAndRoomConnectionResponse {
+public class ConnectRecruitmentAndRoomRequest {
 
-    @NonNull
+    @NotNull
     private Long recruitmentId;
 
-    @NonNull
+    @NotNull
     private Long roomId;
 }

@@ -1,14 +1,17 @@
 package org.niewidoczniakademicy.rezerwacje.controller.exception;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.error.ErrorResponse;
+import org.niewidoczniakademicy.rezerwacje.service.exception.ConnectionNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermsIntersectionException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidInputException;
+import org.niewidoczniakademicy.rezerwacje.service.exception.PdfGenerationFailureException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodEndDateBeforeStartDateException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.RecruitmentPeriodNotFoundException;
@@ -214,10 +217,38 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
         return errorResponse;
     }
 
+    @ExceptionHandler({PdfGenerationFailureException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse pdfGenerationFailed(final DocumentException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
+
     @ExceptionHandler({RecruitmentNotFoundException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse recruitmentNotFoundException(final RecruitmentNotFoundException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler({ConnectionNotFoundException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse connectionNotFoundException(final ConnectionNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

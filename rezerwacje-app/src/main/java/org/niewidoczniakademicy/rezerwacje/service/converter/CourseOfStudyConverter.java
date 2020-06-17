@@ -12,8 +12,6 @@ import org.niewidoczniakademicy.rezerwacje.service.repository.FacultyRepository;
 import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 
 @AllArgsConstructor
 @Component
@@ -25,36 +23,37 @@ public final class CourseOfStudyConverter
 
     @Override
     public CourseOfStudy createFrom(final AddCourseOfStudyRequest dto) {
-        Optional<Faculty> opFaculty = facultyRepository.findFacultyByName(dto.getFaculty());
-        Optional<SystemUser> opUser1 = userRepository.findByLogin(dto.getContactPerson1());
-        Optional<SystemUser> opUser2 = userRepository.findByLogin(dto.getContactPerson2());
+        String facultyErrorMsg = String.format("Faculty with id %d not found!", dto.getFacultyId());
+        Faculty opFaculty = facultyRepository.findById(dto.getFacultyId())
+                .orElseThrow(() ->
+                        new FacultyNotFoundException(facultyErrorMsg));
+
+        String userErrorMsg = String.format("User with id %d not found!", dto.getContactPerson1Id());
+        SystemUser opUser1 = userRepository.findById(dto.getContactPerson1Id())
+                .orElseThrow(() ->
+                        new UserNotFoundException(userErrorMsg));
+
+        SystemUser opUser2;
+        Long opUser2Id = dto.getContactPerson2Id();
+
+        if (opUser2Id == null) {
+            opUser2 = null;
+        } else {
+            opUser2 = userRepository.findById(opUser2Id)
+                    .orElseThrow(() ->
+                            new UserNotFoundException(String.format("User with id %d not found!", opUser2Id)));
+        }
         CourseType type = dto.getCourseType().equals("FULL_TIME") ? CourseType.FULL_TIME : CourseType.EXTERNAL;
 
-        if (opFaculty.isPresent() && opUser1.isPresent()) {
-            // Check if Contact Person 2 was given but is missing in DB
-            if (!dto.getContactPerson2().equals("") && opUser2.isEmpty()) {
-                String msg = String.format("User %s not found!", dto.getContactPerson2());
-                throw new UserNotFoundException(msg);
-            }
 
-            return CourseOfStudy.builder()
-                    .name(dto.getName())
-                    .faculty(opFaculty.get())
-                    .courseType(type)
-                    .contactPerson1(opUser1.get())
-                    .contactPerson2(opUser2.orElse(null))
-                    .isJoined(dto.getIsJoined())
-                    .remarks(dto.getRemarks())
-                    .build();
-        } else {
-            // Either Contact Person 1 or Faculty is missing
-            if (opUser1.isEmpty()) {
-                String msg = String.format("User %s not found!", dto.getContactPerson1());
-                throw new UserNotFoundException(msg);
-            }
-
-            String msg = String.format("Faculty %s not found!", dto.getFaculty());
-            throw new FacultyNotFoundException(msg);
-        }
+        return CourseOfStudy.builder()
+                .name(dto.getName())
+                .faculty(opFaculty)
+                .courseType(type)
+                .contactPerson1(opUser1)
+                .contactPerson2(opUser2)
+                .isJoined(dto.getIsJoined())
+                .remarks(dto.getRemarks())
+                .build();
     }
 }

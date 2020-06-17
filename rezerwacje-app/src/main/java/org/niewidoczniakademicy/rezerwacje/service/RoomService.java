@@ -3,8 +3,10 @@ package org.niewidoczniakademicy.rezerwacje.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.csv.CsvRoom;
+import org.niewidoczniakademicy.rezerwacje.model.database.Hours;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.room.EditRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.GetRoomsResponse;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
@@ -31,6 +33,7 @@ public final class RoomService {
     private final CSVService csvService;
     private final RoomRepository roomRepository;
     private final RoomMapper roomMapper;
+    private final HoursService hoursService;
 
     public GetRoomsResponse getAllResponse() {
         Set<Room> rooms = new HashSet<>(this.roomRepository.findAll());
@@ -59,7 +62,27 @@ public final class RoomService {
         Room room = conversionService.convert(request);
         roomRepository.save(room);
 
+        if (request.getAvailabilityDetails() != null) {
+            List<Hours> availabilityHours = hoursService.saveHours(request.getAvailabilityDetails(), room.getId());
+            room.getAvailabilityHours().addAll(availabilityHours);
+        }
+
         return GetRoomResponse.builder()
+                .room(room)
+                .build();
+    }
+
+    public GetRoomResponse editRoom(EditRoomRequest request) {
+        Room room = roomRepository.findById(request.getId())
+                .orElseThrow(() -> new RoomNotFoundException("Room with id " + request.getId() + " not found"));
+
+        room.setBuilding(request.getBuilding());
+        room.setName(request.getName());
+        room.setCapacity(request.getCapacity());
+        room = roomRepository.save(room);
+
+        return GetRoomResponse
+                .builder()
                 .room(room)
                 .build();
     }

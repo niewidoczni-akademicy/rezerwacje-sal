@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -62,7 +63,7 @@ public class Recruitment {
 
     @Builder.Default
     @ToString.Exclude
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitment")
     private final Set<RecruitmentPeriod> recruitmentPeriods = new HashSet<>();
 

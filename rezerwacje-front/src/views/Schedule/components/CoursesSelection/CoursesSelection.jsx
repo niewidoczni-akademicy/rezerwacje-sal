@@ -46,11 +46,11 @@ const CoursesSelection = props => {
     <Card>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Courses
+          Kierunki
         </Typography>
         <Grid item xs={12}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="multiple_selected_courses">Selected courses</InputLabel>
+            <InputLabel id="multiple_selected_courses">wybrane kierunki</InputLabel>
             <Select
               labelId="multiple_selected_courses"
               id="courses_selection_panel"
