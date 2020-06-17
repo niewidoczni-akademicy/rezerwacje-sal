@@ -11,6 +11,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.GetRecruitment
 import org.niewidoczniakademicy.rezerwacje.service.RecruitmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,10 +26,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("recruitment")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class RecruitmentController {
+public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 
+    @Secured({"ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -36,6 +38,7 @@ public final class RecruitmentController {
         return recruitmentService.saveRecruitment(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(params = {"name"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -43,6 +46,7 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitmentByName(name);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = {"{id}"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -50,6 +54,7 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitment(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @DeleteMapping(path = {"{id}/rooms"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -59,7 +64,7 @@ public final class RecruitmentController {
         return recruitmentService.deleteRecruitmentRooms(id, request);
     }
 
-
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = {"{id}/rooms"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -67,6 +72,7 @@ public final class RecruitmentController {
         return recruitmentService.getRecruitmentRooms(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "all")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
