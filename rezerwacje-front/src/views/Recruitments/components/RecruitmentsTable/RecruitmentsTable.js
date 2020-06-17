@@ -19,6 +19,8 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
+import { connect } from "react-redux";
+import { selectCurrentUser } from "/webapp/src/redux/user/user.selectors";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -48,10 +50,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RecruitmentsTable = () => {
+const RecruitmentsTable = props => {
   const [selectedRecruitment, setSelectedRecruitment] = useState(-1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
 
@@ -68,7 +68,6 @@ const RecruitmentsTable = () => {
     fetch("/api/recruitment/all")
       .then(res => res.json())
       .then(json => {
-        console.log(json);
         setRecruitments(json["recruitments"]);
       })
       .catch(e => console.log(e));
@@ -80,7 +79,7 @@ const RecruitmentsTable = () => {
     } else if (status == "IN_PROGRESS") {
       return "Trwa";
     } else return "Zakończona";
-  }
+  };
 
   const convertDate = date => {
     return date.split("T")[0];
@@ -163,14 +162,16 @@ const RecruitmentsTable = () => {
               ZOBACZ CYKLE
             </Button>
           )}
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            onClick={() => setModalShow(true)}
-          >
-            DODAJ REKRUTACJĘ
-          </Button>
+          {props.currentUser.role != "STANDARD" && (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={() => setModalShow(true)}
+            >
+              DODAJ REKRUTACJĘ
+            </Button>
+          )}
           <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
         </CardActions>
       </Card>
@@ -179,4 +180,8 @@ const RecruitmentsTable = () => {
   );
 };
 
-export default RecruitmentsTable;
+const mapStateToProps = state => ({
+  currentUser: selectCurrentUser(state)
+});
+
+export default connect(mapStateToProps)(RecruitmentsTable);

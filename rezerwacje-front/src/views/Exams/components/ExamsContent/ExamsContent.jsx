@@ -14,9 +14,10 @@ import {
     from "@material-ui/core"
 import ExamFormDialog from "./ExamFormDialog";
 import { convertDegree, convertType } from "./conversion";
+import { selectCurrentUser } from '/webapp/src/redux/user/user.selectors';
+import { connect } from "react-redux";
 
-
-const ExamsContent = () => {
+const ExamsContent = props => {
 
     const [recruitments, setRecruitments] = useState([])
     const [periods, setPeriods] = useState([])
@@ -144,8 +145,13 @@ const ExamsContent = () => {
             </Button>
                 </CardActions>
             </Card>
-            <ExamFormDialog open={modalShow} handleClose={handleClose} recruitment={values.recruitment} period={values.period} />
+            <ExamFormDialog open={modalShow} handleClose={handleClose} recruitment={values.recruitment} period={values.period} user={props.currentUser} />
         </React.Fragment>);
 };
 
-export default ExamsContent;
+
+const mapStateToProps = (state) => ({
+    currentUser: selectCurrentUser(state),
+});
+
+export default connect(mapStateToProps)(ExamsContent);

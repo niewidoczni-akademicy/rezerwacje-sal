@@ -37,6 +37,7 @@ export default function ExamFormDialog(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [periodDetails, setPeriodDetails] = useState({});
   const [seats, setSeats] = useState(0);
+  const [assignedCourses, setAssignedCourses] = useState([]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -95,7 +96,7 @@ export default function ExamFormDialog(props) {
   const handleEndTimeChange = (selectedTime) => setEndTime(selectedTime);
 
   const handleSeatsChange = event => setSeats(event.target.value);
-  
+
   const createRoomData = room => {
     return {
       "id": room.id,
@@ -129,6 +130,18 @@ export default function ExamFormDialog(props) {
       .catch(e => console.log(e));
   }, [props.recruitment]);
 
+  const checkCourseAccess = id => {
+    if (assignedCourses.find(course => course === id) != undefined) return true;
+    else return false;
+  };
+
+  const filterCourses = () => {
+    const coursesList = courses.filter(course => course.courseType == studyType);
+    if (props.user.role === "STANDARD")
+      return coursesList.filter(course => checkCourseAccess(course.id))
+    return coursesList;
+  }
+
   useEffect(() => {
     if (props.period === -1) return;
     fetch(`/api/recruitment-period/${props.period}`)
@@ -151,6 +164,18 @@ export default function ExamFormDialog(props) {
   }, [props.period]);
 
   useEffect(() => {
+    if (props.user.role != "STANDARD") return;
+    var url = `/api/course-of-study/courses?userId=${props.user.id}`;
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        const coursesList = json["coursesOfStudiesIdsForUser"];
+        setAssignedCourses(coursesList);
+      })
+      .catch(e => console.log(e));
+  }, [courses]);
+
+  useEffect(() => {
     fetch("/api/course-of-study")
       .then(res => res.json())
       .then(json => {
@@ -161,7 +186,9 @@ export default function ExamFormDialog(props) {
 
       })
       .catch(e => console.log(e));
-  }, []);
+  }, [props.user]);
+
+
 
   useEffect(() => {
     if (props.recruitment === -1) return;
@@ -218,9 +245,10 @@ export default function ExamFormDialog(props) {
                 variant="outlined"
                 onChange={handleCourseChange}
               >
-                {courses.filter(course => course.courseType == studyType).map(course => (
-                  <option value={course.id}>{course.name}</option>
-                ))}
+                {
+                  filterCourses(courses).map(course => (
+                    <option key={course.id} value={course.id}>{course.name}</option>
+                  ))}
               </TextField>
               <p className="error">{errors.course}</p>
             </Grid>
@@ -239,7 +267,7 @@ export default function ExamFormDialog(props) {
                 onChange={handleRoomChange}
               >
                 {rooms.map(room => (
-                  <option value={room.id}>{`${room.room.name}, ${room.room.building}`}</option>
+                  <option key={room.id} value={room.id}>{`${room.room.name}, ${room.room.building}`}</option>
                 ))}
               </TextField>
               <p className="error">{errors.room}</p>
