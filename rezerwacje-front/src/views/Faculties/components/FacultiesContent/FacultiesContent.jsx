@@ -16,7 +16,10 @@ const FacultiesContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList('/api/faculties', 'faculties');
+  const { entries, findEntry, refreshEntries } = useEntryList(
+    '/api/faculties',
+    'faculties'
+  );
 
   const [initEditState, setEditState] = useState({
     id: null,
@@ -58,9 +61,13 @@ const FacultiesContent = (props) => {
         action="DODAJ"
         message="Wydział został dodany do bazy."
         url="/api/faculties"
-        httpMethod="PUT"
+        httpMethod="POST"
         open={showAddDialog}
         initState={initAddState}
+        onSubmitted={() => {
+          setShowAddDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -73,6 +80,10 @@ const FacultiesContent = (props) => {
         httpMethod="PUT"
         open={showEditDialog}
         initState={initEditState}
+        onSubmitted={() => {
+          setShowEditDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowEditDialog(false);
         }}

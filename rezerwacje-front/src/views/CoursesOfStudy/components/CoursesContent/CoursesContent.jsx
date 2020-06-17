@@ -12,7 +12,7 @@ import {
 import { ImportCoursesDialog, CourseDialog, CoursesTable } from '../';
 import { useAutocomplete, useEntryList } from 'common/utilities';
 
-const fetchPromises = [
+const fetchPromises = () => [
   // TODO: don't fetch passwords o.O
   fetch('/api/faculties')
     .then((response) => response.json())
@@ -44,7 +44,7 @@ const CoursesContent = (props) => {
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
-  const { entries, findEntry } = useEntryList(
+  const { entries, findEntry, refreshEntries } = useEntryList(
     '/api/course-of-study',
     'courseOfStudies'
   );
@@ -57,7 +57,7 @@ const CoursesContent = (props) => {
     courseType: 'FULL_TIME',
     contactPerson1: null,
     contactPerson2: null,
-    isJoined: 'false',
+    isJoined: false,
     remarks: '',
   });
   const initAddState = {
@@ -67,7 +67,7 @@ const CoursesContent = (props) => {
     courseType: 'FULL_TIME',
     contactPerson1: null,
     contactPerson2: null,
-    isJoined: 'false',
+    isJoined: false,
     remarks: '',
   };
 
@@ -113,6 +113,10 @@ const CoursesContent = (props) => {
         open={showAddDialog}
         initState={initAddState}
         autoCompleteValues={acValues}
+        onSubmitted={() => {
+          setShowAddDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowAddDialog(false);
         }}
@@ -126,12 +130,17 @@ const CoursesContent = (props) => {
         open={showEditDialog}
         initState={initEditState}
         autoCompleteValues={acValues}
+        onSubmitted={() => {
+          setShowEditDialog(false);
+          refreshEntries();
+        }}
         handleClose={() => {
           setShowEditDialog(false);
         }}
       />
       <ImportCoursesDialog
         open={showImportDialog}
+        onUploaded={refreshEntries}
         handleClose={() => {
           setShowImportDialog(false);
         }}

@@ -123,6 +123,7 @@ public final class ExamTermService {
         Long cosId = addExamTermRequest.getCourseOfStudyId();
         Long rRoomId = addExamTermRequest.getRecruitmentRoomId();
         Long recruitmentPeriodId = addExamTermRequest.getRecruitmentPeriodId();
+        Integer seats = addExamTermRequest.getSeats();
         LocalDate day = addExamTermRequest.getDay();
         LocalTime timeStart = addExamTermRequest.getTimeStart();
         LocalTime timeEnd = addExamTermRequest.getTimeEnd();
@@ -157,7 +158,8 @@ public final class ExamTermService {
                 timeEnd,
                 recruitmentPeriod,
                 courseOfStudy,
-                rRoom);
+                rRoom,
+                seats);
 
         Long examTermId = examTermRepository.save(examTerm).getId();
 
@@ -184,6 +186,7 @@ public final class ExamTermService {
         examTermRepository.findById(request.getId())
                 .orElseThrow(() -> new ExamTermNotFoundException("No exam term with room id: " + request.getId()));
 
+        final Integer seats = request.getSeats();
         final Long cosId = request.getCourseOfStudyId();
         final Long rRoomId = request.getRecruitmentRoomId();
         final Long recruitmentPeriodId = request.getRecruitmentPeriodId();
@@ -212,7 +215,8 @@ public final class ExamTermService {
                 request.getDeleted(),
                 recruitmentPeriod,
                 courseOfStudy,
-                rRoom
+                rRoom,
+                seats
         );
 
         examTermRepository.save(examTerm);

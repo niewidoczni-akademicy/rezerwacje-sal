@@ -59,10 +59,10 @@ const CourseDialog = (props) => {
       body: JSON.stringify({
         id: id,
         name: name,
-        faculty: faculty.name,
+        facultyId: faculty.id,
         courseType: courseType,
-        contactPerson1: contactPerson1.login,
-        contactPerson2: contactPerson2 != null ? contactPerson2.login : null,
+        contactPerson1Id: contactPerson1.id,
+        contactPerson2Id: contactPerson2 != null ? contactPerson2.id : null,
         isJoined: isJoined,
         remarks: remarks,
       }),
@@ -70,6 +70,7 @@ const CourseDialog = (props) => {
       function (res) {
         if (res.ok) {
           alert(props.message);
+          props.onSubmitted();
         } else {
           alert('Wystąpił błąd.');
         }
@@ -230,17 +231,15 @@ const CourseDialog = (props) => {
                     name="isJoined"
                   >
                     <FormControlLabel
-                      value={'true'}
                       control={<Radio />}
-                      checked={values.isJoined === true}
-                      onChange={handleChangeEvent}
+                      checked={values.isJoined}
+                      onChange={() => handleChange('isJoined', true)}
                       label="Tak"
                     />
                     <FormControlLabel
-                      value={'false'}
                       control={<Radio />}
-                      checked={values.isJoined !== true}
-                      onChange={handleChangeEvent}
+                      checked={!values.isJoined}
+                      onChange={() => handleChange('isJoined', false)}
                       label="Nie"
                     />
                   </RadioGroup>

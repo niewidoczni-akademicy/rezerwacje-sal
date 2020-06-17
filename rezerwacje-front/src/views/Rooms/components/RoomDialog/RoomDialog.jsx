@@ -53,6 +53,7 @@ const RoomDialog = (props) => {
       function (res) {
         if (res.ok) {
           alert(props.message);
+          props.onSubmitted();
         } else {
           alert('Wystąpił błąd.');
         }
