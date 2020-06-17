@@ -38,7 +38,7 @@ public class UserServiceTest {
     @Test
     public void shouldReturnUserByHisLogin_ifHisLoginExistsInTheDatabase() {
         final String login = "ojtaktakbyczq";
-        final SystemUser systemUser = userService.getSystemUserByLogin(login).getSystemUser();
+        final SystemUser systemUser = userService.getSystemUserResponseByLogin(login).getSystemUser();
 
         assertNotNull("Verifying whether returned user is exists", systemUser);
         assertEquals("Verifying user data", UserType.STANDARD, systemUser.getUserType());
@@ -51,7 +51,7 @@ public class UserServiceTest {
 
         assertThrows(
                 UserNotFoundException.class,
-                () -> userService.getSystemUserByLogin(login)
+                () -> userService.getSystemUserResponseByLogin(login)
         );
     }
 
@@ -72,7 +72,7 @@ public class UserServiceTest {
 
         userService.saveSystemUser(request);
 
-        final SystemUser user = userService.getSystemUserByLogin(uniqueLogin).getSystemUser();
+        final SystemUser user = userService.getSystemUserResponseByLogin(uniqueLogin).getSystemUser();
 
         assertNotNull("Testing getting recently added user from the database", user);
         assertEquals("Verifying the user", emailAddressToVerify, user.getEmailAddress());

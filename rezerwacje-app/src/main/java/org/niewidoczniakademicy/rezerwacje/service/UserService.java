@@ -8,12 +8,16 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRe
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.security.UserPrincipal;
 import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
 import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddressException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +25,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class UserService {
+public final class UserService implements UserDetailsService {
 
     private final ConversionService conversionService;
     private final UserRepository userRepository;
@@ -37,11 +41,9 @@ public final class UserService {
                 .build();
     }
 
-    public GetSystemUserResponse getSystemUserByLogin(final String login) {
-        final SystemUser systemUser = getSystemUserFromDatabaseByLogin(login);
-
+    public GetSystemUserResponse getSystemUserResponseByLogin(final String login) {
         return GetSystemUserResponse.builder()
-                .systemUser(systemUser)
+                .systemUser(getSystemUserByLogin(login))
                 .build();
     }
 
@@ -49,8 +51,8 @@ public final class UserService {
         final List<SystemUser> systemUsers = userRepository
                 .findSystemUsersByFirstNameAndLastName(firstName, lastName)
                 .orElseThrow(() -> new UserNotFoundException("No user with first name: "
-                        + firstName + " and last name : "
-                        + lastName + " found"));
+                                                            + firstName + " and last name : "
+                                                            + lastName + " found"));
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -65,8 +67,8 @@ public final class UserService {
                 .build();
     }
 
-    public GetSystemUsersResponse getSystemUsersByType(final UserType type) {
-        final List<SystemUser> systemUsers = getSystemUsersFromDatabaseByType(type);
+    public GetSystemUsersResponse getSystemUsersResponseByType(final UserType type) {
+        final List<SystemUser> systemUsers = getSystemUsersByType(type);
 
         return GetSystemUsersResponse.builder()
                 .systemUsers(systemUsers)
@@ -74,7 +76,7 @@ public final class UserService {
     }
 
     public OperationOnSystemUserResponse deleteSystemUserById(final Long userId) {
-        final SystemUser systemUser = getSystemUserFromDatabaseById(userId);
+        final SystemUser systemUser = getSystemUserById(userId);
         userRepository.delete(systemUser);
 
         return OperationOnSystemUserResponse.builder()
@@ -83,7 +85,7 @@ public final class UserService {
     }
 
     public OperationOnSystemUserResponse deleteSystemUserByLogin(final String login) {
-        final SystemUser systemUser = getSystemUserFromDatabaseByLogin(login);
+        final SystemUser systemUser = getSystemUserByLogin(login);
         userRepository.delete(systemUser);
 
         return OperationOnSystemUserResponse.builder()
@@ -100,21 +102,32 @@ public final class UserService {
         }
     }
 
-    public SystemUser getSystemUserFromDatabaseById(final Long userId) {
+    public SystemUser getSystemUserById(final Long userId) {
         return userRepository
                 .findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " does not exist"));
     }
 
-    private SystemUser getSystemUserFromDatabaseByLogin(final String login) {
+    private SystemUser getSystemUserByLogin(final String login) {
         return userRepository
                 .findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException("User with login: " + login + " does not exist"));
     }
 
-    private List<SystemUser> getSystemUsersFromDatabaseByType(final UserType type) {
+    private List<SystemUser> getSystemUsersByType(final UserType type) {
         return userRepository
                 .findSystemUsersByUserType(type)
                 .orElseThrow(() -> new UserNotFoundException("Unable to find users with type: " + type));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.debug(username + " tries to log in");
+        try {
+            return new UserPrincipal(getSystemUserByLogin(username));
+        } catch (UserNotFoundException e) {
+            log.debug(username + " not found", e);
+            throw new UsernameNotFoundException(username + " not found", e);
+        }
     }
 }
