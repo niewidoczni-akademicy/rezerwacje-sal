@@ -6,7 +6,8 @@ export default function validateExamForm(
   endTime,
   periodDetails,
   room,
-  dayOfWeek
+  dayOfWeek,
+  seats
 ) {
   let errors = {};
 
@@ -15,6 +16,13 @@ export default function validateExamForm(
   }
   if (roomId == -1) {
     errors.room = "Sala jest wymagana";
+  }
+
+  if (Number.isNaN(seats)) {
+    errors.seats = "Niepoprawna wartość dla liczby miejsc";
+  } else if (room.room.capacity != null && seats > room.room.capacity) {
+    errors.seats =
+      "W sali jest dostępnych tylko " + room.room.capacity + " miejsc";
   }
 
   const createIntervalData = hour => {

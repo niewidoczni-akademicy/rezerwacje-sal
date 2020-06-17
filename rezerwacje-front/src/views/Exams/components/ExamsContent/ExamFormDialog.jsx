@@ -35,8 +35,8 @@ export default function ExamFormDialog(props) {
   const [periodName, setPeriodName] = useState('');
   const [studyType, setStudyType] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [periodDetails, setPeriodDetails] = useState({
-  });
+  const [periodDetails, setPeriodDetails] = useState({});
+  const [seats, setSeats] = useState(0);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -49,7 +49,8 @@ export default function ExamFormDialog(props) {
       timeEnd: getTime(endTime),
       recruitmentPeriodId: props.period,
       courseOfStudyId: courseId,
-      recruitmentRoomId: roomId
+      recruitmentRoomId: roomId,
+      seats: parseInt(seats)
     });
 
     fetch("/api/exam-terms", {
@@ -81,7 +82,7 @@ export default function ExamFormDialog(props) {
     let room = -1;
     if (roomId != -1)
       room = getRoom();
-    setErrors(validateExamForm(courseId, roomId, getDate(selectedDate), getTime(startTime), getTime(endTime), periodDetails, room, getDay(selectedDate)));
+    setErrors(validateExamForm(courseId, roomId, getDate(selectedDate), getTime(startTime), getTime(endTime), periodDetails, room, getDay(selectedDate), parseInt(seats)));
     setIsSubmitting(true);
   };
 
@@ -93,6 +94,8 @@ export default function ExamFormDialog(props) {
 
   const handleEndTimeChange = (selectedTime) => setEndTime(selectedTime);
 
+  const handleSeatsChange = event => setSeats(event.target.value);
+  
   const createRoomData = room => {
     return {
       "id": room.id,
@@ -240,6 +243,20 @@ export default function ExamFormDialog(props) {
                 ))}
               </TextField>
               <p className="error">{errors.room}</p>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+            >
+              <TextField
+                id="seats"
+                label="Liczba miejsc"
+                margin="dense"
+                type="number"
+                value={seats}
+                onChange={handleSeatsChange}
+              />
+              <p className="error">{errors.seats}</p>
             </Grid>
             <Grid
               item

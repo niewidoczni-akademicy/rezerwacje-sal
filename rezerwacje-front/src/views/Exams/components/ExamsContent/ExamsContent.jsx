@@ -47,6 +47,11 @@ const ExamsContent = () => {
                         ...values,
                         ['recruitment']: recruitmentList[0].id
                     });
+                else 
+                    setValues({
+                        ...values,
+                        ['recruitment']: -1
+                    })
             })
             .catch(e => console.log(e));
     }, []);
@@ -63,6 +68,10 @@ const ExamsContent = () => {
                             ...values,
                             ['period']: periodsList[0].id
                         })
+                    else setValues({
+                        ...values,
+                        ['period']: -1
+                    })
                 })
                 .catch(e => console.log(e));
     }, [values.recruitment]);
