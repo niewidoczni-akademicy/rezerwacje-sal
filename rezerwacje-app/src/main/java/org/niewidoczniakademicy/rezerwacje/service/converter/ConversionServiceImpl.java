@@ -59,10 +59,10 @@ public final class ConversionServiceImpl implements ConversionService {
     public CourseOfStudy convert(EditCourseOfStudyRequest request) {
         AddCourseOfStudyRequest addRequest = AddCourseOfStudyRequest.builder()
                 .name(request.getName())
-                .faculty(request.getFaculty())
+                .facultyId(request.getFacultyId())
                 .courseType(request.getCourseType())
-                .contactPerson1(request.getContactPerson1())
-                .contactPerson2(request.getContactPerson2())
+                .contactPerson1Id(request.getContactPerson1Id())
+                .contactPerson2Id(request.getContactPerson2Id())
                 .isJoined(request.getIsJoined())
                 .remarks(request.getRemarks())
                 .build();
