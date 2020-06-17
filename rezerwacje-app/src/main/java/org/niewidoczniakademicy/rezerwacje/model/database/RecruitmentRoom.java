@@ -11,6 +11,7 @@ import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,6 +22,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,6 +54,14 @@ public class RecruitmentRoom {
     @JsonManagedReference
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @Basic
+    @NonNull
+    private LocalTime availableFrom;
+
+    @Basic
+    @NonNull
+    private LocalTime availableTo;
 
     @Builder.Default
     @ToString.Exclude

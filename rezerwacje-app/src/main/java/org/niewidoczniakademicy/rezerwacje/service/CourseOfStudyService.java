@@ -6,6 +6,7 @@ import org.niewidoczniakademicy.rezerwacje.model.csv.CsvCourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.csv.DatabaseException;
 import org.niewidoczniakademicy.rezerwacje.model.database.CourseOfStudy;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.EditCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudiesResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCourseOfStudyResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCoursesOfStudiesForUserResponse;
@@ -36,6 +37,31 @@ public final class CourseOfStudyService {
 
     public GetCourseOfStudiesResponse getAllResponse() {
         Set<CourseOfStudy> courseOfStudies = new HashSet<>(this.courseOfStudyRepository.findAll());
+        Set<CourseOfStudy> predecessors = new HashSet<>();
+
+        for (CourseOfStudy courseOfStudy : courseOfStudies) {
+            CourseOfStudy predecessor = courseOfStudy.getPredecessor();
+            if (predecessor != null) {
+                predecessors.add(predecessor);
+            }
+        }
+
+        courseOfStudies.removeAll(predecessors);
+
+        return GetCourseOfStudiesResponse.builder()
+                .courseOfStudies(courseOfStudies)
+                .build();
+    }
+
+    public GetCourseOfStudiesResponse getHistory(Long id) {
+        CourseOfStudy root = courseOfStudyRepository
+                .findById(id)
+                .orElse(null);
+        Set<CourseOfStudy> courseOfStudies = new HashSet<>();
+        while (root != null) {
+            courseOfStudies.add(root);
+            root = root.getPredecessor();
+        }
 
         return GetCourseOfStudiesResponse.builder()
                 .courseOfStudies(courseOfStudies)
@@ -69,10 +95,25 @@ public final class CourseOfStudyService {
 
     public GetCourseOfStudyResponse saveCourse(final AddCourseOfStudyRequest request) {
         CourseOfStudy course = conversionService.convert(request);
-        courseOfStudyRepository.save(course);
+        CourseOfStudy savedCourse = courseOfStudyRepository.save(course);
+        return GetCourseOfStudyResponse.builder()
+                .courseOfStudy(savedCourse)
+                .build();
+    }
+
+    public GetCourseOfStudyResponse editCourse(final EditCourseOfStudyRequest request) {
+        Long courseId = request.getId();
+        CourseOfStudy predecessor = courseOfStudyRepository.findById(courseId)
+                .orElseThrow(() -> new CourseOfStudyNotFoundException("No cos with id " + courseId));
+
+        CourseOfStudy course = conversionService.convert(request);
+
+        course.setPredecessor(predecessor);
+
+        CourseOfStudy savedCourse = courseOfStudyRepository.save(course);
 
         return GetCourseOfStudyResponse.builder()
-                .courseOfStudy(course)
+                .courseOfStudy(savedCourse)
                 .build();
     }
 

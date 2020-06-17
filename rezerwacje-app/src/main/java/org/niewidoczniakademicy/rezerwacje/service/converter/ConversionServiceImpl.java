@@ -7,6 +7,7 @@ import org.niewidoczniakademicy.rezerwacje.model.database.RecruitmentPeriod;
 import org.niewidoczniakademicy.rezerwacje.model.database.Room;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.AddCourseOfStudyRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.EditCourseOfStudyRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitment.AddRecruitmentRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentperiod.AddRecruitmentPeriodRequest;
 import org.niewidoczniakademicy.rezerwacje.model.rest.room.AddRoomRequest;
@@ -47,6 +48,20 @@ public final class ConversionServiceImpl implements ConversionService {
     @Override
     public CourseOfStudy convert(final AddCourseOfStudyRequest request) {
         return courseOfStudyConverter.createFrom(request);
+    }
+
+    @Override
+    public CourseOfStudy convert(EditCourseOfStudyRequest request) {
+        AddCourseOfStudyRequest addRequest = AddCourseOfStudyRequest.builder()
+                .name(request.getName())
+                .faculty(request.getFaculty())
+                .courseType(request.getCourseType())
+                .contactPerson1(request.getContactPerson1())
+                .contactPerson2(request.getContactPerson2())
+                .isJoined(request.getIsJoined())
+                .remarks(request.getRemarks())
+                .build();
+        return courseOfStudyConverter.createFrom(addRequest);
     }
 
 }
