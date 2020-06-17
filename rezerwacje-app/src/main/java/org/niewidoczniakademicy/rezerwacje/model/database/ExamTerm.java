@@ -1,12 +1,15 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -19,7 +22,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
+@Builder
 @Entity
 @Table
 @Getter
@@ -27,6 +30,7 @@ import java.time.LocalTime;
 @ToString
 @EqualsAndHashCode(exclude = {"courseOfStudy", "recruitmentRoom"})
 @NoArgsConstructor
+@AllArgsConstructor
 public class ExamTerm {
 
     @Id
@@ -44,6 +48,10 @@ public class ExamTerm {
     @Basic
     @NonNull
     private LocalTime timeEnd;
+
+    @NonNull
+    @ColumnDefault("false")
+    private Boolean deleted;
 
     @NonNull
     @ManyToOne
@@ -71,6 +79,23 @@ public class ExamTerm {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
+        this.deleted = false;
+        this.addRecruitmentPeriod(recruitmentPeriod);
+        this.addCourseOfStudy(courseOfStudy);
+        this.addRoom(recruitmentRoom);
+    }
+
+    public ExamTerm(final LocalDate day,
+                    final LocalTime timeStart,
+                    final LocalTime timeEnd,
+                    final Boolean deleted,
+                    final RecruitmentPeriod recruitmentPeriod,
+                    final CourseOfStudy courseOfStudy,
+                    final RecruitmentRoom recruitmentRoom) {
+        this.day = day;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.deleted = deleted;
         this.addRecruitmentPeriod(recruitmentPeriod);
         this.addCourseOfStudy(courseOfStudy);
         this.addRoom(recruitmentRoom);
