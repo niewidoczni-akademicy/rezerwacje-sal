@@ -5,7 +5,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';	
 import TodayIcon from '@material-ui/icons/Today';	
 import SchoolIcon from '@material-ui/icons/School';	
-import ScheduleIcon from '@material-ui/icons/CalendarToday';	
+import ScheduleIcon from '@material-ui/icons/CalendarToday';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import {	
   Home as HomeView,	
   Rooms as RoomsView,	
@@ -14,7 +15,8 @@ import {
   Exams as ExamsView,	
   Recruitments as RecruitmentsView,	
   UserCourses as UserCoursesView,	
-  Schedule as ScheduleView	
+  Schedule as ScheduleView,
+  Faculties as FacultiesView
 } from 'views';
 
 const ROUTES_DATA = [
