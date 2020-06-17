@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
 }
-  from "@material-ui/core"
+  from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -51,7 +51,6 @@ export default function ExamFormDialog(props) {
       courseOfStudyId: courseId,
       recruitmentRoomId: roomId
     });
-    console.log(body);
 
     fetch("/api/exam-terms", {
       method: "POST",
@@ -62,8 +61,11 @@ export default function ExamFormDialog(props) {
         if (res.ok) {
           alert("Egzamin został dodany do bazy.");
           props.handleClose();
-        } else {
-          alert("Wystąpił błąd.");
+        } else if (res.status === 404) {
+          res.json().then(function (object) {
+            if (object.message.includes("exams already found in provided term"))
+              alert("Wybrany termin jest już zajęty");
+          });
         }
       },
       function (e) {
@@ -72,12 +74,13 @@ export default function ExamFormDialog(props) {
     );
   };
 
+  const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "SATURDAY"];
+
   const handleSubmit = async event => {
     event.preventDefault();
     let room = -1;
     if (roomId != -1)
       room = getRoom();
-    console.log(getDay(selectedDate));
     setErrors(validateExamForm(courseId, roomId, getDate(selectedDate), getTime(startTime), getTime(endTime), periodDetails, room, getDay(selectedDate)));
     setIsSubmitting(true);
   };
@@ -105,13 +108,11 @@ export default function ExamFormDialog(props) {
 
   const getRoom = () => rooms.filter(room => room.id == roomId)[0];
 
-  const getDay = date => date.getDay().toUpperCase();
+  const getDay = date => days[date.getDay()];
 
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       submit();
-    } else {
-      console.log(errors);
     }
   }, [errors]);
 
@@ -147,18 +148,14 @@ export default function ExamFormDialog(props) {
   }, [props.period]);
 
   useEffect(() => {
-    if (Object.keys(errors).length === 0 && isSubmitting) {
-      submit();
-    } else {
-      console.log(errors);
-    }
-  }, [errors]);
-
-  useEffect(() => {
     fetch("/api/course-of-study")
       .then(res => res.json())
       .then(json => {
-        setCourses(json["courseOfStudies"]);
+        const coursesList = json["courseOfStudies"];
+        setCourses(coursesList);
+        if (coursesList.length > 0)
+          setCourseId(coursesList[0].id);
+
       })
       .catch(e => console.log(e));
   }, []);
@@ -171,6 +168,8 @@ export default function ExamFormDialog(props) {
       .then(json => {
         const rooms = getRooms(json['recruitmentRooms']);
         setRooms(rooms);
+        if (rooms.length > 0)
+          setRoomId(rooms[0].id);
       })
       .catch(e =>
         console.log(e));

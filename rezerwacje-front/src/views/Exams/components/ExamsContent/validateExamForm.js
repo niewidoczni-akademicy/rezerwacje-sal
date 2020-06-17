@@ -10,6 +10,13 @@ export default function validateExamForm(
 ) {
   let errors = {};
 
+  if (courseId == -1) {
+    errors.course = "Kierunek jest wymagany.";
+  }
+  if (roomId == -1) {
+    errors.room = "Sala jest wymagana";
+  }
+
   const createIntervalData = hour => {
     return {
       timeStart: hour.timeStart,
@@ -17,28 +24,23 @@ export default function validateExamForm(
     };
   };
 
-  const availabilityHours = room.availabilityHours
-    .filter(hour => hour.dayOfWeek === dayOfWeek)
-    .map(hour => createIntervalData(hour));
+  var availabilityHours;
 
-  console.log(availabilityHours);
+  if (room != -1) {
+    availabilityHours = room.room.availabilityHours
+      .filter(hour => hour.dayOfWeek === dayOfWeek)
+      .map(hour => createIntervalData(hour));
+  }
 
   const validateTime = hour => {
     if (availabilityHours.length === 0) return true;
     var interval;
     for (interval in availabilityHours) {
-      if (hour >= interval.startTime && hour <= interval.endTime)
-        return true;
+      if (hour >= interval.startTime && hour <= interval.endTime) return true;
     }
     return false;
   };
 
-  if (courseId == -1) {
-    errors.course = "Kierunek jest wymagany.";
-  }
-  if (roomId == -1) {
-    errors.room = "Sala jest wymagana";
-  }
   if (!selectedDate) {
     errors.date = "Data jest wymagana.";
   } else if (
@@ -50,13 +52,13 @@ export default function validateExamForm(
 
   if (!startTime) {
     errors.startTime = "Godzina początkowa jest wymagana";
-  } else if (!validateTime(startTime)) {
+  } else if (room != -1 && !validateTime(startTime)) {
     errors.startTime = "Sala nie jest dostępna o tej godzinie";
   }
 
   if (endTime <= startTime) {
     errors.endTime = "Godzina końcowa musi być późniejsza od początkowej";
-  } else if (!validateTime(endTime)) {
+  } else if (room != -1 && !validateTime(endTime)) {
     errors.endTime = "Sala nie jest dostępna o tej godzinie";
   }
 
