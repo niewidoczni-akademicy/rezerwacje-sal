@@ -25,7 +25,7 @@ public class RecruitmentController {
 
     private final RecruitmentService recruitmentService;
 
-    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
+    @Secured({"ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)

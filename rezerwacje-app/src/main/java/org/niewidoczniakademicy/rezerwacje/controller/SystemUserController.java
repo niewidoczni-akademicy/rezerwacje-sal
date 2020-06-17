@@ -3,15 +3,14 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
-import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.niewidoczniakademicy.rezerwacje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +56,7 @@ public class SystemUserController {
         return userService.getSystemUsersByFirstNameAndLastName(firstName, lastName);
     }
 
+    @Secured({"ROLE_ADMINISTRATOR"})
     @GetMapping(params = {"type"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -93,9 +93,6 @@ public class SystemUserController {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public Object getMe() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth);
-
-        return auth;
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }

@@ -77,6 +77,7 @@ public class ExamTermController {
         return examTermService.getAddExamTermResponse(addExamTermRequest);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "/set-deleted/{examTermId}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -84,6 +85,7 @@ public class ExamTermController {
         return examTermService.setExamTermAsDeleted(examTermId);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PutMapping(path = "update")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)

@@ -41,6 +41,7 @@ public class RoomsController {
         return roomService.uploadRoomsResponse(file);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
