@@ -47,7 +47,7 @@ const ExamsContent = () => {
                         ...values,
                         ['recruitment']: recruitmentList[0].id
                     });
-                else 
+                else
                     setValues({
                         ...values,
                         ['recruitment']: -1
