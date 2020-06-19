@@ -51,17 +51,7 @@ const useStyles = makeStyles(theme => ({
 
 const UsersTable = () => {
   const [selectedUser, setSelectedUser] = useState("");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
   const [users, setUsers] = useState([]);
-
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
 
   const classes = useStyles();
 
@@ -155,17 +145,6 @@ const UsersTable = () => {
             </div>
           </PerfectScrollbar>
         </CardContent>
-        <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={users.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleRowsPerPageChange}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
-        </CardActions>
       </Card>
       <br />
       <ChangeCourseAccess user={getSelectedUser()} />

@@ -1,23 +1,24 @@
 import React from "react";
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';	
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';	
-import HomeIcon from '@material-ui/icons/Home';	
-import PersonIcon from '@material-ui/icons/Person';	
-import TodayIcon from '@material-ui/icons/Today';	
-import SchoolIcon from '@material-ui/icons/School';	
+import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person';
+import TodayIcon from '@material-ui/icons/Today';
+import SchoolIcon from '@material-ui/icons/School';
 import ScheduleIcon from '@material-ui/icons/CalendarToday';
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance"
 import {
-  Home as HomeView,	
-  Rooms as RoomsView,	
-  Courses as CoursesView,	
+  Home as HomeView,
+  Rooms as RoomsView,
+  Courses as CoursesView,
   Faculties as FacultiesView,
   Users as UsersView,
-  Exams as ExamsView,	
-  Recruitments as RecruitmentsView,	
-  UserCourses as UserCoursesView,	
+  Exams as ExamsView,
+  Recruitments as RecruitmentsView,
+  UserCourses as UserCoursesView,
   Schedule as ScheduleView,
   Login as LoginView,
+  RecruitmentRooms as RecruitmentRoomsView
 } from 'views';
 
 const ROUTES_DATA = [
@@ -100,6 +101,13 @@ const ROUTES_DATA = [
     view: <LoginView />,
     roles: ["ANON"],
   },
+  {
+    title: 'Sale w rekrutacji',
+    href: '/recruitment/rooms',
+    icon: <MeetingRoomIcon />,
+    view: <RecruitmentRoomsView />,
+    roles: ["ADMINISTRATOR", "SUPERVISOR"]
+  }
 ];
 
 export default ROUTES_DATA;

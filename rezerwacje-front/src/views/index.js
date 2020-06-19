@@ -7,4 +7,5 @@ export { default as Faculties } from './Faculties';
 export { default as Recruitments } from './Recruitments';
 export { default as UserCourses } from './UserCourses';
 export { default as Schedule } from './Schedule';
-export { default as Login } from "./Login/login.component"
+export { default as RecruitmentRooms } from './RecruitmentRooms';
+export { default as Login } from "./Login/login.component";
