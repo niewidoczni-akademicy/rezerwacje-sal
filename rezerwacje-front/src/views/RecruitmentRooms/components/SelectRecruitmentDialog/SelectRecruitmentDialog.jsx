@@ -99,7 +99,7 @@ export default function SelectRecruitmentDialog(props) {
         setRooms(roomsIds);
       })
       .catch(e => console.log(e));
-  }, [recruitment]);
+  }, [assignedRooms]);
 
   useEffect(() => {
     if (props.recruitment != undefined && props.recruitment != -1) {
@@ -113,7 +113,7 @@ export default function SelectRecruitmentDialog(props) {
         })
         .catch(e => console.log(e));
     }
-  }, [props.recruitment]);
+  }, [recruitment]);
 
   return (
     <Dialog
