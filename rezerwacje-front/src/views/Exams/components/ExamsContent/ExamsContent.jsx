@@ -1,6 +1,5 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
     TextField,
     Grid,
@@ -14,13 +13,18 @@ import {
 }
     from "@material-ui/core"
 import ExamFormDialog from "./ExamFormDialog";
+import { convertDegree, convertType } from "./conversion";
+import { selectCurrentUser } from '/webapp/src/redux/user/user.selectors';
+import { connect } from "react-redux";
 
+const ExamsContent = props => {
 
-const ExamsContent = () => {
+    const [recruitments, setRecruitments] = useState([])
+    const [periods, setPeriods] = useState([])
 
     const [values, setValues] = useState({
-        space: '',
-        period: ''
+        recruitment: -1,
+        period: -1
     });
 
     const [modalShow, setModalShow] = useState(false);
@@ -33,11 +37,47 @@ const ExamsContent = () => {
         });
     };
 
-    const recruitmentSpaces = ["lato 2020", "zima 2021"];
+    useEffect(() => {
+        fetch("/api/recruitment/all")
+            .then(res => res.json())
+            .then(json => {
+                const recruitmentList = json["recruitments"];
+                setRecruitments(recruitmentList);
+                if (recruitmentList.length > 0)
+                    setValues({
+                        ...values,
+                        ['recruitment']: recruitmentList[0].id
+                    });
+                else
+                    setValues({
+                        ...values,
+                        ['recruitment']: -1
+                    })
+            })
+            .catch(e => console.log(e));
+    }, []);
 
-    const recruitmentPeriods = ['1', '2'];
+    useEffect(() => {
+        if (values.recruitment != -1)
+            fetch(`/api/recruitment-period/recruitment/${values.recruitment}`)
+                .then(res => res.json())
+                .then(json => {
+                    const periodsList = json["recruitmentPeriods"];
+                    setPeriods(periodsList);
+                    if (periodsList.length > 0)
+                        setValues({
+                            ...values,
+                            ['period']: periodsList[0].id
+                        })
+                    else setValues({
+                        ...values,
+                        ['period']: -1
+                    })
+                })
+                .catch(e => console.log(e));
+    }, [values.recruitment]);
 
-    const handleClose = () => setModalShow(false)
+    const handleClose = () => setModalShow(false);
 
     return (
         <React.Fragment>
@@ -55,16 +95,16 @@ const ExamsContent = () => {
                             <TextField
                                 fullWidth
                                 margin="dense"
-                                name="space"
+                                name="recruitment"
                                 onChange={handleChange}
                                 required
                                 select
                                 SelectProps={{ native: true }}
-                                value={values.space}
+                                value={values.recruitment}
                                 variant="outlined"
                             >
-                                {recruitmentSpaces.map(space => (
-                                    <option key={space} value={space}>{space}</option>
+                                {recruitments.map(recruitment => (
+                                    <option key={recruitment.id} value={recruitment.id}>{recruitment.name}</option>
                                 ))}
                             </TextField>
                         </Grid>
@@ -79,14 +119,14 @@ const ExamsContent = () => {
                                 margin="dense"
                                 name="period"
                                 onChange={handleChange}
-                                required
                                 select
+                                required
                                 SelectProps={{ native: true }}
                                 value={values.period}
                                 variant="outlined"
                             >
-                                {recruitmentPeriods.map(period => (
-                                    <option key={period} value={period}>{period}</option>
+                                {periods.map(period => (
+                                    <option key={period.id} value={period.id}>{`${period.startDate} - ${period.endDate}, ${convertType(period.studyType)}, ${convertDegree(period.studyDegree)}`}</option>
                                 ))}
                             </TextField>
                         </Grid>
@@ -97,6 +137,7 @@ const ExamsContent = () => {
                     <Button
                         color="primary"
                         variant="contained"
+                        disabled={values.recruitment === -1 || values.period === -1}
                         onClick={() =>
                             setModalShow(true)}
                     >
@@ -104,8 +145,13 @@ const ExamsContent = () => {
             </Button>
                 </CardActions>
             </Card>
-            <ExamFormDialog open={modalShow} handleClose={handleClose} space={values.space} period={values.period} />
+            <ExamFormDialog open={modalShow} handleClose={handleClose} recruitment={values.recruitment} period={values.period} user={props.currentUser} />
         </React.Fragment>);
 };
 
-export default ExamsContent;
+
+const mapStateToProps = (state) => ({
+    currentUser: selectCurrentUser(state),
+});
+
+export default connect(mapStateToProps)(ExamsContent);
