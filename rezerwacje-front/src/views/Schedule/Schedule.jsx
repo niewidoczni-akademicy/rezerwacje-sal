@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import {
@@ -28,13 +28,52 @@ const useStyles = makeStyles(theme => ({
 const Schedule = () => {
   const classes = useStyles();
 
-  const recruitments = ["lato 2020", "zima 2021"];
+  const useEffectsWithParameters = (url, responseKey, setter, formatter) => {
+    useEffect(() => {
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json[responseKey]);
+          if (json["message"] == undefined)
+            setter(json[responseKey].reduce((accumulator, element, i) => {
+              accumulator.push(formatter(element))
+              return accumulator
+            }, []));
+        })
+        .catch(e => console.log(e));
+    }, []);
+  }
 
   const cycles = ['1', '2'];
 
-  const courses = ['IET Informatyka', 'IMiC Ceramika'];
+  const [rooms, setRooms] = useState([]);
 
-  const rooms = ['D17 2.41', 'D17 1.38', 'Online'];
+  useEffectsWithParameters(
+    '/api/rooms', 
+    'rooms', 
+    setRooms, 
+    x => `${x.building} ${x.name}`,
+  );
+
+  console.log(rooms)
+
+  const [recruitments, setRecruitments] = useState([]);
+
+  useEffectsWithParameters(
+    '/api/recruitment/all', 
+    'recruitments', 
+    setRecruitments, 
+    x => `${x.name}`,
+  );
+
+  const [courses, setCourses] = useState([]);
+
+  useEffectsWithParameters(
+    '/api/course-of-study', 
+    'courseOfStudies', 
+    setCourses, 
+    x => `${x.faculty_id} ${x.name} (${x.course_type})`,
+  );
 
   const [values, setValues] = useState({
     recruitment: recruitments.length > 0 ? recruitments[0] : '',
@@ -89,7 +128,7 @@ const Schedule = () => {
       >
         <Grid item xs={3}>
           <RecruitmentSelection 
-            updateRecruitment={updateRecruitment} 
+            updateRecruitment={updateRecruitment}   
             updateCycle={updateCycle}
             recruitments={recruitments}
             cycles={cycles}

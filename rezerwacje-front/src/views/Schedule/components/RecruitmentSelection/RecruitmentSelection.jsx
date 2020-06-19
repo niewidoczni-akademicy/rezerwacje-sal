@@ -37,12 +37,12 @@ const RecruitmentSelection = props => {
     <Card>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Rekrutacja
+          Recruitment
         </Typography>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            helperText="rekrutacja"
+            helperText="Recruitment"
             margin="dense"
             name="recruitment"
             onChange={handleSelectedRecruitmentChange}
@@ -60,7 +60,7 @@ const RecruitmentSelection = props => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            helperText="cykl"
+            helperText="Cycle"
             margin="dense"
             name="cycle"
             onChange={handleSelectedCycleChange}

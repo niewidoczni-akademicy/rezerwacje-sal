@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { 
   Card, 
   CardContent, 
@@ -34,6 +34,25 @@ class Calendar extends Component {
       timebar: buildExamTimebar(props.defaults.from, props.defaults.to),
       now: new Date(Date.now()),
     }
+  }
+
+  useEffectsWithParameters = (url, responseKey, setter, formatter) => {
+    useEffect(() => {
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json[responseKey]);
+          if (json["message"] == undefined)
+            setter(json[responseKey].reduce((accumulator, element, i) => {
+              accumulator.push({
+                id: i,
+                text: formatter(element),
+              })
+              return accumulator
+            }, []));
+        })
+        .catch(e => console.log(e));
+    }, []);
   }
 
   getRoomsTracks = rooms => {

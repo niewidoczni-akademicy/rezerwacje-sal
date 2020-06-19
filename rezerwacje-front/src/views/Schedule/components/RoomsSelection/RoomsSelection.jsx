@@ -40,20 +40,17 @@ const RoomsSelection = props => {
     const value = event.target.value
     setSelectedRooms(value)
     props.updateRooms(value)
-    console.log(rooms)
-    console.log(value)
-    console.log("-------------")
   };
 
   return (
     <Card>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Sale
+          Rooms
         </Typography>
         <Grid item xs={12}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="multiple_selected_rooms">wybrane sale</InputLabel>
+            <InputLabel id="multiple_selected_rooms">Selected rooms</InputLabel>
             <Select
               labelId="multiple_selected_rooms"
               id="rooms_selection_panel"
