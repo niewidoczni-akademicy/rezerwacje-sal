@@ -9,6 +9,7 @@ import org.niewidoczniakademicy.rezerwacje.model.rest.courseofstudy.GetCoursesOf
 import org.niewidoczniakademicy.rezerwacje.service.CourseOfStudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping(path = "course-of-study")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public final class CourseOfStudyController {
+public class CourseOfStudyController {
 
     private final CourseOfStudyService courseOfStudyService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -36,6 +38,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.getAllResponse();
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "upload")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -43,6 +46,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.uploadCourseOfStudiesResponse(file);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -50,6 +54,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.saveCourse(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PutMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -57,6 +62,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.editCourse(request);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "history/{id}")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -64,7 +70,7 @@ public final class CourseOfStudyController {
         return courseOfStudyService.getHistory(id);
     }
 
-
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "courses", params = {"userId"})
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)

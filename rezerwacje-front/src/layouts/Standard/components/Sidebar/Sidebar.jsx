@@ -1,28 +1,26 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import { Divider, Drawer } from '@material-ui/core';
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
-import HomeIcon from '@material-ui/icons/Home';
+import React from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
+import { Drawer } from "@material-ui/core";
 
-import { SidebarNav } from './components';
-
-import { Routes } from 'common';
+import { SidebarNav } from "./components";
+import { connect } from "react-redux";
+import { selectAvaibleRoutes } from "../../../../redux/routes/routes.selectors";
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
     width: 240,
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       marginTop: 64,
-      height: 'calc(100% - 64px)',
+      height: "calc(100% - 64px)",
     },
   },
   root: {
     backgroundColor: theme.palette.white,
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
     padding: theme.spacing(2),
   },
   divider: {
@@ -34,17 +32,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Sidebar = (props) => {
-  const { open, variant, onClose, className, ...rest } = props;
+  const { open, variant, onClose, className, routes, dispatch, ...rest } = props;
 
   const classes = useStyles();
 
-  const pages = Routes.map((route) => {
+  const pages = routes.map((route) => {
     return {
       title: route.title,
       href: route.href,
       icon: route.icon,
-    }
-  })
+    };
+  });
 
   return (
     <Drawer
@@ -66,6 +64,17 @@ Sidebar.propTypes = {
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired,
+  routes: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      href: PropTypes.string,
+      icon: PropTypes.element,
+    })
+  ),
 };
 
-export default Sidebar;
+const mapStateToProps = (state) => ({
+  routes: selectAvaibleRoutes(state),
+});
+
+export default connect(mapStateToProps)(Sidebar);
