@@ -19,25 +19,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
 } from '@material-ui/pickers';
+import { FrontDOW } from './dow.js';
 
-const DOW = Object.freeze([
-  'Poniedziałek',
-  'Wtorek',
-  'Środa',
-  'Czwartek',
-  'Piątek',
-  'Sobota',
-  'Niedziela',
-]);
-const EngDOW = Object.freeze([
-  'MONDAY',
-  'TUESDAY',
-  'WEDNESDAY',
-  'THURSDAY',
-  'FRIDAY',
-  'SATURDAY',
-  'SUNDAY',
-]);
 function TimeRangePicker(props) {
   const { startDate, endDate, onChange } = props;
 
@@ -151,9 +134,6 @@ export default function WeekTimeRangePicker(props) {
     setSelectedDay(event.target.value);
   };
 
-  const dayTimeRanges = (dayIndex, allTimeRanges) =>
-    allTimeRanges.filter((element) => element.dayOfWeek === EngDOW[dayIndex]);
-
   return (
     <div className={classes.root}>
       <Grid container spacing={1}>
@@ -166,7 +146,7 @@ export default function WeekTimeRangePicker(props) {
               value={selectedDay}
               onChange={handleDayChange}
             >
-              {DOW.map((dow, ind) => (
+              {FrontDOW.map((dow, ind) => (
                 <MenuItem value={ind}>{dow}</MenuItem>
               ))}
             </Select>
@@ -183,12 +163,12 @@ export default function WeekTimeRangePicker(props) {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          {DOW.map(
+          {FrontDOW.map(
             (value, index) => (
               <TimeRangeList
                 value={selectedDay}
                 index={index}
-                timeRanges={dayTimeRanges(index, props.weekTimeRanges)}
+                timeRanges={props.weekTimeRanges[index]}
                 handleRangeChange={props.changeRange(selectedDay)}
                 handleRangeDelete={props.deleteRange(selectedDay)}
               />

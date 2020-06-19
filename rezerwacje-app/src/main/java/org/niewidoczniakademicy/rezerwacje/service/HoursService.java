@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,27 @@ public final class HoursService {
         validateIfOverlapping(request, room.getAvailabilityHours());
 
         List<Hours> availabilityHours = conversionService.convert(request);
+        hoursRepository.saveAll(availabilityHours);
+        return availabilityHours;
+    }
+
+    public List<Hours> editHours(final Map<DayOfWeek, List<TimeInterval>> availabilityDetails, final Long roomId) {
+        AddHoursRequest request = AddHoursRequest.builder()
+                .availabilityDetails(availabilityDetails)
+                .roomId(roomId)
+                .build();
+        return editHours(request);
+    }
+
+    public List<Hours> editHours(final AddHoursRequest request) {
+        final Room room = roomRepository.findById(request.getRoomId())
+                .orElseThrow(() -> new RoomNotFoundException("No room with id " + request.getRoomId()));
+
+        validateTimeStartAndTimeEnd(request);
+        validateIfOverlapping(request, new HashSet<>());
+
+        List<Hours> availabilityHours = conversionService.convert(request);
+        hoursRepository.deleteAll(room.getAvailabilityHours());
         hoursRepository.saveAll(availabilityHours);
         return availabilityHours;
     }

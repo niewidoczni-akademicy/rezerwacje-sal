@@ -81,6 +81,11 @@ public final class RoomService {
         room.setCapacity(request.getCapacity());
         room = roomRepository.save(room);
 
+        if (request.getAvailabilityHours() != null) {
+            List<Hours> availabilityHours = hoursService.editHours(request.getAvailabilityHours(), room.getId());
+            room.getAvailabilityHours().addAll(availabilityHours);
+        }
+
         return GetRoomResponse
                 .builder()
                 .room(room)

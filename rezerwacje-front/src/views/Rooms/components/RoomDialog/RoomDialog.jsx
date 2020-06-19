@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   Button,
@@ -13,9 +13,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import { BackDOW, BackDOWToIndex } from './dow.js';
 import validateRoomForm from './validateRoomForm.js';
 import WeekTimeRangePicker from './WeekTimeRangePicker';
-import { useDialogForm } from 'common/utilities';
 
 var dateFormat = require('dateformat');
 
@@ -32,32 +32,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DOW = Object.freeze([
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
-  'sunday',
-]);
+const convertTimeStamp = (time) => {
+  let d = new Date();
+  let [hours, minutes, seconds] = time.split(':');
 
-const transformAvailability = (details) => {
+  d.setHours(+hours);
+  d.setMinutes(minutes);
+  d.setSeconds(seconds);
+
+  return d;
+};
+
+// Split by day of week
+const convertBackendHours = (hours) => {
+  const frontHours = Object.values(BackDOWToIndex).reduce((acc, value) => {
+    acc[value] = [];
+    return acc;
+  }, {});
+
+  hours.forEach((h, index) => {
+    const { dayOfWeek, timeStart, timeEnd } = h;
+    const dowInd = BackDOWToIndex[dayOfWeek];
+    frontHours[dowInd].push([
+      convertTimeStamp(timeStart),
+      convertTimeStamp(timeEnd),
+    ]);
+  });
+
+  return frontHours;
+};
+
+const convertFrontendHours = (hours) => {
   const result = {};
 
-  for (var key in details) {
-    const dow = DOW[key];
+  for (var key in hours) {
+    const dow = BackDOW[key];
     result[dow] = [];
 
-    details[key].forEach((element) => {
+    hours[key].forEach((element) => {
       result[dow].push({
-        timeStart: dateFormat(element[0], 'hh:MM'),
-        timeEnd: dateFormat(element[1], 'hh:MM'),
+        timeStart: dateFormat(element[0], 'HH:MM'),
+        timeEnd: dateFormat(element[1], 'HH:MM'),
       });
     });
   }
 
-  console.log(result);
   return result;
 };
 
@@ -75,7 +94,7 @@ const RoomDialog = (props) => {
         name: name,
         building: building,
         capacity: capacity,
-        availabilityHours: transformAvailability(availabilityHours),
+        availabilityHours: convertFrontendHours(availabilityHours),
       }),
     }).then(
       function (res) {
@@ -92,20 +111,46 @@ const RoomDialog = (props) => {
     );
   };
 
-  const {
-    handleChange,
-    handleChangeEvent,
-    handleSubmit,
-    values,
-    errors,
-  } = useDialogForm(props.initState, submit, validateRoomForm);
+  const [values, setValues] = useState({
+    ...props.initState,
+    availabilityHours: convertBackendHours(props.initState.availabilityHours),
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const setAvailabilityHours = (details) => {
-    handleChange('availabilityHours', details);
+  const handleChange = (name, value) => {
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleChangeEvent = (event) => {
+    const { name, value } = event.target;
+    handleChange(name, value);
+  };
+
+  useEffect(() => {
+    setValues({
+      ...props.initState,
+      availabilityHours: convertBackendHours(props.initState.availabilityHours),
+    });
+  }, [props.initState]);
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setErrors(await validateRoomForm(values));
+  };
+
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      submit();
+    }
+  }, [errors]);
+
+  const setAvailabilityHours = (hours) => {
+    handleChange('availabilityHours', hours);
   };
 
   const addRange = (selectedDay) => {
-    let currentRanges = [...values.availabilityDetails[selectedDay]];
+    let currentRanges = [...values.availabilityHours[selectedDay]];
     currentRanges.push([new Date(), new Date()]);
     setAvailabilityHours({
       ...values.availabilityHours,
@@ -114,7 +159,7 @@ const RoomDialog = (props) => {
   };
 
   const deleteRange = (selectedDay) => (index) => {
-    let currentRanges = [...values.availabilityDetails[selectedDay]];
+    let currentRanges = [...values.availabilityHours[selectedDay]];
     let newRanges = currentRanges.reduce(function (acc, value, ind) {
       if (ind !== index) {
         acc.push(value);

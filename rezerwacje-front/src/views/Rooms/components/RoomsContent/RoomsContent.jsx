@@ -27,14 +27,14 @@ const RoomsContent = (props) => {
     name: '',
     building: '',
     capacity: '',
-    availabilityHours: {},
+    availabilityHours: [],
   });
   const initAddState = {
     id: null,
     name: '',
     building: '',
     capacity: '',
-    availabilityHours: {},
+    availabilityHours: [],
   };
 
   return (
