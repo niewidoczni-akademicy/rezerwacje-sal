@@ -136,7 +136,11 @@ export default function ExamFormDialog(props) {
   };
 
   const filterCourses = () => {
-    const coursesList = courses.filter(course => course.courseType == studyType);
+    const coursesList = courses.filter((course) => {
+      const cType = 
+        course.courseType === 'FULL_TIME' ? course.courseType : 'PART_TIME';
+      return cType === studyType;
+    });
     if (props.user.role === "STANDARD")
       return coursesList.filter(course => checkCourseAccess(course.id))
     return coursesList;
