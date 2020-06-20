@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
 import {
   Calendar,
   RecruitmentSelection,
@@ -8,6 +9,9 @@ import {
   RoomsSelection,
   TimeSelection,
 } from './components';
+import {
+  selectCurrentUser
+} from '../../redux/user/user.selectors'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,37 +29,67 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Schedule = () => {
+const Schedule = ({user, ...rest}) => {
+
   const classes = useStyles();
+
+  const fetchWithParameters = async (url, responseKey, setter, formatter) => {
+    var tmp = []
+    await fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json[responseKey]);
+        if (json["message"] == undefined)
+          tmp = json[responseKey].reduce((accumulator, element, i) => {
+            accumulator.push(formatter(element))
+            return accumulator
+          }, []);
+        setter(tmp)
+      })
+      .catch(e => console.log(e))
+    return tmp
+  }
 
   const useEffectsWithParameters = (url, responseKey, setter, formatter) => {
     useEffect(() => {
-      fetch(url)
-        .then(res => res.json())
-        .then(json => {
-          console.log(json[responseKey]);
-          if (json["message"] == undefined)
-            setter(json[responseKey].reduce((accumulator, element, i) => {
-              accumulator.push(formatter(element))
-              return accumulator
-            }, []));
-        })
-        .catch(e => console.log(e));
+      fetchWithParameters(url, responseKey, setter, formatter)
     }, []);
   }
 
   const cycles = ['1', '2'];
 
   const [rooms, setRooms] = useState([]);
+  
+  const [roomsExams, setRoomsExams] = useState([]);
 
-  useEffectsWithParameters(
-    '/api/rooms', 
-    'rooms', 
-    setRooms, 
-    x => `${x.building} ${x.name}`,
-  );
+  // useEffectsWithParameters(
+  //   '/api/rooms', 
+  //   'rooms', 
+  //   setRooms, 
+  //   x => ({id: x.id, text: `${x.building} ${x.name}`}),
+  // )
 
-  console.log(rooms)
+  useEffect(async () => {
+    const tmpRooms = await fetchWithParameters(
+      '/api/rooms', 
+      'rooms', 
+      setRooms, 
+      x => ({id: x.id, text: `${x.building} ${x.name}`}),
+    )
+
+    // const tmpRoomsExams = tmpRooms.map(x => {
+    //   fetch('/api/exam-terms/room/' + x.id)
+    //   .then(x => console.log(x))
+    // })
+
+    fetch('/api/exam-terms')
+    .then(res => res.json())
+    .then(json => {
+      console.log(json)
+    })
+    .catch(e => console.log(e))
+
+  }, [])
 
   const [recruitments, setRecruitments] = useState([]);
 
@@ -64,16 +98,35 @@ const Schedule = () => {
     'recruitments', 
     setRecruitments, 
     x => `${x.name}`,
-  );
+  )
 
   const [courses, setCourses] = useState([]);
 
-  useEffectsWithParameters(
-    '/api/course-of-study', 
-    'courseOfStudies', 
-    setCourses, 
-    x => `${x.faculty_id} ${x.name} (${x.course_type})`,
-  );
+  const [userCoursesIds, setUserCoursesIds] = useState([]);
+
+  const [userCoursesOfStudies, setUserCoursesOfStudies] = useState([])
+
+  useEffect(async () => {
+    const tmpCourses = await fetchWithParameters(
+      '/api/course-of-study', 
+      'courseOfStudies', 
+      setCourses, 
+      x => ({ id: x.id, text: `${x.faculty.name} ${x.name} (${x.courseType.toLowerCase().replace('_', ' ')})`}),
+    )
+
+    const tmpCoursesIds = await fetchWithParameters(
+      '/api/course-of-study/courses?userId=' + user.id, 
+      'coursesOfStudiesIdsForUser', 
+      setUserCoursesIds, 
+      x => x,
+    )
+
+    setUserCoursesOfStudies(tmpCourses.reduce((accumulator, element, i) => {
+      if (tmpCoursesIds.includes(element.id))
+        accumulator.push(element)
+      return accumulator
+    }, [])) 
+  }, [])
 
   const [values, setValues] = useState({
     recruitment: recruitments.length > 0 ? recruitments[0] : '',
@@ -84,7 +137,7 @@ const Schedule = () => {
     rooms: rooms.slice(0),
     recruitments: recruitments.slice(0),
     cycles: cycles.slice(0),
-  });
+  })
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -92,7 +145,7 @@ const Schedule = () => {
         ...values,
         [name]: value
     });
-  };
+  }
 
   const updateRecruitment = value => {
     setValues({
@@ -165,4 +218,8 @@ const Schedule = () => {
   );
 };
 
-export default Schedule;
+const mapStateToProps = (state) => ({
+  user: selectCurrentUser(state),
+})
+
+export default connect(mapStateToProps)(Schedule);

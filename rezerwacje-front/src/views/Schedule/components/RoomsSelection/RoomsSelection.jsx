@@ -61,14 +61,14 @@ const RoomsSelection = props => {
               renderValue={(selected) => (
                 <div className={classes.chips}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
+                    <Chip key={value.id} label={value.text} className={classes.chip} />
                   ))}
                 </div>
               )}
             >
               {rooms.map((room) => (
-                <MenuItem key={room} value={room}>
-                  {room}
+                <MenuItem key={room.id} value={room}>
+                  {room.text}
                 </MenuItem>
               ))}
             </Select>
