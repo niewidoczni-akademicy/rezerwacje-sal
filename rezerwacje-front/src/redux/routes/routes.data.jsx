@@ -18,7 +18,7 @@ import {
   UserCourses as UserCoursesView,
   Schedule as ScheduleView,
   Login as LoginView,
-  RecruitmentRooms as RecruitmentRoomsView
+  RecruitmentRooms as RecruitmentRoomsView,
 } from 'views';
 
 const ROUTES_DATA = [

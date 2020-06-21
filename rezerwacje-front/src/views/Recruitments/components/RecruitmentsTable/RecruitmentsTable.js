@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
+import RecruitmentCycleFormDialog from "../RecruitmentCycleFormDialog";
 import { connect } from "react-redux";
 import { selectCurrentUser } from "/webapp/src/redux/user/user.selectors";
 
@@ -54,8 +55,10 @@ const RecruitmentsTable = props => {
   const [selectedRecruitment, setSelectedRecruitment] = useState(-1);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [cycleModalShow, setCycleModalShow] = useState(false);
 
   const handleClose = () => setModalShow(false);
+  const handleCycleClose = () => setCycleModalShow(false);
 
   const classes = useStyles();
 
@@ -83,6 +86,15 @@ const RecruitmentsTable = props => {
 
   const convertDate = date => {
     return date.split("T")[0];
+  };
+
+  const getRecruitmentCycles = id => {
+    fetch("/api/recruitment-period/recruitment/" + id)
+      .then(res => res.json())
+      .then(json => {
+        console.log(json["recruitmentPeriods"]);
+      })
+      .catch(e => console.log(e));
   };
 
   return (
@@ -158,8 +170,21 @@ const RecruitmentsTable = props => {
         </CardContent>
         <CardActions className={classes.actions}>
           {selectedRecruitment != -1 && (
-            <Button color="primary" variant="contained">
+            <Button 
+              color="primary" 
+              variant="contained"
+              onClick={() => getRecruitmentCycles(selectedRecruitment)}>
               ZOBACZ CYKLE
+            </Button>
+          )}
+          {selectedRecruitment != -1 && props.currentUser.role != "STANDARD" && (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={() => setCycleModalShow(true)}
+            >
+              DODAJ CYKL
             </Button>
           )}
           {props.currentUser.role != "STANDARD" && (
@@ -173,6 +198,7 @@ const RecruitmentsTable = props => {
             </Button>
           )}
           <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
+          <RecruitmentCycleFormDialog open={cycleModalShow} handleClose={handleCycleClose} recruitmentId={selectedRecruitment} />
         </CardActions>
       </Card>
       <br />
