@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ReactComponent as Logo } from '../../../../assets/logo.svg';
+import LogoutButton from '../../../../common/components/LogoutButton';
+import { selectLoggedIn } from '../../../../redux/user/user.selectors';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,10 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Topbar = props => {
-
-  const { className, onSidebarOpen, ...rest } = props;
-
+const Topbar = ({ className, onSidebarOpen, isLoggedIn, ...rest }) => {
   const classes = useStyles();
 
   const [notifications] = useState([]);
@@ -35,11 +35,6 @@ const Topbar = props => {
       <Toolbar>
         <Link to="/">
           <Logo height="30"/>
-          {/* <img
-            alt="Logo"
-            src="/img/logo.svg"
-            height="30"
-          /> */}
         </Link>
         <div className={classes.flexGrow} />
         <Hidden lgUp>
@@ -50,6 +45,7 @@ const Topbar = props => {
             <MenuIcon />
           </IconButton>
         </Hidden>
+        {isLoggedIn ? <LogoutButton /> : ""}
       </Toolbar>
     </AppBar>
   );
@@ -60,4 +56,8 @@ Topbar.propTypes = {
   onSidebarOpen: PropTypes.func
 };
 
-export default Topbar;
+const mapStateToProps = (state) => ({
+  isLoggedIn: selectLoggedIn(state),
+})
+
+export default connect(mapStateToProps)(Topbar);

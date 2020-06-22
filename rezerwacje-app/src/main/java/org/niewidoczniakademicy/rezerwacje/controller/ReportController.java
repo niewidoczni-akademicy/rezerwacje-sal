@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
@@ -31,6 +33,7 @@ public class ReportController {
         return reportService.getReportsInfoResponse();
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @GetMapping(path = "recruitment/{id}",
             produces = MediaType.APPLICATION_PDF_VALUE)
     @ResponseBody
@@ -39,6 +42,7 @@ public class ReportController {
         return reportService.getRecruitmentPdf(id);
     }
 
+    @Secured({"ROLE_STANDARD", "ROLE_SUPERVISOR", "ROLE_ADMINISTRATOR"})
     @PostMapping(path = "recruitment/{id}",
             produces = MediaType.APPLICATION_PDF_VALUE)
     @ResponseBody

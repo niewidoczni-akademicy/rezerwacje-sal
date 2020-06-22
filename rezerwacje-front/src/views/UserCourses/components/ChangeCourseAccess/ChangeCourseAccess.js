@@ -9,7 +9,8 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-  IconButton
+  IconButton,
+  Typography
 } from "@material-ui/core";
 import "./ChangeCourseAccess.scss";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
@@ -19,6 +20,7 @@ const ChangeCourseAccess = props => {
   const user = props.user;
   const [courses, setCourses] = useState([]);
   const [userCourses, setUserCourses] = useState([]);
+  const [currentCourse, setCurrentCourse] = useState(-1);
 
   const getUserCourses = ids =>
     courses.filter(course => ids.find(id => id === course.id) != undefined);
@@ -38,11 +40,10 @@ const ChangeCourseAccess = props => {
       fetch(`/api/course-of-study/courses?userId=${props.user.id}`)
         .then(res => res.json())
         .then(json => {
-          console.log(json);
           setUserCourses(getUserCourses(json["coursesOfStudiesIdsForUser"]));
         })
         .catch(e => console.log(e));
-  }, [props.user]);
+  }, [props.user, currentCourse]);
 
   const checkCourseAccess = id => {
     if (userCourses.find(course => course.id === id) != undefined) return false;
@@ -62,8 +63,6 @@ const ChangeCourseAccess = props => {
     translateType(course.courseType);
 
   const handleAddCourse = course => {
-    console.log(course.id);
-    console.log(user.id);
     fetch(
       `/api/connection/connect?userId=${user.id}&courseOfStudyId=${course.id}`,
       {
@@ -73,9 +72,8 @@ const ChangeCourseAccess = props => {
     ).then(
       function(res) {
         if (res.ok) {
-          alert("Dostęp został przyznany.");
-          window.location.reload();
-        } else if (res.status === 400) {
+          setCurrentCourse(course.id);
+        } else {
           alert("Wystąpił błąd.");
         }
       },
@@ -86,43 +84,45 @@ const ChangeCourseAccess = props => {
     );
   };
 
-  const handleRemoveCourse = course => {};
+  const handleRemoveCourse = course => {
+    fetch(
+      `/api/connection/disconnect?userId=${user.id}&courseOfStudyId=${course.id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      }
+    ).then(
+      function(res) {
+        if (res.ok) {
+          setCurrentCourse(course.id);
+        } else {
+          alert("Wystąpił błąd.");
+        }
+      },
+      function(e) {
+        alert("Wystąpił błąd.");
+        console.log(e);
+      }
+    );
+  };
 
-  if (user != null) {
-    const title = `Zmiana dostępu do kierunków dla użytkownika: ${user.firstName} ${user.lastName}`;
-    return (
+  return (
+    <React.Fragment>
+      <Card style={{ marginTop: 3, marginBottom: 3, padding: 10 }}>
+        <Typography variant="h6">
+          Wybierz użytkownika, aby zmienić mu dostęp do kierunków
+        </Typography>
+      </Card>
       <Grid container direction={"row"}>
         <Grid item xs={6}>
           <Card>
             <CardHeader title="Dostęp do kierunków" />
             <Divider />
             <CardContent>
-              <List>
-                {userCourses.map(course => (
-                  <ListItem>
-                    <ListItemText>{getCourseString(course)}</ListItemText>
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <RemoveIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-        <br />
-        <Grid item xs={6}>
-          <Card>
-            <CardHeader title="Brak dostępu do kierunków" />
-            <Divider />
-            <CardContent>
-              <List>
-                {courses
-                  .filter(course => checkCourseAccess(course.id))
-                  .map(course => (
-                    <ListItem value={course.id}>
+              {props.user != null && (
+                <List>
+                  {userCourses.map(course => (
+                    <ListItem>
                       <ListItemText>{getCourseString(course)}</ListItemText>
                       <ListItemSecondaryAction
                         value={course.id}
@@ -132,21 +132,56 @@ const ChangeCourseAccess = props => {
                           edge="end"
                           aria-label="delete"
                           onClick={() => {
-                            handleAddCourse(course);
+                            handleRemoveCourse(course);
                           }}
                         >
-                          <AddIcon />
+                          <RemoveIcon />
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
-              </List>
+                </List>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+        <br />
+        <Grid item xs={6}>
+          <Card>
+            <CardHeader title="Brak dostępu do kierunków" />
+            <Divider />
+            <CardContent>
+              {props.user != null && (
+                <List>
+                  {courses
+                    .filter(course => checkCourseAccess(course.id))
+                    .map(course => (
+                      <ListItem value={course.id}>
+                        <ListItemText>{getCourseString(course)}</ListItemText>
+                        <ListItemSecondaryAction
+                          value={course.id}
+                          key={course.id}
+                        >
+                          <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={() => {
+                              handleAddCourse(course);
+                            }}
+                          >
+                            <AddIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
-    );
-  } else return null;
+    </React.Fragment>
+  );
 };
 
 export default ChangeCourseAccess;

@@ -24,3 +24,4 @@ RUN ./gradlew bootJar
 FROM adoptopenjdk/openjdk11:alpine-jre as prod
 COPY --from=jar /app/build/libs/rezerwacje-0.0.1-SNAPSHOT.jar/ rezerwacje-backend.jar
 ENTRYPOINT [ "java", "-Xmx256m", "-jar", "rezerwacje-backend.jar" ]
+

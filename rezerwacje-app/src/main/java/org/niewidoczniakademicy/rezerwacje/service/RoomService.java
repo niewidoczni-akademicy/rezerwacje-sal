@@ -62,8 +62,8 @@ public final class RoomService {
         Room room = conversionService.convert(request);
         roomRepository.save(room);
 
-        if (request.getAvailabilityDetails() != null) {
-            List<Hours> availabilityHours = hoursService.saveHours(request.getAvailabilityDetails(), room.getId());
+        if (request.getAvailabilityHours() != null) {
+            List<Hours> availabilityHours = hoursService.saveHours(request.getAvailabilityHours(), room.getId());
             room.getAvailabilityHours().addAll(availabilityHours);
         }
 
@@ -80,6 +80,11 @@ public final class RoomService {
         room.setName(request.getName());
         room.setCapacity(request.getCapacity());
         room = roomRepository.save(room);
+
+        if (request.getAvailabilityHours() != null) {
+            List<Hours> availabilityHours = hoursService.editHours(request.getAvailabilityHours(), room.getId());
+            room.getAvailabilityHours().addAll(availabilityHours);
+        }
 
         return GetRoomResponse
                 .builder()
