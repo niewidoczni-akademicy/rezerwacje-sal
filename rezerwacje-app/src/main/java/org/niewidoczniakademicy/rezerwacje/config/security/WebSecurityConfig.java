@@ -34,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(createAuthenticationProvider(userService));
-        if (userService.getAllSystemUsers().getSystemUsers().isEmpty()) { //If no users in database provide an admin account
+        if (userService.getAllSystemUsers().getSystemUsers().isEmpty()) {
+            //If no users in database provide an admin account
             auth.inMemoryAuthentication()
                     .withUser("admin")
                     .password(getEncoder().encode("admin"))

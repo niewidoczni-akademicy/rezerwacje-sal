@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.niewidoczniakademicy.rezerwacje.model.database.SystemUser;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.AddSystemUserRequest;
-import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.GetSystemUsersResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.systemuser.OperationOnSystemUserResponse;
 import org.niewidoczniakademicy.rezerwacje.model.security.UserPrincipal;
 import org.niewidoczniakademicy.rezerwacje.model.shared.UserType;
 import org.niewidoczniakademicy.rezerwacje.service.converter.ConversionService;
@@ -15,7 +15,6 @@ import org.niewidoczniakademicy.rezerwacje.service.exception.InvalidEmailAddress
 import org.niewidoczniakademicy.rezerwacje.service.exception.UserNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
