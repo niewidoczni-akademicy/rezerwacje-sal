@@ -40,7 +40,7 @@ http {
             try_files $uri $uri/ /index.html;
         }
 
-        location /api {
+        location /api/ {
 #            proxy_pass http://rezerwacje-app:8080/;
             proxy_pass https://rezerwacje-backend.herokuapp.com/;
         }
