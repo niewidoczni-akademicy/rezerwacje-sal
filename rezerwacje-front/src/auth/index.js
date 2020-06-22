@@ -9,7 +9,16 @@ export const getAuthentication = async () => {
             role: "ANON"
         }
     } else {
+        console.log(json);
         const user = json.principal.user
+        if (user === undefined) { //Special first admin user
+            return {
+                isLoggedIn: true,
+                id: -1,
+                name: json.name,
+                role: "ADMINISTRATOR",
+            }
+        }
         return {
             isLoggedIn: true,
             id: user.id,
