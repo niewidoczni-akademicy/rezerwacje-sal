@@ -88,15 +88,6 @@ const RecruitmentsTable = props => {
     return date.split("T")[0];
   };
 
-  const getRecruitmentCycles = id => {
-    fetch("/api/recruitment-period/recruitment/" + id)
-      .then(res => res.json())
-      .then(json => {
-        console.log(json["recruitmentPeriods"]);
-      })
-      .catch(e => console.log(e));
-  };
-
   return (
     <React.Fragment>
       <Card>
@@ -169,14 +160,6 @@ const RecruitmentsTable = props => {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          {selectedRecruitment != -1 && (
-            <Button 
-              color="primary" 
-              variant="contained"
-              onClick={() => getRecruitmentCycles(selectedRecruitment)}>
-              ZOBACZ CYKLE
-            </Button>
-          )}
           {selectedRecruitment != -1 && props.currentUser.role != "STANDARD" && (
             <Button
               color="primary"
@@ -199,7 +182,7 @@ const RecruitmentsTable = props => {
           )}
           <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
           <RecruitmentCycleFormDialog open={cycleModalShow} handleClose={handleCycleClose} recruitmentId={selectedRecruitment} />
-        </CardActions>
+          </CardActions>
       </Card>
       <br />
     </React.Fragment>
