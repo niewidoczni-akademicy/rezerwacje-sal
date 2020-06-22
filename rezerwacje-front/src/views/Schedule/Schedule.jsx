@@ -53,8 +53,6 @@ const Schedule = ({user, ...rest}) => {
   const cycles = ['1', '2'];
 
   const [rooms, setRooms] = useState([]);
-  
-  const [roomsExams, setRoomsExams] = useState([]);
 
   useEffect(async () => {
     const tmpRooms = await fetchWithParameters(

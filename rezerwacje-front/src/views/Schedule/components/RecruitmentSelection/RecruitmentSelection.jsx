@@ -58,7 +58,6 @@ const RecruitmentSelection = props => {
             required
             select
             SelectProps={{ native: true }}
-            value={selectedRecruitment}
             variant="outlined"
           >
             {recruitments.map(recruitment => (
@@ -78,7 +77,6 @@ const RecruitmentSelection = props => {
             required
             select
             SelectProps={{ native: true }}
-            value={selectedCycle}
             variant="outlined"
           >
             {(selectedRecruitment ? selectedRecruitment.cycles : []).map(cycle => (

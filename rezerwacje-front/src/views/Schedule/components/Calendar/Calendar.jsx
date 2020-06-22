@@ -33,6 +33,9 @@ class Calendar extends Component {
       end: this.prepareEndDate(props.defaults.to),
       timebar: buildExamTimebar(props.defaults.from, props.defaults.to),
       now: new Date(Date.now()),
+      courses: [],
+      recruitment: undefined,
+      cycle: undefined,
     }
   }
 
@@ -57,13 +60,12 @@ class Calendar extends Component {
 
   setExamRelation(exam) {
     var relation = "unrelated"
-    if (this.props.cycle && exam.recruitmentPeriod.id == this.props.cycle.id) {
-      if (this.props.courses && this.props.courses.filter(x => x.id == exam.courseOfStudy.id).length > 0) {
+    if (this.state.cycle && exam.recruitmentPeriod.id == this.state.cycle.id) {
+      relation = "related"
+      if (this.state.courses && this.state.courses.filter(x => x.id == exam.courseOfStudy.id).length > 0) {
         relation = "closely_related"
       }
-      relation = "related"
     } 
-
     exam.relation = relation
   }
 
@@ -90,12 +92,15 @@ class Calendar extends Component {
   }
 
   applyFilters = () => {
-    const { from, to, rooms, courses } = this.props.getFilterValues()
+    const { from, to, rooms, courses, recruitment, cycle } = this.props.getFilterValues()
     this.state.start = this.prepareStartDate(from)
     this.state.end = this.prepareEndDate(to)
     this.state.timebar = buildExamTimebar(this.state.start, this.state.end)
     this.state.tracksById = this.getRoomsTracks(rooms)
     this.state.tracks = Object.values(this.state.tracksById)
+    this.state.courses = courses
+    this.state.recruitment = recruitment
+    this.state.cycle = cycle
     this.forceUpdate()
   }
 
