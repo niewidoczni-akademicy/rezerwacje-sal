@@ -85,28 +85,29 @@ const RecruitmentsTable = props => {
     return date.split("T")[0];
   };
 
+  function handlePdfRes(blob, type, name) {
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob);
+    } else {
+        const objUrl = window.URL.createObjectURL(blob);
+        let link = document.createElement('a');
+        link.href = objUrl;
+        link.download = "raport_" + type + "_rekrutacja_" + name + ".pdf";
+        link.click();
+        setTimeout(() => {
+            window.URL.revokeObjectURL(objUrl);
+        }, 250);
+    }
+  }
+
   const handleGeneratingOverallPdfReport = (id, name) => {
-      fetch("/api/report/recruitment/" + id)
+        fetch("/api/report/recruitment/" + id)
           .then(res => {
               return res.blob()
           })
-          .then(blob => {
-              if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                  window.navigator.msSaveOrOpenBlob(blob);
-              } else {
-                  const objUrl = window.URL.createObjectURL(blob);
-                  let link = document.createElement('a');
-                  link.href = objUrl;
-                  link.download = "raport_ogólny_rekrutacja_" + name + ".pdf";
-                  link.click();
-                  setTimeout(() => {
-                      window.URL.revokeObjectURL(objUrl);
-                  }, 250);
-              }
-          })
+          .then(res => handlePdfRes(res, "ogólny", name))
           .catch(err => console.error(err))
   };
-
   const handleGeneratingSpecificPdfReport = (id, name) => {
       const ids = Array.from(Array(1000).keys());
       const body = JSON.stringify({
@@ -125,21 +126,7 @@ const RecruitmentsTable = props => {
         .then(res => {
           return res.blob()
         })
-        .then(blob => {
-          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob);
-          } else {
-            const objUrl = window.URL.createObjectURL(blob);
-            let link = document.createElement('a');
-            link.href = objUrl;
-            link.download = "raport_szczegółowy_rekrutacja" + name + ".pdf";
-            link.click();
-            setTimeout(() => {
-              window.URL.revokeObjectURL(objUrl);
-            }, 250);
-          }
-        })
-        .catch(err => console.error(err))
+        .then(res => handlePdfRes(res, "szczegółowy", name))
   };
 
   return (
