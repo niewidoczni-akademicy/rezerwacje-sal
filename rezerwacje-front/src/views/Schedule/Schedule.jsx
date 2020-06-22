@@ -91,8 +91,8 @@ const Schedule = ({ user, ...rest }) => {
           (r) => r
         )
       );
-      fun();
     };
+    fun();
   }, []);
 
   const [courses, setCourses] = useState([]);
