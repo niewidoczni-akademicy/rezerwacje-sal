@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Hidden, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { ReactComponent as Logo } from '../../../../assets/logo.svg';
 import LogoutButton from '../../../../common/components/LogoutButton';
 import { selectLoggedIn } from '../../../../redux/user/user.selectors';
 import { connect } from 'react-redux';
@@ -33,9 +32,6 @@ const Topbar = ({ className, onSidebarOpen, isLoggedIn, ...rest }) => {
       className={clsx(classes.root, className)}
     >
       <Toolbar>
-        <Link to="/">
-          <Logo height="30"/>
-        </Link>
         <div className={classes.flexGrow} />
         <Hidden lgUp>
           <IconButton
