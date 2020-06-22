@@ -40,9 +40,6 @@ const RoomsSelection = props => {
     const value = event.target.value
     setSelectedRooms(value)
     props.updateRooms(value)
-    console.log(rooms)
-    console.log(value)
-    console.log("-------------")
   };
 
   return (
@@ -53,7 +50,7 @@ const RoomsSelection = props => {
         </Typography>
         <Grid item xs={12}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="multiple_selected_rooms">wybrane sale</InputLabel>
+            <InputLabel id="multiple_selected_rooms">Wybrane sale</InputLabel>
             <Select
               labelId="multiple_selected_rooms"
               id="rooms_selection_panel"
@@ -64,14 +61,14 @@ const RoomsSelection = props => {
               renderValue={(selected) => (
                 <div className={classes.chips}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
+                    <Chip key={value.id} label={value.text} className={classes.chip} />
                   ))}
                 </div>
               )}
             >
               {rooms.map((room) => (
-                <MenuItem key={room} value={room}>
-                  {room}
+                <MenuItem key={room.id} value={room}>
+                  {room.text}
                 </MenuItem>
               ))}
             </Select>

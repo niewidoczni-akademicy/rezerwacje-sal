@@ -82,9 +82,9 @@ export const buildRoomElements = (trackId, exams) => {
     elements.push(
       buildExamElement({
         trackId,
-        start: new Date(exam.start),
-        end: new Date(exam.end),
-        examName: exam.name,
+        start: new Date(`${exam.day} ${exam.timeStart}`),
+        end: new Date(`${exam.day} ${exam.timeEnd} (${exam.seats} miejsc)`),
+        examName: `${exam.id}, ${exam.courseOfStudy.name}`,
         backgroundColor: mapRelationToColor(exam.relation),
         id: i,
       })

@@ -46,11 +46,11 @@ const CoursesSelection = props => {
     <Card>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Kierunki
+          Kursy
         </Typography>
         <Grid item xs={12}>
           <FormControl className={classes.formControl}>
-            <InputLabel id="multiple_selected_courses">wybrane kierunki</InputLabel>
+            <InputLabel id="multiple_selected_courses">Wybrane kursy</InputLabel>
             <Select
               labelId="multiple_selected_courses"
               id="courses_selection_panel"
@@ -61,14 +61,14 @@ const CoursesSelection = props => {
               renderValue={(selected) => (
                 <div className={classes.chips}>
                   {selected.map((value) => (
-                    <Chip key={value} label={value} className={classes.chip} />
+                    <Chip key={value.id} label={value.text} className={classes.chip} />
                   ))}
                 </div>
               )}
             >
               {courses.map((course) => (
-                <MenuItem key={course} value={course}>
-                  {course}
+                <MenuItem key={course.id} value={course}>
+                  {course.text}
                 </MenuItem>
               ))}
             </Select>

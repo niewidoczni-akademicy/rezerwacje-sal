@@ -29,12 +29,12 @@ const TimeSelection = props => {
     <Card>
       <CardContent>
         <Typography variant="h4" gutterBottom>
-          Przedział czasu
+          Przedział czasowy
         </Typography>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            helperText="od"
+            helperText="Od"
             variant="inline"
             format="MM/dd/yyyy"
             margin="normal"
@@ -47,7 +47,7 @@ const TimeSelection = props => {
           />
           <KeyboardDatePicker
             disableToolbar
-            helperText="do"
+            helperText="Do"
             variant="inline"
             format="MM/dd/yyyy"
             margin="normal"

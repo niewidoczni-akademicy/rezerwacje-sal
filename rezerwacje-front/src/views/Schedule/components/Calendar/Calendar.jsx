@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import { 
   Card, 
   CardContent, 
   CardActions, 
-  Button 
+  Button,
+  Typography,
 } from '@material-ui/core';
 import Timeline from 'react-timelines'
-import { ROOMS } from './constants'
 import { buildExamTimebar, buildRoomTrack } from './builders'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 import './style.scss'
 
@@ -33,13 +34,46 @@ class Calendar extends Component {
       end: this.prepareEndDate(props.defaults.to),
       timebar: buildExamTimebar(props.defaults.from, props.defaults.to),
       now: new Date(Date.now()),
+      courses: [],
+      recruitment: undefined,
+      cycle: undefined,
     }
   }
 
+  useEffectsWithParameters = (url, responseKey, setter, formatter) => {
+    useEffect(() => {
+      fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log(json[responseKey]);
+          if (json["message"] == undefined)
+            setter(json[responseKey].reduce((accumulator, element, i) => {
+              accumulator.push({
+                id: i,
+                text: formatter(element),
+              })
+              return accumulator
+            }, []));
+        })
+        .catch(e => console.log(e));
+    }, []);
+  }
+
+  setExamRelation(exam) {
+    var relation = "unrelated"
+    if (this.state.cycle && exam.recruitmentPeriod.id == this.state.cycle.id) {
+      relation = "related"
+      if (this.state.courses && this.state.courses.filter(x => x.id == exam.courseOfStudy.id).length > 0) {
+        relation = "closely_related"
+      }
+    } 
+    exam.relation = relation
+  }
+
   getRoomsTracks = rooms => {
-    return ROOMS.filter(x => rooms.includes(x.name))
-                .reduce((accumulator, element, i) => {
-                  const track = buildRoomTrack(i, element.name, element.exams)
+    return rooms.reduce((accumulator, element, i) => {
+                  element.exams.forEach(x => this.setExamRelation(x))
+                  const track = buildRoomTrack(i, element.text, element.exams)
                   accumulator[track.id] = track
                   return accumulator
                 }, {})
@@ -59,12 +93,15 @@ class Calendar extends Component {
   }
 
   applyFilters = () => {
-    const { from, to, rooms, courses } = this.props.getFilterValues()
+    const { from, to, rooms, courses, recruitment, cycle } = this.props.getFilterValues()
     this.state.start = this.prepareStartDate(from)
     this.state.end = this.prepareEndDate(to)
     this.state.timebar = buildExamTimebar(this.state.start, this.state.end)
     this.state.tracksById = this.getRoomsTracks(rooms)
     this.state.tracks = Object.values(this.state.tracksById)
+    this.state.courses = courses
+    this.state.recruitment = recruitment
+    this.state.cycle = cycle
     this.forceUpdate()
   }
 
@@ -74,7 +111,7 @@ class Calendar extends Component {
     return (
       <Card>
         <CardContent>
-          <CardActions>
+          <CardActions className="top-options">
             <Button
               color="primary"
               variant="contained"
@@ -82,6 +119,20 @@ class Calendar extends Component {
             >
               ZASTOSUJ FILTRY
             </Button>
+            <div className="top-options">
+              <FiberManualRecordIcon style={{fill: "#D81E5B"}}/>
+              <div className="top-options-margin-content">
+                <Typography variant="subtitle2"> dobrze pasujący </Typography>
+              </div>
+              <FiberManualRecordIcon style={{fill: "#EB5E55"}}/>
+              <div className="top-options-margin-content">
+              <Typography variant="subtitle2" text=""> częściowo pasujący </Typography>
+              </div>
+              <FiberManualRecordIcon style={{fill: "#3A3335"}}/>
+              <div className="top-options-last-margin-content">
+                <Typography variant="subtitle2"> niepasujący </Typography>
+              </div>
+            </div>
           </CardActions>
         </CardContent>
         <Timeline

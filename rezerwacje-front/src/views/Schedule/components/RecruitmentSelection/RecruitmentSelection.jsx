@@ -13,25 +13,34 @@ const RecruitmentSelection = props => {
 
   const recruitments = props.recruitments;
 
-  const [selectedRecruitment, setRecruitment] = useState(
-    recruitments.length > 0 ? recruitments[0] : '');
+  const [selectedRecruitment, setRecruitment] = useState(undefined)
 
   const handleSelectedRecruitmentChange = event => {
     const value = event.target.value
-    setRecruitment(value)
-    props.updateRecruitment(value)
+    const recruitment = recruitments.find(x => x.id == value)
+    console.log(recruitment)
+    setRecruitment(recruitment)
+    props.updateRecruitment(recruitment)
   };
 
-  const cycles = props.cycles;
-
-  const [selectedCycle, setCycle] = useState(
-    cycles.length > 0 ? cycles[0] : '');
+  const [selectedCycle, setCycle] = useState(undefined)
 
   const handleSelectedCycleChange = event => {
     const value = event.target.value
-    setCycle(value)
-    props.updateCycle(value)
+    const cycle = selectedRecruitment.cycles.find(x => x.id == value)
+    setCycle(cycle)
+    props.updateCycle(cycle)
   };
+
+  const studiesTypes = {
+    FULL_TIME : "studia dzienne",
+    PART_TIME : "studia zaoczne",
+  }
+
+  const studiesLevels = {
+    FIRST_DEGREE : "pierwszy stopień",
+    SECOND_DEGREE : "drugi stopień",
+  }
 
   return (
     <Card>
@@ -42,36 +51,38 @@ const RecruitmentSelection = props => {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            helperText="rekrutacja"
+            helperText="Rekrutacja"
             margin="dense"
             name="recruitment"
             onChange={handleSelectedRecruitmentChange}
             required
             select
             SelectProps={{ native: true }}
-            value={selectedRecruitment}
             variant="outlined"
           >
             {recruitments.map(recruitment => (
-              <option key={recruitment} value={recruitment}>{recruitment}</option>
+              <option key={recruitment.id} value={recruitment.id}>
+                {recruitment.text}
+              </option>
             ))}
           </TextField>
         </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth
-            helperText="cykl"
+            helperText="Cykl rekrutacyjny"
             margin="dense"
             name="cycle"
             onChange={handleSelectedCycleChange}
             required
             select
             SelectProps={{ native: true }}
-            value={selectedCycle}
             variant="outlined"
           >
-            {cycles.map(cycle => (
-              <option key={cycle} value={cycle}>{cycle}</option>
+            {(selectedRecruitment ? selectedRecruitment.cycles : []).map(cycle => (
+              <option key={cycle.id} value={cycle.id}>
+                {`${cycle.id} (${studiesTypes[cycle.studyType]}, ${studiesLevels[cycle.studyDegree]})`}
+              </option>
             ))}
           </TextField>
         </Grid>
