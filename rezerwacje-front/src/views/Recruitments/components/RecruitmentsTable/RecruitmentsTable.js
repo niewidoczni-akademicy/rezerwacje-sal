@@ -145,9 +145,9 @@ const RecruitmentsTable = props => {
                     <TableCell>Nazwa</TableCell>
                     <TableCell>Data początkowa</TableCell>
                     <TableCell>Data końcowa</TableCell>
-                    <TableCell>Generowanie raportu</TableCell>
-                    <TableCell>Generowanie szczegółowego raportu</TableCell>
-                    <TableCell>Status</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Generowanie raportu</TableCell>
+                      <TableCell>Generowanie szczegółowego raportu</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
