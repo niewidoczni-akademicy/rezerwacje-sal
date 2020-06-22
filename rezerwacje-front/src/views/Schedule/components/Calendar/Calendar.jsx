@@ -55,10 +55,22 @@ class Calendar extends Component {
     }, []);
   }
 
+  setExamRelation(exam) {
+    var relation = "unrelated"
+    if (this.props.cycle && exam.recruitmentPeriod.id == this.props.cycle.id) {
+      if (this.props.courses && this.props.courses.filter(x => x.id == exam.courseOfStudy.id).length > 0) {
+        relation = "closely_related"
+      }
+      relation = "related"
+    } 
+
+    exam.relation = relation
+  }
+
   getRoomsTracks = rooms => {
-    return ROOMS.filter(x => rooms.includes(x.name))
-                .reduce((accumulator, element, i) => {
-                  const track = buildRoomTrack(i, element.name, element.exams)
+    return rooms.reduce((accumulator, element, i) => {
+                  element.exams.forEach(x => this.setExamRelation(x))
+                  const track = buildRoomTrack(i, element.text, element.exams)
                   accumulator[track.id] = track
                   return accumulator
                 }, {})

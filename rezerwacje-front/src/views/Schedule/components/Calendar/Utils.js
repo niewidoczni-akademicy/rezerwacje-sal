@@ -15,7 +15,7 @@ export const colourIsLight = (r, g, b) => {
 
 export const mapRelationToColor = relation => {
   switch (relation) {
-    case 'owner':
+    case 'closely_related':
       return RELATION_COLOR.OWNER
     case 'related':
       return RELATION_COLOR.RELATED

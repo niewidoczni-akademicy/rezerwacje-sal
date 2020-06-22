@@ -50,55 +50,47 @@ const Schedule = ({user, ...rest}) => {
     return tmp
   }
 
-  const useEffectsWithParameters = (url, responseKey, setter, formatter) => {
-    useEffect(() => {
-      fetchWithParameters(url, responseKey, setter, formatter)
-    }, []);
-  }
-
   const cycles = ['1', '2'];
 
   const [rooms, setRooms] = useState([]);
   
   const [roomsExams, setRoomsExams] = useState([]);
 
-  // useEffectsWithParameters(
-  //   '/api/rooms', 
-  //   'rooms', 
-  //   setRooms, 
-  //   x => ({id: x.id, text: `${x.building} ${x.name}`}),
-  // )
-
   useEffect(async () => {
     const tmpRooms = await fetchWithParameters(
       '/api/rooms', 
       'rooms', 
       setRooms, 
-      x => ({id: x.id, text: `${x.building} ${x.name}`}),
+      x => ({id: x.id, text: `${x.building} ${x.name}`, exams: []}),
     )
 
-    // const tmpRoomsExams = tmpRooms.map(x => {
-    //   fetch('/api/exam-terms/room/' + x.id)
-    //   .then(x => console.log(x))
-    // })
-
-    fetch('/api/exam-terms')
-    .then(res => res.json())
-    .then(json => {
-      console.log(json)
-    })
-    .catch(e => console.log(e))
-
+    tmpRooms.map(x => 
+      fetchWithParameters(
+        '/api/exam-terms/room/' + x.id,
+        'examTerms',
+        e => x.exams = e,
+        r => r,
+      ))
   }, [])
 
   const [recruitments, setRecruitments] = useState([]);
 
-  useEffectsWithParameters(
-    '/api/recruitment/all', 
-    'recruitments', 
-    setRecruitments, 
-    x => `${x.name}`,
-  )
+  useEffect(async () => {
+    const tmpRecruitments = await fetchWithParameters(
+      '/api/recruitment/all', 
+      'recruitments', 
+      setRecruitments, 
+      x => ({ id: x.id, text: `${x.name}`, cycles: [] }),
+    )
+
+    tmpRecruitments.map(x => 
+      fetchWithParameters(
+        '/api/recruitment-period/recruitment/' + x.id,
+        'recruitmentPeriods',
+        r => x.cycles = r,
+        r => r,
+      ))
+  }, [])
 
   const [courses, setCourses] = useState([]);
 
@@ -129,8 +121,8 @@ const Schedule = ({user, ...rest}) => {
   }, [])
 
   const [values, setValues] = useState({
-    recruitment: recruitments.length > 0 ? recruitments[0] : '',
-    cycle: cycles.length > 0 ? cycles[0] : '',
+    recruitment: recruitments.length > 0 ? recruitments[0] : undefined,
+    cycle: cycles.length > 0 ? cycles[0] : undefined,
     dateFrom: new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)),
     dateTo: new Date(Date.now()),
     courses: courses.slice(0),
@@ -147,12 +139,7 @@ const Schedule = ({user, ...rest}) => {
     });
   }
 
-  const updateRecruitment = value => {
-    setValues({
-      ...values,
-      ['recruitment']: value
-    });
-  }
+  const updateRecruitment = value => handleChange({target: {name: 'recruitment', value: value }})
 
   const updateCycle = value => handleChange({target: {name: 'cycle', value: value }})
 
@@ -170,6 +157,8 @@ const Schedule = ({user, ...rest}) => {
       to: values.dateTo,
       rooms: values.rooms,
       courses: values.courses,
+      recruitment: values.recruitment,
+      cycle: values.cycle,
     }
   }
 
@@ -184,7 +173,6 @@ const Schedule = ({user, ...rest}) => {
             updateRecruitment={updateRecruitment}   
             updateCycle={updateCycle}
             recruitments={recruitments}
-            cycles={cycles}
           />
         </Grid>
         <Grid item xs={3}>
