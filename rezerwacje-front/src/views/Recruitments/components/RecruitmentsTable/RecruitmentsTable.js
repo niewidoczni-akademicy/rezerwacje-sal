@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
+import RecruitmentCycleFormDialog from "../RecruitmentCycleFormDialog";
 import { connect } from "react-redux";
 import { selectCurrentUser } from "/webapp/src/redux/user/user.selectors";
 
@@ -54,8 +55,10 @@ const RecruitmentsTable = props => {
   const [selectedRecruitment, setSelectedRecruitment] = useState(-1);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [cycleModalShow, setCycleModalShow] = useState(false);
 
   const handleClose = () => setModalShow(false);
+  const handleCycleClose = () => setCycleModalShow(false);
 
   const classes = useStyles();
 
@@ -85,6 +88,51 @@ const RecruitmentsTable = props => {
     return date.split("T")[0];
   };
 
+  function handlePdfRes(blob, type, name) {
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob);
+    } else {
+        const objUrl = window.URL.createObjectURL(blob);
+        let link = document.createElement('a');
+        link.href = objUrl;
+        link.download = "raport_" + type + "_rekrutacja_" + name + ".pdf";
+        link.click();
+        setTimeout(() => {
+            window.URL.revokeObjectURL(objUrl);
+        }, 250);
+    }
+  }
+
+  const handleGeneratingOverallPdfReport = (id, name) => {
+        fetch("/api/report/recruitment/" + id)
+          .then(res => {
+              return res.blob()
+          })
+          .then(res => handlePdfRes(res, "ogólny", name))
+          .catch(err => console.error(err))
+  };
+
+  const handleGeneratingSpecificPdfReport = (id, name) => {
+      const ids = Array.from(Array(1000).keys());
+      const body = JSON.stringify({
+          recruitmentPeriods: ids,
+          faculties: ids,
+          courseOfStudies: ids,
+          rooms: ids
+      });
+
+    fetch("/api/report/recruitment/" + id, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body
+        }
+    )
+        .then(res => {
+          return res.blob()
+        })
+        .then(res => handlePdfRes(res, "szczegółowy", name))
+  };
+
   return (
     <React.Fragment>
       <Card>
@@ -100,7 +148,9 @@ const RecruitmentsTable = props => {
                     <TableCell>Nazwa</TableCell>
                     <TableCell>Data początkowa</TableCell>
                     <TableCell>Data końcowa</TableCell>
-                    <TableCell>Status</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Generowanie raportu</TableCell>
+                      <TableCell>Generowanie szczegółowego raportu</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -149,6 +199,26 @@ const RecruitmentsTable = props => {
                           </Typography>
                         </div>
                       </TableCell>
+                      <TableCell className={classes.cell}>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          type="submit"
+                          onClick={() => handleGeneratingOverallPdfReport(recruitment.id, recruitment.name)}
+                        >
+                            Generuj raport
+                        </Button>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            type="submit"
+                            onClick={() => handleGeneratingSpecificPdfReport(recruitment.id)}
+                        >
+                          Generuj szczegółowy raport
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -157,9 +227,14 @@ const RecruitmentsTable = props => {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          {selectedRecruitment != -1 && (
-            <Button color="primary" variant="contained">
-              ZOBACZ CYKLE
+          {selectedRecruitment != -1 && props.currentUser.role != "STANDARD" && (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={() => setCycleModalShow(true)}
+            >
+              DODAJ CYKL
             </Button>
           )}
           {props.currentUser.role != "STANDARD" && (
@@ -173,7 +248,8 @@ const RecruitmentsTable = props => {
             </Button>
           )}
           <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
-        </CardActions>
+          <RecruitmentCycleFormDialog open={cycleModalShow} handleClose={handleCycleClose} recruitmentId={selectedRecruitment} />
+          </CardActions>
       </Card>
       <br />
     </React.Fragment>
