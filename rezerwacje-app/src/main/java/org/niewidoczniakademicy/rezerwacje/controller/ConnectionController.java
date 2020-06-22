@@ -3,7 +3,9 @@ package org.niewidoczniakademicy.rezerwacje.controller;
 import lombok.AllArgsConstructor;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.CourseAndUserConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRecruitmentPeriodConnectionResponse;
-import org.niewidoczniakademicy.rezerwacje.model.rest.other.RecruitmentAndRoomConnectionResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom.ConnectRecruitmentAndRoomsRequest;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom.RecruitmentAndRoomConnectionResponse;
+import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom.RecruitmentAndRoomsConnectionResponse;
 import org.niewidoczniakademicy.rezerwacje.model.rest.recruitmentroom.ConnectRecruitmentAndRoomRequest;
 import org.niewidoczniakademicy.rezerwacje.service.ConnectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +34,37 @@ public final class ConnectionController {
         return connectionService.connectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
     }
 
+    @PostMapping(path = "disconnect", params = {"userId", "courseOfStudyId"})
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public CourseAndUserConnectionResponse removeCourseOfStudyFromUser(@RequestParam final Long userId,
+                                                                       @RequestParam final Long courseOfStudyId) {
+
+        return connectionService.disconnectCourseOfStudyWithSystemUser(userId, courseOfStudyId);
+    }
+
     @PostMapping(path = "connect-recruitment-and-room")
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public RecruitmentAndRoomConnectionResponse addRoomToRecruitment(
             @RequestBody final ConnectRecruitmentAndRoomRequest request) {
 
-        return connectionService.connectRecruitmentWithRoom(request.getRecruitmentId(),
-                request.getRoomId(),
-                request.getAvailableFrom(),
-                request.getAvailableTo());
+        return connectionService.connectRecruitmentWithRoom(
+                request.getRecruitmentId(),
+                request.getRoomId()
+        );
+    }
+
+    @PostMapping(path = "connect-recruitment-and-rooms")
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public RecruitmentAndRoomsConnectionResponse addRoomsToRecruitment(
+            @RequestBody final ConnectRecruitmentAndRoomsRequest request) {
+
+        return connectionService.connectRecruitmentWithRooms(
+                request.getRecruitmentId(),
+                request.getRooms().getRoomsIds()
+        );
     }
 
     @PostMapping(path = "connect", params = {"recruitmentId", "recruitmentPeriodId"})

@@ -1,10 +1,10 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.niewidoczniakademicy.rezerwacje.model.shared.StudyDegree;
@@ -29,6 +29,7 @@ import java.util.Set;
 @Table
 @Entity
 @Builder
+@EqualsAndHashCode(exclude = {"recruitment", "examTerms"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecruitmentPeriod {
@@ -52,7 +53,7 @@ public class RecruitmentPeriod {
     @NonNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recruitment_id")
-    @JsonManagedReference
+    @JsonBackReference
     private Recruitment recruitment;
 
     @Builder.Default

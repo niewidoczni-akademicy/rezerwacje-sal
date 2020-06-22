@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -10,15 +10,15 @@ import {
   Typography,
   DialogActions,
   IconButton,
-} from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import CloseIcon from "@material-ui/icons/Close";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+} from '@material-ui/core';
+import { makeStyles, useTheme } from '@material-ui/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
-import validateRoomForm from "./validateRoomForm.js";
-import useForm from "./useForm.jsx";
+import validateRoomForm from './validateRoomForm.js';
+import { useDialogForm } from 'common/utilities';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,28 +26,24 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
 }));
 
-const AddRoomForm = (props) => {
+const RoomDialog = (props) => {
   const classes = useStyles();
-  const initState = {
-    name: "",
-    building: "",
-    capacity: "",
-  };
 
   const submit = () => {
-    const { name, building, capacity } = values;
+    const { id, name, building, capacity } = values;
 
-    fetch("/api/rooms", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch(props.url, {
+      method: props.httpMethod,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        id: id,
         name: name,
         building: building,
         capacity: capacity,
@@ -55,24 +51,25 @@ const AddRoomForm = (props) => {
     }).then(
       function (res) {
         if (res.ok) {
-          setState(initState);
-          console.log(values);
-          alert("Sala została dodana do bazy.");
+          alert(props.message);
+          props.onSubmitted();
         } else {
-          alert("Wystąpił błąd.");
+          alert('Wystąpił błąd.');
         }
       },
       function (e) {
-        alert("Wystąpił błąd.");
+        alert('Wystąpił błąd.');
       }
     );
   };
 
-  const { handleChange, handleSubmit, values, errors, setState } = useForm(
-    initState,
-    submit,
-    validateRoomForm
-  );
+  const {
+    handleChange,
+    handleChangeEvent,
+    handleSubmit,
+    values,
+    errors,
+  } = useDialogForm(props.initState, submit, validateRoomForm);
 
   return (
     <Dialog
@@ -81,7 +78,7 @@ const AddRoomForm = (props) => {
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle className={classes.root}>
-        <Typography variant="h3">Nowa sala</Typography>
+        <Typography variant="h3">{props.title}</Typography>
         <IconButton
           aria-label="close"
           className={classes.closeButton}
@@ -101,7 +98,7 @@ const AddRoomForm = (props) => {
                   label="Nazwa"
                   margin="dense"
                   name="name"
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   required
                   value={values.name}
                   variant="outlined"
@@ -114,7 +111,7 @@ const AddRoomForm = (props) => {
                   label="Budynek"
                   margin="dense"
                   name="building"
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   required
                   variant="outlined"
                   value={values.building}
@@ -127,7 +124,7 @@ const AddRoomForm = (props) => {
                   label="Pojemność"
                   margin="dense"
                   name="capacity"
-                  onChange={handleChange}
+                  onChange={handleChangeEvent}
                   value={values.capacity}
                   variant="outlined"
                 />
@@ -144,11 +141,11 @@ const AddRoomForm = (props) => {
           variant="contained"
           onClick={() => handleSubmit()}
         >
-          DODAJ
+          {props.action}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddRoomForm;
+export default RoomDialog;

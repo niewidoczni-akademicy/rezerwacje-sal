@@ -1,6 +1,7 @@
 package org.niewidoczniakademicy.rezerwacje.model.database;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,6 +34,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,4 +53,14 @@ public class Room {
     @JsonBackReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
     private Set<RecruitmentRoom> recruitmentRooms = new HashSet<>();
+
+    @Builder.Default
+    @ToString.Exclude
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    private Set<Hours> availabilityHours = new HashSet<>();
+
+    public void removeRoom(final RecruitmentRoom recruitmentRoom) {
+        this.recruitmentRooms.remove(recruitmentRoom);
+    }
 }
