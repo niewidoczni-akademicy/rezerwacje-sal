@@ -26,5 +26,5 @@ public class AddRoomRequest {
     @NonNull
     private Integer capacity;
 
-    private Map<DayOfWeek, List<TimeInterval>> availabilityDetails;
+    private Map<DayOfWeek, List<TimeInterval>> availabilityHours;
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.itextpdf.text.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.niewidoczniakademicy.rezerwacje.model.rest.error.ErrorResponse;
+import org.niewidoczniakademicy.rezerwacje.service.exception.ConnectionNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.CourseOfStudyNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermNotFoundException;
 import org.niewidoczniakademicy.rezerwacje.service.exception.ExamTermTimeEndBeforeTimeStartException;
@@ -234,6 +235,20 @@ public final class RestControllerExceptionHandler extends ResponseEntityExceptio
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse recruitmentNotFoundException(final RecruitmentNotFoundException e) {
+        final ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
+                .build();
+
+        log.warn(e.getMessage());
+        log.warn(Arrays.toString(e.getStackTrace()));
+
+        return errorResponse;
+    }
+
+    @ExceptionHandler({ConnectionNotFoundException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse connectionNotFoundException(final ConnectionNotFoundException e) {
         final ErrorResponse errorResponse = ErrorResponse.builder()
                 .message(e.getMessage())
                 .build();

@@ -57,5 +57,4 @@ public class UserCourses {
         this.systemUser = systemUser;
         this.systemUser.getUserCourses().add(this);
     }
-
 }

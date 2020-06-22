@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'commons-validator:commons-validator:1.4.1'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -39,6 +40,7 @@ dependencies {
 	implementation 'com.opencsv:opencsv:4.0'
 
 	testCompile 'com.h2database:h2'
+	testCompile 'org.springframework.security:spring-security-test'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -57,5 +59,11 @@ tasks.withType(Checkstyle) {
 		xml.enabled true
 		html.enabled true
 		html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-severity-sorted.xsl')
+	}
+}
+
+bootRun {
+	if (project.hasProperty("debug")) {
+		jvmArgs += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"
 	}
 }

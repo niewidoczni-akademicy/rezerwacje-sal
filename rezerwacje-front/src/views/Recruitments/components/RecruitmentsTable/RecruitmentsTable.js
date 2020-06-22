@@ -20,6 +20,8 @@ import {
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
 import ReportDialog from "../ReportDialog";
+import { connect } from "react-redux";
+import { selectCurrentUser } from "/webapp/src/redux/user/user.selectors";
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -49,10 +51,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const RecruitmentsTable = () => {
+const RecruitmentsTable = props => {
   const [selectedRecruitment, setSelectedRecruitment] = useState(-1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [reportModalShow, setReportModalShow] = useState(false);
@@ -80,11 +80,18 @@ const RecruitmentsTable = () => {
     fetch("/api/recruitment/all")
       .then(res => res.json())
       .then(json => {
-        console.log(json);
         setRecruitments(json["recruitments"]);
       })
       .catch(e => console.log(e));
   }, []);
+
+  const convertStatusType = status => {
+    if (status == "IN_PREPARATION") {
+      return "W przygotowaniu";
+    } else if (status == "IN_PROGRESS") {
+      return "Trwa";
+    } else return "Zakończona";
+  };
 
   const convertDate = date => {
     return date.split("T")[0];
@@ -129,6 +136,7 @@ const RecruitmentsTable = () => {
                     <TableCell>Data końcowa</TableCell>
                     <TableCell>Generowanie raportu</TableCell>
                     <TableCell>Generowanie szczegółowego raportu</TableCell>
+                    <TableCell>Status</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -171,6 +179,13 @@ const RecruitmentsTable = () => {
                         </div>
                       </TableCell>
                       <TableCell className={classes.cell}>
+                        <div className={classes.nameContainer}>
+                          <Typography variant="body1">
+                            {convertStatusType(recruitment.recruitmentStatus)}
+                          </Typography>
+                        </div>
+                      </TableCell>
+                      <TableCell className={classes.cell}>
                         <Button
                           color="primary"
                           variant="contained"
@@ -199,28 +214,21 @@ const RecruitmentsTable = () => {
           </PerfectScrollbar>
         </CardContent>
         <CardActions className={classes.actions}>
-          <TablePagination
-            component="div"
-            count={recruitments.length}
-            onChangePage={handlePageChange}
-            onChangeRowsPerPage={handleRowsPerPageChange}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            rowsPerPageOptions={[5, 10, 25]}
-          />
           {selectedRecruitment != -1 && (
             <Button color="primary" variant="contained">
               ZOBACZ CYKLE
             </Button>
           )}
-          <Button
-            color="primary"
-            variant="contained"
-            type="submit"
-            onClick={() => setModalShow(true)}
-          >
-            DODAJ REKRUTACJĘ
-          </Button>
+          {props.currentUser.role != "STANDARD" && (
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={() => setModalShow(true)}
+            >
+              DODAJ REKRUTACJĘ
+            </Button>
+          )}
           <RecruitmentFormDialog open={modalShow} handleClose={handleClose} />
         </CardActions>
       </Card>
@@ -229,4 +237,8 @@ const RecruitmentsTable = () => {
   );
 };
 
-export default RecruitmentsTable;
+const mapStateToProps = state => ({
+  currentUser: selectCurrentUser(state)
+});
+
+export default connect(mapStateToProps)(RecruitmentsTable);
