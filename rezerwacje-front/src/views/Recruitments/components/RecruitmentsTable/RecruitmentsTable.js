@@ -19,7 +19,6 @@ import {
 } from "@material-ui/core";
 import "./RecruitmentsTable.scss";
 import RecruitmentFormDialog from "../RecruitmentFormDialog";
-import ReportDialog from "../ReportDialog";
 import { connect } from "react-redux";
 import { selectCurrentUser } from "/webapp/src/redux/user/user.selectors";
 
@@ -55,19 +54,8 @@ const RecruitmentsTable = props => {
   const [selectedRecruitment, setSelectedRecruitment] = useState(-1);
   const [recruitments, setRecruitments] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [reportModalShow, setReportModalShow] = useState(false);
 
   const handleClose = () => setModalShow(false);
-
-  const handleReportClose = () => setReportModalShow(false);
-
-  const handlePageChange = (event, page) => {
-    setPage(page);
-  };
-
-  const handleRowsPerPageChange = event => {
-    setRowsPerPage(event.target.value);
-  };
 
   const classes = useStyles();
 
@@ -97,7 +85,7 @@ const RecruitmentsTable = props => {
     return date.split("T")[0];
   };
 
-  const handleGeneratingPdfReport = (id, name) => {
+  const handleGeneratingOverallPdfReport = (id, name) => {
       fetch("/api/report/recruitment/" + id)
           .then(res => {
               return res.blob()
@@ -117,6 +105,29 @@ const RecruitmentsTable = props => {
               }
           })
           .catch(err => console.error(err))
+  };
+
+  const handleGeneratingSpecificPdfReport = (id, name) => {
+    fetch("/api/report/recruitment/" + id
+    )
+        .then(res => {
+          return res.blob()
+        })
+        .then(blob => {
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob);
+          } else {
+            const objUrl = window.URL.createObjectURL(blob);
+            let link = document.createElement('a');
+            link.href = objUrl;
+            link.download = "raport_z_rekrutacji_" + name + ".pdf";
+            link.click();
+            setTimeout(() => {
+              window.URL.revokeObjectURL(objUrl);
+            }, 250);
+          }
+        })
+        .catch(err => console.error(err))
   };
 
   return (
@@ -190,7 +201,7 @@ const RecruitmentsTable = props => {
                           color="primary"
                           variant="contained"
                           type="submit"
-                          onClick={() => handleGeneratingPdfReport(recruitment.id, recruitment.name)}
+                          onClick={() => handleGeneratingOverallPdfReport(recruitment.id, recruitment.name)}
                         >
                             Generuj raport
                         </Button>
@@ -200,11 +211,10 @@ const RecruitmentsTable = props => {
                             color="primary"
                             variant="contained"
                             type="submit"
-                            onClick={() => setReportModalShow(true)}
+                            onClick={() => handleGeneratingSpecificPdfReport(recruitment.id)}
                         >
                           Generuj szczegółowy raport
                         </Button>
-                        <ReportDialog id={recruitment.id} open={reportModalShow} handleClose={handleReportClose} />
                       </TableCell>
                     </TableRow>
                   ))}
