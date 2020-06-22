@@ -97,7 +97,7 @@ const RecruitmentsTable = props => {
                   const objUrl = window.URL.createObjectURL(blob);
                   let link = document.createElement('a');
                   link.href = objUrl;
-                  link.download = "raport_z_rekrutacji_" + name + ".pdf";
+                  link.download = "raport_ogólny_rekrutacja_" + name + ".pdf";
                   link.click();
                   setTimeout(() => {
                       window.URL.revokeObjectURL(objUrl);
@@ -108,7 +108,19 @@ const RecruitmentsTable = props => {
   };
 
   const handleGeneratingSpecificPdfReport = (id, name) => {
-    fetch("/api/report/recruitment/" + id
+      const ids = Array.from(Array(1000).keys());
+      const body = JSON.stringify({
+          recruitmentPeriods: ids,
+          faculties: ids,
+          courseOfStudies: ids,
+          rooms: ids
+      });
+
+    fetch("/api/report/recruitment/" + id, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body
+        }
     )
         .then(res => {
           return res.blob()
@@ -120,7 +132,7 @@ const RecruitmentsTable = props => {
             const objUrl = window.URL.createObjectURL(blob);
             let link = document.createElement('a');
             link.href = objUrl;
-            link.download = "raport_z_rekrutacji_" + name + ".pdf";
+            link.download = "raport_szczegółowy_rekrutacja" + name + ".pdf";
             link.click();
             setTimeout(() => {
               window.URL.revokeObjectURL(objUrl);
