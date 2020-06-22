@@ -3,11 +3,12 @@ import {
   Card, 
   CardContent, 
   CardActions, 
-  Button 
+  Button,
+  Typography,
 } from '@material-ui/core';
 import Timeline from 'react-timelines'
-import { ROOMS } from './constants'
 import { buildExamTimebar, buildRoomTrack } from './builders'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 import './style.scss'
 
@@ -110,7 +111,7 @@ class Calendar extends Component {
     return (
       <Card>
         <CardContent>
-          <CardActions>
+          <CardActions className="top-options">
             <Button
               color="primary"
               variant="contained"
@@ -118,6 +119,20 @@ class Calendar extends Component {
             >
               ZASTOSUJ FILTRY
             </Button>
+            <div className="top-options">
+              <FiberManualRecordIcon style={{fill: "#D81E5B"}}/>
+              <div className="top-options-margin-content">
+                <Typography variant="subtitle2"> dobrze pasujący </Typography>
+              </div>
+              <FiberManualRecordIcon style={{fill: "#EB5E55"}}/>
+              <div className="top-options-margin-content">
+              <Typography variant="subtitle2" text=""> częściowo pasujący </Typography>
+              </div>
+              <FiberManualRecordIcon style={{fill: "#3A3335"}}/>
+              <div className="top-options-last-margin-content">
+                <Typography variant="subtitle2"> niepasujący </Typography>
+              </div>
+            </div>
           </CardActions>
         </CardContent>
         <Timeline

@@ -59,6 +59,22 @@ $react-timelines-button-size: 44px !default;
   margin: -1px; padding: 0; border: 0; 
 }
 
+.top-options {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+  align-content: stretch;
+  .top-options-margin-content {
+    margin-right: 10px;
+    margin-top: 2px;
+  }
+  .top-options-last-margin-content {
+    margin-top: 2px;
+  }
+}
+
 @import 'components/controls';
 @import 'components/element';
 @import 'components/grid';
