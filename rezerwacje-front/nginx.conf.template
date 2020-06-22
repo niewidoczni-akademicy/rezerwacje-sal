@@ -23,7 +23,7 @@ http {
 
     server {
         # listen on port 80
-        listen 80;
+        listen $PORT;
 
         # save logs here
         access_log /var/log/nginx/access.log compression;
@@ -41,11 +41,8 @@ http {
         }
 
         location /api/ {
-            log_format upstreamlog '[$time_local] $remote_addr - $remote_user - $server_name to: $upstream_addr: $request upstream_response_time $upstream_response_time msec $msec request_time $request_time';
-            access_log  /var/log/nginx/access.log upstreamlog;
-
 #            proxy_pass http://rezerwacje-app:8080/;
-            proxy_pass https://rezerwacje-backend.herokuapp.com;
+            proxy_pass https://rezerwacje-backend.herokuapp.com/;
         }
 
         # Media: images, icons, video, audio, HTC

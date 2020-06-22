@@ -29,7 +29,6 @@ class Login extends React.Component {
 
     const data = new FormData(event.target);
 
-    console.log(data);
     try {
       const res = await fetch("/api/login", {
         method: "POST",

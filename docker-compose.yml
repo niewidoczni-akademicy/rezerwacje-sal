@@ -1,7 +1,9 @@
 version: '3.4'
 services:
   rezerwacje-app:
-    build: ./rezerwacje-app
+    build: 
+      context: ./rezerwacje-app
+      target: base
     # container_name: rezerwacje-app
     ports: 
       - 8080:8080
@@ -9,6 +11,9 @@ services:
       - ./rezerwacje-app:/app
     user: appuser
     env_file: .env
+    environment:
+      - PORT=8080
+      - JDBC_DATABASE_URL=postgresql://rezerwacje-db:5432/${POSTGRES_DB}
     command: ./gradlew --project-cache-dir /tmp/gradle-cache bootRun
     depends_on:
       - rezerwacje-db
