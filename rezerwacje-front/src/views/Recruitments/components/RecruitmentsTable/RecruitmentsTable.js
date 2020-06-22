@@ -108,6 +108,7 @@ const RecruitmentsTable = props => {
           .then(res => handlePdfRes(res, "ogólny", name))
           .catch(err => console.error(err))
   };
+
   const handleGeneratingSpecificPdfReport = (id, name) => {
       const ids = Array.from(Array(1000).keys());
       const body = JSON.stringify({
