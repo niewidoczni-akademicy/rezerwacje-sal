@@ -78,6 +78,14 @@ bash run.sh
 http://localhost:3000
 ```
 
+4. Zaloguj się za pomocą tymczasowego konta admina
+
+```
+Login: admin
+Hasło: admin
+```
+Uwaga: Po dodaniu dowolnego innego użytkownika i restarcie backend'u tymczasowe konto admina znika - nie zapomnij dodać własne konto administracyjne.
+
 ### Zaawansowana konfiguracja
 
 Poniższe sekcje dotyczą konfiguracji plików 
