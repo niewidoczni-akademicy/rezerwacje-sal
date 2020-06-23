@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { 
   Card, 
@@ -11,9 +11,18 @@ import {
 const RecruitmentSelection = props => {
   const { className, ...rest } = props;
 
-  const recruitments = props.recruitments;
+  const [recruitments, setRecruitments] = useState(props.recruitments);
 
   const [selectedRecruitment, setRecruitment] = useState(undefined)
+  console.log(selectedRecruitment)
+
+  useEffect(() => {
+    if (recruitments != props.recruitments) {
+      setRecruitments(props.recruitments);
+      setRecruitment(props.recruitments[0])
+      setCycle(props.recruitments[0] ? props.recruitments[0].cycles[0] : undefined)
+    }
+  })
 
   const handleSelectedRecruitmentChange = event => {
     const value = event.target.value

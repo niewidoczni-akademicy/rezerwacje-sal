@@ -30,37 +30,34 @@ const useStyles = makeStyles((theme) => ({
 const Schedule = ({ user, ...rest }) => {
   const classes = useStyles();
 
-  const fetchWithParameters = async (url, responseKey, setter, formatter) => {
+  const fetchWithParameters = (url, responseKey, setter, formatter) => {
     var tmp = [];
-    await fetch(url)
+    return fetch(url)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json[responseKey]);
+        // console.log(json[responseKey]);
         if (json["message"] == undefined)
           tmp = json[responseKey].reduce((accumulator, element, i) => {
             accumulator.push(formatter(element));
             return accumulator;
           }, []);
         setter(tmp);
+        return tmp;
       })
       .catch((e) => console.log(e));
-    return tmp;
   };
 
-  const cycles = ["1", "2"];
+  const cycles = [];
 
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    let fun = async () => {
-      const tmpRooms = await fetchWithParameters(
-        "/api/rooms",
-        "rooms",
-        setRooms,
-        (x) => ({ id: x.id, text: `${x.building} ${x.name}`, exams: [] })
-      );
-
-      tmpRooms.map((x) =>
+    fetchWithParameters("/api/rooms", "rooms", setRooms, (x) => ({
+      id: x.id,
+      text: `${x.building} ${x.name}`,
+      exams: [],
+    })).then((rooms) => {
+      rooms.map((x) =>
         fetchWithParameters(
           "/api/exam-terms/room/" + x.id,
           "examTerms",
@@ -68,31 +65,33 @@ const Schedule = ({ user, ...rest }) => {
           (r) => r
         )
       );
-    };
-    fun();
+    });
   }, []);
 
   const [recruitments, setRecruitments] = useState([]);
 
   useEffect(() => {
-    let fun = async () => {
-      const tmpRecruitments = await fetchWithParameters(
-        "/api/recruitment/all",
-        "recruitments",
-        setRecruitments,
-        (x) => ({ id: x.id, text: `${x.name}`, cycles: [] })
-      );
-
-      tmpRecruitments.map((x) =>
+    fetchWithParameters(
+      "/api/recruitment/all",
+      "recruitments",
+      (_) => 0,
+      // setRecruitments,
+      (x) => ({ id: x.id, text: `${x.name}`, cycles: [] })
+    ).then((tmpRec) => {
+      console.log(tmpRec);
+      Promise.all(tmpRec.map((x) =>
         fetchWithParameters(
           "/api/recruitment-period/recruitment/" + x.id,
           "recruitmentPeriods",
           (r) => (x.cycles = r),
           (r) => r
         )
-      );
-    };
-    fun();
+      )).then(cycles => {
+        setRecruitments([...tmpRec]);
+        // updateRecruitment(tmpRec[0])
+        console.log("tmprec", tmpRec);
+      })
+    });
   }, []);
 
   const [courses, setCourses] = useState([]);
@@ -133,8 +132,8 @@ const Schedule = ({ user, ...rest }) => {
   }, []);
 
   const [values, setValues] = useState({
-    recruitment: recruitments.length > 0 ? recruitments[0] : undefined,
-    cycle: cycles.length > 0 ? cycles[0] : undefined,
+    recruitment: recruitments[0],
+    cycle: cycles[0],
     dateFrom: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     dateTo: new Date(Date.now()),
     courses: courses.slice(0),
@@ -151,11 +150,15 @@ const Schedule = ({ user, ...rest }) => {
     });
   };
 
-  const updateRecruitment = (value) =>
-    handleChange({ target: { name: "recruitment", value: value } });
+  const updateRecruitment = (value) => {
+    // handleChange({ target: { name: "recruitment", value: value } });
+    setValues({...values, recruitment: value, cycle: value.cycles[0]})
+  }    
 
-  const updateCycle = (value) =>
+  const updateCycle = (value) => {
     handleChange({ target: { name: "cycle", value: value } });
+    console.log("cycle", value)
+  }
 
   const updateCourses = (value) =>
     handleChange({ target: { name: "courses", value: value } });
