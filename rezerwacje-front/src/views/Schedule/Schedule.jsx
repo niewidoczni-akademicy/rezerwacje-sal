@@ -51,13 +51,17 @@ const Schedule = ({ user, ...rest }) => {
 
   const [rooms, setRooms] = useState([]);
 
-  useEffect(() => {
+  const loadRooms = () => {
     let fun = async () => {
+
+      const isRecruitmentSet = values.recruitment != undefined
+      const roomFormatter = x => ({ id: x.id, text: `${x.building} ${x.name}`, exams: [] })
+
       const tmpRooms = await fetchWithParameters(
-        "/api/rooms",
-        "rooms",
+        isRecruitmentSet ? `/api/recruitment/${values.recruitment.id}/rooms` : "/api/rooms",
+        isRecruitmentSet ? "recruitmentRooms" : "rooms",
         setRooms,
-        (x) => ({ id: x.id, text: `${x.building} ${x.name}`, exams: [] })
+        isRecruitmentSet ? x => roomFormatter(x.room) : roomFormatter
       );
 
       tmpRooms.map((x) =>
@@ -70,6 +74,10 @@ const Schedule = ({ user, ...rest }) => {
       );
     };
     fun();
+  }
+
+  useEffect(() => {
+    loadRooms()
   }, []);
 
   const [recruitments, setRecruitments] = useState([]);
@@ -151,8 +159,10 @@ const Schedule = ({ user, ...rest }) => {
     });
   };
 
-  const updateRecruitment = (value) =>
+  const updateRecruitment = (value) => {
     handleChange({ target: { name: "recruitment", value: value } });
+    loadRooms()
+  }
 
   const updateCycle = (value) =>
     handleChange({ target: { name: "cycle", value: value } });
