@@ -51,12 +51,22 @@ const Schedule = ({ user, ...rest }) => {
 
   const [rooms, setRooms] = useState([]);
 
-  useEffect(() => {
-    fetchWithParameters("/api/rooms", "rooms", setRooms, (x) => ({
+  const loadRooms = (recruitmentId = undefined) => {
+    const isRecruitmentSet = recruitmentId || values.recruitment != undefined;
+    const roomFormatter = (x) => ({
       id: x.id,
       text: `${x.building} ${x.name}`,
       exams: [],
-    })).then((rooms) => {
+    });
+
+    fetchWithParameters(
+      isRecruitmentSet
+        ? `/api/recruitment/${recruitmentId || values.recruitment.id}/rooms`
+        : "/api/rooms",
+      isRecruitmentSet ? "recruitmentRooms" : "rooms",
+      setRooms,
+      isRecruitmentSet ? (x) => roomFormatter(x.room) : roomFormatter
+    ).then((rooms) => {
       rooms.map((x) =>
         fetchWithParameters(
           "/api/exam-terms/room/" + x.id,
@@ -66,6 +76,10 @@ const Schedule = ({ user, ...rest }) => {
         )
       );
     });
+  };
+
+  useEffect(() => {
+    loadRooms();
   }, []);
 
   const [recruitments, setRecruitments] = useState([]);
@@ -79,18 +93,20 @@ const Schedule = ({ user, ...rest }) => {
       (x) => ({ id: x.id, text: `${x.name}`, cycles: [] })
     ).then((tmpRec) => {
       console.log(tmpRec);
-      Promise.all(tmpRec.map((x) =>
-        fetchWithParameters(
-          "/api/recruitment-period/recruitment/" + x.id,
-          "recruitmentPeriods",
-          (r) => (x.cycles = r),
-          (r) => r
+      Promise.all(
+        tmpRec.map((x) =>
+          fetchWithParameters(
+            "/api/recruitment-period/recruitment/" + x.id,
+            "recruitmentPeriods",
+            (r) => (x.cycles = r),
+            (r) => r
+          )
         )
-      )).then(cycles => {
+      ).then((cycles) => {
         setRecruitments([...tmpRec]);
         // updateRecruitment(tmpRec[0])
         console.log("tmprec", tmpRec);
-      })
+      });
     });
   }, []);
 
@@ -151,14 +167,13 @@ const Schedule = ({ user, ...rest }) => {
   };
 
   const updateRecruitment = (value) => {
-    // handleChange({ target: { name: "recruitment", value: value } });
-    setValues({...values, recruitment: value, cycle: value.cycles[0]})
-  }    
+    setValues({ ...values, recruitment: value, cycle: value.cycles[0] });
+    loadRooms(value.id);
+  };
 
   const updateCycle = (value) => {
     handleChange({ target: { name: "cycle", value: value } });
-    console.log("cycle", value)
-  }
+  };
 
   const updateCourses = (value) =>
     handleChange({ target: { name: "courses", value: value } });
