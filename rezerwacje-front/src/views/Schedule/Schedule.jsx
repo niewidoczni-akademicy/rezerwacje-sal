@@ -51,14 +51,14 @@ const Schedule = ({ user, ...rest }) => {
 
   const [rooms, setRooms] = useState([]);
 
-  const loadRooms = () => {
+  const loadRooms = (recruitmentId = undefined) => {
     let fun = async () => {
 
-      const isRecruitmentSet = values.recruitment != undefined
+      const isRecruitmentSet = recruitmentId || values.recruitment != undefined
       const roomFormatter = x => ({ id: x.id, text: `${x.building} ${x.name}`, exams: [] })
 
       const tmpRooms = await fetchWithParameters(
-        isRecruitmentSet ? `/api/recruitment/${values.recruitment.id}/rooms` : "/api/rooms",
+        isRecruitmentSet ? `/api/recruitment/${recruitmentId || values.recruitment.id}/rooms` : "/api/rooms",
         isRecruitmentSet ? "recruitmentRooms" : "rooms",
         setRooms,
         isRecruitmentSet ? x => roomFormatter(x.room) : roomFormatter
@@ -161,7 +161,7 @@ const Schedule = ({ user, ...rest }) => {
 
   const updateRecruitment = (value) => {
     handleChange({ target: { name: "recruitment", value: value } });
-    loadRooms()
+    loadRooms(value.id)
   }
 
   const updateCycle = (value) =>
